@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Developer's Guide</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="Curriculum"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Administrator's Guide"
+HREF="admin.html"><LINK
+REL="NEXT"
+TITLE="Future Developments"
+HREF="future.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Curriculum</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="admin.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="future.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DEV"
+>4. Developer's Guide</A
+></H1
+><P
+>The usage of Curriculum has been extended quite a bit from the OpenACS 3 version, which wasn't subsite aware and didn't allow for several curriculums to be presented at once. The new expanded Curriculum module has also been adapted into a .LRN applet and portlet. One nice feature that has been kept from the original module is the ability to serve curriculums to both logged-in users and casual surfers. Non-registered users will get a cookie that keeps track of the curriculum progress. Logged-in users get their progress updated in the database, and are thus able to continue where they were last even if they are not using their own computer.</P
+><P
+>The definition of the curriculums and their elements (and respective metadata) is entered via ad_forms into the <SAMP
+CLASS="COMPUTEROUTPUT"
+>cu_curriculums</SAMP
+> and the <SAMP
+CLASS="COMPUTEROUTPUT"
+>cu_elements</SAMP
+> tables. Elements, not curriculums, are actually the most fundamental objects that the Curriculum package works with. Presenting the elements as belonging to a certain curriculum, in turn belonging to a certain instance, is more or less a matter of display finesses. The curriculum and element definition tables are cached per instance, and the cache gets flushed whenever a curriculum or element is modified.</P
+><P
+>The tracking of users' learning progress is handled with a registered filter that notes whenever a user visits a URL that has been defined as a learning element in a curriculum. If the URL is external to the subsite that hosts the Curriculum instance, it will be modified in the bar so as to lead to a "clickthrough" script where the tracking takes place as the web page is delivered. In order to display the curriculum bar on external pages too, these are presented with frames. A user's individual curriculum progress is set and updated in a cookie. Logged-in users get their learning progress recorded in the <SAMP
+CLASS="COMPUTEROUTPUT"
+>cu_user_element_map.</SAMP
+></P
+><P
+>In order for logged-in users to have more control over which curriculums to follow and which not to, the <SAMP
+CLASS="COMPUTEROUTPUT"
+>cu_user_curriculum_map</SAMP
+> keeps track of which curriculums a user wants displayed. This table is cached per user. The cache is only flushed for all users at the specific request of a curriculum administrator who is done modifying the curriculums and elements in an instance. The administrator will want do this from time to time in order to update the curriculum bar of all users of the Curriculum service so as to reflect altered curriculum or element definitions.</P
+><P
+>Curriculum uses the Workflow package for managing the process of publishing curriculums. A default workflow is automatically created when installing the Curriculum package. Every instance will use an individual copy of this default workflow. If you are dissatisfied with the default workflow template and wish to create another one of your own liking, please refer to the Workflow Developer's Guide. The default workflow of Curriculum goes as follows:</P
+><P
+><A
+NAME="AEN55"
+></A
+><BLOCKQUOTE
+CLASS="BLOCKQUOTE"
+><PRE
+CLASS="SCREEN"
+>* Roles:
+
+{Author}
+{Editor}
+{Publisher}
+
+* Actions:
+
+[Create]
+[Edit]
+[Reject]
+[Publish]
+[Archive]
+[Comment]
+
+* States:
+
+(Created)
+(Edited)
+(Rejected)
+(Published)
+(Archived)
+
+* Cases:
+
+In-flow:
+
+The {Editor} and {Publisher} are required to act on some states, and will be notified when this is so.
+
+When the object is in the states (Created) or (Rejected) the {Editor} is required to [Edit].
+
+(Created) -&#62; [Edit] -&#62; (Edited)
+(Rejected) -&#62; [Edit] -&#62; (Edited)
+
+When the object is in the state (Edited) the {Publisher} is required to [Reject] or [Publish].
+
+(Edited) -&#62; [Reject] -&#62; (Rejected)
+(Edited) -&#62; [Publish] -&#62; (Published)
+
+Out-of-flow: 
+
+The {Author}, {Editor}, and {Publisher} are free to act in different ways on different states.
+
+The {Author} can always [Create] objects, and then the {Editor} is required to [Edit].
+
+[Create] -&#62; (Created)
+
+The {Editor} can always [Edit] objects, and then the {Publisher} is required to either [Reject] or [Publish].
+
+(Edited) -&#62; [Edit] -&#62; (Edited)
+(Published) -&#62; [Edit] -&#62; (Edited)
+(Archived) -&#62; [Edit] -&#62; (Edited)
+
+The {Publisher} can always [Archive] objects that are (Published), and [Publish] objects that are (Archived).
+
+(Published) -&#62; [Archive] -&#62; (Archived)
+(Archived) -&#62; [Publish] -&#62; (Published) 
+
+All roles can [Comment] the workflow process without this having any effect on the states.
+      </PRE
+></BLOCKQUOTE
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="admin.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="future.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Administrator's Guide</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Future Developments</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

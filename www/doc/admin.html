@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML
+><HEAD
+><TITLE
+>Administrator's Guide</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.7"><LINK
+REL="HOME"
+TITLE="Curriculum"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="User's Guide"
+HREF="user.html"><LINK
+REL="NEXT"
+TITLE="Developer's Guide"
+HREF="dev.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Curriculum</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="user.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="dev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ADMIN"
+>3. Administrator's Guide</A
+></H1
+><P
+>As a site wide admin (SWA) there are a few things that you should be aware of when setting up an instance of the Curriculum module. The package essentially offers services to students and teachers of online courses. The students are offered a curriculum bar, a navigation and tracking interface, that is to be displayed on all master-templated pages of the site, or at least the subsite, where the Curriculum instance is mounted. You must facilitate this. The teachers that design courses use a publishing workflow. Unless you want to take on the responsibility for administrating the work, you must grant admin rights on the instance to a head teacher.</P
+><P
+>Hence, after installing and mounting the Curriculum package (you can mount one instance of Curriculum per subsite) there are a few things left for you to do. First, make sure to facilitate the proper display of the curriculum bar widget. There are two versions of the curriculum bar to choose from: a horizontal and a vertical course menu. But the curriculum bar widget won't be displayed at all until you have included it manually in the master template. You will need to add the following curriculum bar include code at the desired place in the default-master or other template of preference, and perhaps write some markup code around it.</P
+><P
+>Add this to the template's TCL file:</P
+><P
+><A
+NAME="AEN35"
+></A
+><BLOCKQUOTE
+CLASS="BLOCKQUOTE"
+><PRE
+CLASS="SCREEN"
+># Curriculum bar
+set curriculum_bar_p [apm_package_installed_p curriculum]</PRE
+></BLOCKQUOTE
+></P
+><P
+>Add this to the template's ADP file:</P
+><P
+><A
+NAME="AEN39"
+></A
+><BLOCKQUOTE
+CLASS="BLOCKQUOTE"
+><PRE
+CLASS="SCREEN"
+>&#60;!-- Start curriculum bar --&#62;
+&#60;if @curriculum_bar_p@&#62;&#60;include src="/packages/curriculum/lib/bar" /&#62;&#60;/if&#62;
+&#60;!-- End curriculum bar --&#62;</PRE
+></BLOCKQUOTE
+></P
+><P
+>Where you decide to put the ADP include and what type of HTML and CSS formatting you want to work on it depends on which type of curriculum bar you are going to have. This and other preferences for the functionality and presentation of the curriculum bar you set at the instance parameters page. You'll find a link to the Curriculum parameters page at the top left of the Curriculum admin page. The setting of instance parameters can also be done later by a Curriculum administrator (a head teacher perhaps) as soon as you have granted someone such permission. You'll find a link to the Curriculum permissions page right next to the link to the Curriculum parameters page. Also, decide which users will get to read the curriculums.</P
+><P
+>Finally, assign workflow roles...</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="user.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="dev.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>User's Guide</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Developer's Guide</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
