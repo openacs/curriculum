@@ -3,14 +3,6 @@ TODO:
 - Let the public access the curriculum-ave and element-ave
   widgets, but prohibit them from adding/editing content...
   Also, remove the workflow action buttons!
-- When you mount a new subsite that not yet have curriculum
-  mounted anywhere under it, URLs in that subsite crap out 
-  because "enabled_elements" takes a package_id param, but 
-  "conn" just returns {} without a curriculum instance mounted.
-  (We should probably change to scope by subsite_id which will
-   always be available!)
-- I believe that the sort order is wrong in the "bar query" -
-  or am I being fooled by a caching issue?
 - Think about flushing "enabled rows" after publishing.
   (maybe via a WF "side effect")
 - Assignees and notifications in workflow.
@@ -52,3 +44,9 @@ DONE:
   bar and index page queries to filter out the users desired
   curriculums among the published ones.
 - Add scripts to add/remove desired curriculums.
+- When you mount a new subsite that not yet have curriculum
+  mounted anywhere under it, URLs in that subsite crap out 
+  because "enabled_elements" takes a package_id param, but 
+  "conn" just returns {} without a curriculum instance mounted.
+- I believe that the sort order is wrong in the "bar query" -
+  or am I being fooled by a caching issue?
