@@ -733,12 +733,18 @@ ad_proc -private curriculum::curriculum_filter_internal {
     # to curriculums to consider adding to cookie.
     set list_of_lists [curriculum::enabled_elements_memoized -package_id $package_id]
     set current_url [ad_conn url]
+
+    # Check for query vars. URL decode the vars here if they exist, and do the same
+    # when we compare current_url to the element URLs to ensure consistency ...
+    if { ![empty_string_p [set query_vars [ad_conn query]]] } {
+	append current_url "?[ns_urldecode $query_vars]"
+    }
     
     foreach list $list_of_lists {
 	array set info $list
 
 	# Is the user visiting this curriculum element url?
-	if { [string equal $current_url $info(url)] } {
+	if { [string equal $current_url [ns_urldecode $info(url)]] } {
 
 	    # See if this element isn't already in user's cookie.
 	    set element_id $info(element_id)

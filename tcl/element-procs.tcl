@@ -16,7 +16,7 @@ ad_proc -public curriculum::element::new {
     {-name:required}
     {-description ""}
     {-desc_format "text/html"}
-    {-url:required}
+    {-url ""}
     {-enabled_p t}
     {-sort_key ""}
 } {
@@ -28,7 +28,7 @@ ad_proc -public curriculum::element::new {
     @param name          The name of the element.
     @param description   Long description of the element.
     @param desc_format   The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param url           Url that this element is linked to. (URLs without "http://" are considered to be relative to the page root).
+    @param url           Url that this element is linked to. (URLs without "http://" are considered to be relative to the page root, and no URL at all will make the element point to its info page).
     @param enabled_p     Should the element be enabled or disabled (archived) upon creation? This can be toggled afterwards.
     @param sort_key      The relative sort order of the elements in a curriculum.
 
@@ -67,9 +67,6 @@ ad_proc -public curriculum::element::external_p {
 	set external_p t
     } else {
 	# Try to determine if the URL belongs to another subsite.
-	#array set node [site_node::get_from_url -url $url]
-	
-	# FIXME. This condition does not tell the whole truth ...
 
 	set subsite_id [site_node_closest_ancestor_package -url $url [curriculum::package_keys]]
 
@@ -89,7 +86,7 @@ ad_proc -public curriculum::element::edit {
     {-name:required}
     {-description:required}
     {-desc_format:required}
-    {-url:required}
+    {-url ""}
 } {
 
     Edit a curriculum element.
