@@ -44,51 +44,6 @@ ad_proc -private curriculum::apm::after_instantiate {
     Package instantiation callback proc.
 } {
     curriculum::instance_workflow_create -package_id $package_id
-    
-    ###
-    # FIXME. We just set this up for convenience during development.
-    ###
-    
-    db_transaction {
-
-	set subsite_url [curriculum::conn subsite_url]
-
-	# Create a curriculum.
-	set curriculum_id [curriculum::new \
-			       -name [set name "Demo Curriculum A"] \
-			       -description "$name description." \
-			       -package_id $package_id]
-	
-	# Add some elements.
-	foreach { url label } [list ${subsite_url}api-doc/ "API Documentation" ${subsite_url} "Home" ${subsite_url}doc/ "Package Documentation"] {
-	    curriculum::element::new \
-		-curriculum_id $curriculum_id \
-		-name $label \
-		-description "Description of <i>$label</i>." \
-		-desc_format "text/html" \
-		-url $url
-	}
-	
-	# Create a curriculum.
-	set curriculum_id [curriculum::new \
-			       -name [set name "Demo Curriculum B"] \
-			       -description "$name description." \
-			       -package_id $package_id]
-	
-	# Add some elements.
-	foreach { url label } [list ${subsite_url}curriculum/ "Curriculum Home" ${subsite_url}admin/ "Admin" ${subsite_url}acs-service-contract/ "Service Contracts" http://openacs.org "OpenACS Website"] {
-	    curriculum::element::new \
-		-curriculum_id $curriculum_id \
-		-name $label \
-		-description "Description of <i>$label</i>." \
-		-desc_format "text/fixed-width" \
-		-url $url
-	}
-	
-    }
-
-    curriculum::elements_flush
-
 }
 
 
