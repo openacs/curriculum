@@ -139,17 +139,6 @@ ad_form -name curriculum \
     }
 }
 
-# Add status field on display/edit mode for people with write privs.
-if { !$new_p && $write_p } {
-    ad_form -extend -name curriculum -form {
-	{pretty_state:text(inform)
-	    {label Status}
-	    {before_html <b>}
-	    {after_html  </b>}
-	}
-    }
-}
-
 ad_form -extend -name curriculum -form {
     {description:richtext
 	{mode $element_mode}
@@ -160,7 +149,27 @@ ad_form -extend -name curriculum -form {
     }
 }
 
+if { $write_p } {
+    ad_form -extend -name curriculum -form {
+	{comment:richtext
+	    {mode $element_mode}
+	    {label "Workflow Log"}
+	    {help_text "Comment your action"}
+	    {html {rows 5 cols 50 wrap soft}}
+	    optional
+	}
+    }
+}
+
+# Add status field on display/edit mode for people with write privs.
 if { !$new_p && $write_p } {
+    ad_form -extend -name curriculum -form {
+	{pretty_state:text(inform)
+	    {label Status}
+	    {before_html <b>}
+	    {after_html  </b>}
+	}
+    }
 
     # Extend the form with assignee widgets (only in edit or display mode).
     workflow::case::role::add_assignee_widgets -case_id $case_id -form_name curriculum
@@ -168,10 +177,10 @@ if { !$new_p && $write_p } {
     # FIXME. Get values for the role assignment widgets.
     workflow::case::role::set_assignee_values -case_id $case_id -form_name curriculum
     
-    # Set values for description field.
+    # Set values for comment field.
     # Is before_html the right placement of this? Perhaps we should link
     # to a different page where we show the case log?
-    element set_properties curriculum description \
+    element set_properties curriculum comment \
 	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>$action_pretty_name by user_first_names user_last_name</b></p>"]"
     
     # Single-curriculum notifications link.
@@ -216,8 +225,7 @@ ad_form -extend -name curriculum -edit_request {
 
     template::util::array_to_vars curriculum_array
 
-    # The first list element is the description and it needs to be set to be empty.
-    set description [list {} $desc_format]
+    set description [template::util::richtext::create $description $desc_format]
 
     # Hide elements that should be hidden because of a certain wf status.
     foreach element $curriculum_array(hide_fields) {
@@ -237,6 +245,8 @@ ad_form -extend -name curriculum -edit_request {
 	-name $name \
 	-description [template::util::richtext::get_property contents $description] \
 	-desc_format [template::util::richtext::get_property format $description] \
+	-comment [template::util::richtext::get_property contents $comment] \
+	-comment_format [template::util::richtext::get_property format $comment] \
 	-owner_id $owner_id \
 	-package_id $package_id
     
@@ -247,6 +257,8 @@ ad_form -extend -name curriculum -edit_request {
 	-name $name \
 	-description [template::util::richtext::get_property contents $description] \
 	-desc_format [template::util::richtext::get_property format $description] \
+	-comment [template::util::richtext::get_property contents $comment] \
+	-comment_format [template::util::richtext::get_property format $comment] \
 	-owner_id $owner_id \
 	-action_id $action_id \
 	-array curriculum_array

@@ -33,6 +33,8 @@ ad_proc -public curriculum::new {
     -name:required
     {-description ""}
     {-desc_format "text/html"}
+    {-comment ""}
+    {-comment_format "text/html"}
     {-owner_id ""}
     -package_id:required
     {-sort_key ""}
@@ -40,13 +42,15 @@ ad_proc -public curriculum::new {
 
     Create a new curriculum.
 
-    @param curriculum_id The pre-fetched object-id of the curriculum which should be created (normally not used).
-    @param name          The name of the curriculum.
-    @param description   Long  description of the objective(s) of the curriculum.
-    @param desc_format   The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param owner_id      The party-id of the party - user or group - that is responsible for this curriculum. Defaults to the creating user.
-    @param package_id    Package-id makes the Curriculum package subsite-aware. Defaults to [ad_conn package_id].
-    @param sort_key      The relative sort order of the curriculums in a package instance.
+    @param curriculum_id  The pre-fetched object-id of the curriculum which should be created (normally not used).
+    @param name           The name of the curriculum.
+    @param description    Long description of the objective(s) of the curriculum.
+    @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
+    @param comment        Comment on the action taken on the curriculum.
+    @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
+    @param owner_id       The party-id of the party - user or group - that is responsible for this curriculum. Defaults to the creating user.
+    @param package_id     Package-id makes the Curriculum package subsite-aware. Defaults to [ad_conn package_id].
+    @param sort_key       The relative sort order of the curriculums in a package instance.
 
     @return The object-id of the newly created curriculum.
 
@@ -72,8 +76,8 @@ ad_proc -public curriculum::new {
 	workflow::case::new \
 	    -workflow_id [workflow::get_id -object_id $package_id -short_name [workflow_short_name]] \
 	    -object_id $curriculum_id \
-	    -comment $description \
-	    -comment_mime_type $desc_format
+	    -comment $comment \
+	    -comment_mime_type $comment_format
     }
 
     return $curriculum_id
@@ -85,6 +89,8 @@ ad_proc -public curriculum::edit {
     -name:required
     {-description ""}
     {-desc_format "text/plain"}
+    {-comment ""}
+    {-comment_format "text/html"}
     -owner_id:required
     -action_id:required
     -array:required
@@ -93,11 +99,13 @@ ad_proc -public curriculum::edit {
 
     Edit a curriculum.
 
-    @param curriculum_id The object-id of the curriculum which should be updated.
-    @param name          The new name.
-    @param description   The new description.
-    @param desc_format   The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param owner_id      The new owner (party_id).
+    @param curriculum_id  The object-id of the curriculum which should be updated.
+    @param name           The new name.
+    @param description    The new description.
+    @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
+    @param comment        Comment on the action taken on the curriculum.
+    @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
+    @param owner_id       The new owner (party_id).
 
     @return Nothing.
 
@@ -131,8 +139,8 @@ ad_proc -public curriculum::edit {
 	workflow::case::action::execute \
 	    -case_id $case_id \
 	    -action_id $action_id \
-	    -comment $description \
-	    -comment_mime_type $desc_format \
+	    -comment $comment \
+	    -comment_mime_type $comment_format \
 	    -entry_id $entry_id
     }
     
@@ -329,10 +337,10 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name "Comment"
                     pretty_past_tense "Commented"
                     allowed_roles { author editor publisher }
-                    privileges { read write }
+                    privileges { write }
                     always_enabled_p t
                     edit_fields { 
-			       description
+			       comment
 		         }
                 }
                 edit {
@@ -345,17 +353,31 @@ ad_proc -private curriculum::workflow_create {} {
                     edit_fields { 
                         name
 			       description
+			       comment
+		         }
+                }
+                reject {
+                    pretty_name "Reject"
+                    pretty_past_tense "Rejected"
+                    new_state "rejected"
+                    allowed_roles { publisher }
+                    privileges { write }
+                    always_enabled_p t
+                    edit_fields { 
+			       comment
 		         }
                 }
                 publish {
                     pretty_name "Publish"
                     pretty_past_tense "Published"
                     assigned_role "publisher"
-                    enabled_states { authored edited }
+                    enabled_states { authored edited archived }
                     assigned_states { edited }
                     new_state "published"
                     privileges { write }
-                    edit_fields { }
+                    edit_fields {
+			       comment
+		         }
                 }
                 archive {
                     pretty_name "Archive"
@@ -364,7 +386,9 @@ ad_proc -private curriculum::workflow_create {} {
                     assigned_states { published }
                     new_state "archived"
                     privileges { write }
-                    edit_fields { }
+                    edit_fields {
+                        comment
+                    }
                 }
             }
         }

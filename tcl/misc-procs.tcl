@@ -15,7 +15,7 @@ namespace eval curriculum {}
 ad_proc -public curriculum::package_keys {
 } {
     Builds a list that will be used as an argument to "site_node_closest_ancestor_package".
-    If .LRN is not installed it will be ste to "acs_subsite" and if it is installed, 
+    If .LRN is not installed it will be set to "acs_subsite" and if it is installed, 
     "dotlrn" will be prepended to the list. The Underlying reason we do this is because
     we want to allow one Curriculum instance under each dotLRN instance, if dotLRN is
     installed. And if it is installed it should take precedence over acs_subsite.
