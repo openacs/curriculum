@@ -52,7 +52,7 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     set title "[_ curriculum.lt_element_name_part_of_]"
 }
 
-set context {$title}
+set context [list $title]
 
 ad_form -name element \
     -export {curriculum_id} \
@@ -140,5 +140,11 @@ if { ![form is_valid element] } {
 
     element set_properties element url -display_value $link
 }
+
+# If there is a spelling error you want to display the form in edit mode.
+if { [form is_submission element] } {
+    form set_properties element -mode edit
+}
+
 
 ad_return_template

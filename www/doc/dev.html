@@ -82,89 +82,17 @@ CLASS="COMPUTEROUTPUT"
 > and the <SAMP
 CLASS="COMPUTEROUTPUT"
 >cu_elements</SAMP
-> tables. Elements, not curriculums, are actually the most fundamental objects that the Curriculum package works with. Presenting the elements as belonging to a certain curriculum, in turn belonging to a certain instance, is more or less a matter of display finesses. The curriculum and element definition tables are cached per instance, and the cache gets flushed whenever a curriculum or element is modified.</P
+> tables. Elements, not curriculums, are actually the most fundamental objects that the Curriculum package works with. Presenting the elements as belonging to a certain curriculum, in turn belonging to a certain instance, is more or less a matter of display finesses. The curriculum and element definition tables are cached per instance, and the cache gets flushed via a callback whenever a curriculum or element is modified by an editor or publisher.</P
 ><P
 >The tracking of users' learning progress is handled with a registered filter that notes whenever a user visits a URL that has been defined as a learning element in a curriculum. If the URL is external to the subsite that hosts the Curriculum instance, it will be modified in the bar so as to lead to a "clickthrough" script where the tracking takes place as the web page is delivered. In order to display the curriculum bar on external pages too, these are presented with frames. A user's individual curriculum progress is set and updated in a cookie. Logged-in users get their learning progress recorded in the <SAMP
 CLASS="COMPUTEROUTPUT"
->cu_user_element_map.</SAMP
-></P
-><P
->In order for logged-in users to have more control over which curriculums to follow and which not to, the <SAMP
+>cu_user_element_map</SAMP
+>. In order for logged-in users to have more control over which curriculums to follow and which not to, the <SAMP
 CLASS="COMPUTEROUTPUT"
 >cu_user_curriculum_map</SAMP
-> keeps track of which curriculums a user wants displayed. This table is cached per user. The cache is only flushed for all users at the specific request of a curriculum administrator who is done modifying the curriculums and elements in an instance. The administrator will want do this from time to time in order to update the curriculum bar of all users of the Curriculum service so as to reflect altered curriculum or element definitions.</P
+> keeps track of which curriculums a user wants displayed. This table is cached per user.</P
 ><P
->Curriculum uses the Workflow package for managing the process of publishing curriculums. A default workflow is automatically created when installing the Curriculum package. Every instance will use an individual copy of this default workflow. If you are dissatisfied with the default workflow template and wish to create another one of your own liking, please refer to the Workflow Developer's Guide. The default workflow of Curriculum goes as follows:</P
-><P
-><A
-NAME="AEN55"
-></A
-><BLOCKQUOTE
-CLASS="BLOCKQUOTE"
-><PRE
-CLASS="SCREEN"
->* Roles:
-
-{Author}
-{Editor}
-{Publisher}
-
-* Actions:
-
-[Create]
-[Edit]
-[Reject]
-[Publish]
-[Archive]
-[Comment]
-
-* States:
-
-(Created)
-(Edited)
-(Rejected)
-(Published)
-(Archived)
-
-* Cases:
-
-In-flow:
-
-The {Editor} and {Publisher} are required to act on some states, and will be notified when this is so.
-
-When the object is in the states (Created) or (Rejected) the {Editor} is required to [Edit].
-
-(Created) -&#62; [Edit] -&#62; (Edited)
-(Rejected) -&#62; [Edit] -&#62; (Edited)
-
-When the object is in the state (Edited) the {Publisher} is required to [Reject] or [Publish].
-
-(Edited) -&#62; [Reject] -&#62; (Rejected)
-(Edited) -&#62; [Publish] -&#62; (Published)
-
-Out-of-flow: 
-
-The {Author}, {Editor}, and {Publisher} are free to act in different ways on different states.
-
-The {Author} can always [Create] objects, and then the {Editor} is required to [Edit].
-
-[Create] -&#62; (Created)
-
-The {Editor} can always [Edit] objects, and then the {Publisher} is required to either [Reject] or [Publish].
-
-(Edited) -&#62; [Edit] -&#62; (Edited)
-(Published) -&#62; [Edit] -&#62; (Edited)
-(Archived) -&#62; [Edit] -&#62; (Edited)
-
-The {Publisher} can always [Archive] objects that are (Published), and [Publish] objects that are (Archived).
-
-(Published) -&#62; [Archive] -&#62; (Archived)
-(Archived) -&#62; [Publish] -&#62; (Published) 
-
-All roles can [Comment] the workflow process without this having any effect on the states.
-      </PRE
-></BLOCKQUOTE
-></P
+>Curriculum uses the Workflow package for managing the process of publishing curriculums. A default workflow - distinguishing between the roles of Creator, Editor, and Publisher - is automatically created when installing the Curriculum package. Every instance will use an individual copy of this default workflow. If you are dissatisfied with the default workflow template and wish to create another one to your own liking, please refer to the Workflow Developer's Guide.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
