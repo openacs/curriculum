@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<message_catalog package_key="curriculum" package_version="1.3" locale="fr_FR" charset="ISO-8859-1">
+
+  <msg key="Actions">Actions</msg>
+  <msg key="Add_a_curriculum">Ajouter un curriculum</msg>
+  <msg key="Add_an_element">Ajouter un élément</msg>
+  <msg key="Add_Element">Ajouter l'élément</msg>
+  <msg key="Archive">Archive</msg>
+  <msg key="Archived">Archivé</msg>
+  <msg key="Author">Auteur</msg>
+  <msg key="Comment">Commentaire</msg>
+  <msg key="Commented">Commenté</msg>
+  <msg key="Complete_description">Description complète</msg>
+  <msg key="Create">Créer</msg>
+  <msg key="Create_a_new_element">Créer un nouvel événenment</msg>
+  <msg key="Create_Curriculum">Créer un curriculum</msg>
+  <msg key="Delete">Effacer</msg>
+  <msg key="Description">Description</msg>
+  <msg key="Disable">Désactiver</msg>
+  <msg key="Disabled">Désactivé</msg>
+  <msg key="Edit">Modifier</msg>
+  <msg key="Edited">Modifié</msg>
+  <msg key="Editor">Editeur</msg>
+  <msg key="Enable">Activer</msg>
+  <msg key="Enabled">Activé</msg>
+  <msg key="External_Element">Elément externe</msg>
+  <msg key="lt_Activate_this_element">Activer cet élément</msg>
+</message_catalog>

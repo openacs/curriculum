@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="curriculum" package_version="0.5d1" locale="de_DE" charset="ISO-8859-1">
+<message_catalog package_key="curriculum" package_version="1.3" locale="de_DE" charset="ISO-8859-1">
 
   <msg key="Action_Log">Aktionen-Protokoll</msg>
   <msg key="Actions">Aktionen</msg>
   <msg key="Add_a_curriculum">Neues Curriculum hinzufügen</msg>
   <msg key="Add_an_element">Neues Element hinzufügen</msg>
   <msg key="Add_Element">Neues Element hinzufügen</msg>
-  <msg key="Any">Irgendein</msg>
+  <msg key="Any">Beliebig</msg>
   <msg key="Archive">Archiv</msg>
   <msg key="Archived">Archiviert</msg>
   <msg key="Assign">Aufgeben</msg>
@@ -70,7 +70,7 @@
   <msg key="lt_Request_notifications">Benachrichtigungsfunktion für Aktivitäten in diesem Curriculum aktivieren</msg>
   <msg key="lt_Reset_all_curriculums">Alle Curricula zurücksetzen</msg>
   <msg key="lt_Set_site-wide_prefere">Systemweite Einstellungen für diese Curriculums-Instanz setzen</msg>
-  <msg key="lt_Show_curriculums_in_p">Curricula im Veröffentlichungs-Status anzeigen
+  <msg key="lt_Show_curriculums_in_p">Curricula mit folgendem Veröffentlichungs-Status anzeigen:
 </msg>
   <msg key="lt_Stop_displaying_the_c">Anzeige der Curriculums-Steuerungsleiste ausschalten</msg>
   <msg key="lt_This_field_is_for_com">Dieses Feld dient zur Kommentierung von Aktionen im Curriculum</msg>
