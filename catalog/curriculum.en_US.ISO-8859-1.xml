@@ -23,12 +23,7 @@
   <msg key="Curriculum">Curriculum:</msg>
   <msg key="Curriculum_1">Curriculum</msg>
   <msg key="Curriculum_info">Curriculum info</msg>
-  <msg key="Default_Assignees">Default Assignees</msg>
-  <msg key="Default_assignees_help">&lt;p&gt;&lt;b&gt;Help:&lt;/b&gt;&lt;/p&gt;
-
-&lt;p&gt;Every authored curriculum is subject to a publishing workflow, and the users assigned to the editor and publisher roles are responsible for assuring its quality. The editor is supposed to review the curriculum, and then it is the job of the publisher to ultimately decide if the curriculum is ready to be published or not.&lt;/p&gt;
-
-&lt;p&gt;It is possible at any time to assign these roles to different users in each individual curriculum. Still, it is a good idea to have default assignees for all curricula that are added to this Curriculum instance, so that no curriculum is left unattended. Initially, the user who mounted this instance is assigned as default editor and publisher.&lt;/p&gt;</msg>
+  <msg key="Curriculum_owner">Curriculum owner</msg>
   <msg key="Delete">Delete</msg>
   <msg key="Description">Description</msg>
   <msg key="Detailed_information">Detailed information</msg>
@@ -59,7 +54,6 @@
   <msg key="lt_Back_to_where_you_wer">Back to where you came from</msg>
   <msg key="lt_Create_a_new_curricul">Create a new curriculum</msg>
   <msg key="lt_Deactivate_this_eleme">Deactivate this element</msg>
-  <msg key="lt_Default_assignees_for">Default assignees for the editor and publisher role</msg>
   <msg key="lt_Delete_this_curriculu">Delete this curriculum and all of its data</msg>
   <msg key="lt_Delete_this_element_a">Delete this element and all of its data</msg>
   <msg key="lt_deleting_curriculum_c">deleting curriculum %curriculum_id% in package_id %package_id%</msg>
@@ -97,6 +91,7 @@
   <msg key="No_elements">No elements</msg>
   <msg key="Ongoing">Ongoing</msg>
   <msg key="Options">Options</msg>
+  <msg key="Owner">Owner</msg>
   <msg key="Package_parameters">Package parameters</msg>
   <msg key="Package_permissions">Package permissions</msg>
   <msg key="Pending">Pending</msg>
