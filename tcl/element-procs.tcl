@@ -38,19 +38,7 @@ ad_proc -public curriculum::element::new {
 
 } {
     # Check for external URLs.
-    if { [string equal -length 7 "http://" $url] } {
-	set external_p t
-    } else {
-	# Try to determine if the URL belongs to another subsite.
-	array set node [site_node::get_from_url -url $url]
-	
-	# FIXME. This condition does not tell the whole truth ...
-	if { [string equal -length [string length $node(url)] $node(url) $url] } {
-	    set external_p f
-	} else {
-	    set external_p t
-	}
-    }
+    set external_p [external_p -url $url]
     
     # Prepare the variables for instantiation.
     set extra_vars [ns_set create]
@@ -58,6 +46,41 @@ ad_proc -public curriculum::element::new {
     
     # Instantiate the curriculum element.
     return [package_instantiate_object -extra_vars $extra_vars cu_element]
+}
+
+
+ad_proc -public curriculum::element::external_p {
+    {-url:required}
+} {
+
+    Determine whether or not a curriculum element is external.
+
+    @param url         The url to check.
+
+    @return t or f
+
+    @author Ola Hansson (ola@polyxena.net)
+
+} {
+    # Check for external URLs.
+    if { [string equal -length 7 "http://" $url] } {
+	set external_p t
+    } else {
+	# Try to determine if the URL belongs to another subsite.
+	#array set node [site_node::get_from_url -url $url]
+	
+	# FIXME. This condition does not tell the whole truth ...
+
+	set subsite_id [site_node_closest_ancestor_package -url $url [curriculum::package_keys]]
+
+	if { $subsite_id == [curriculum::conn subsite_id] } {
+	    set external_p f
+	} else {
+	    set external_p t
+	}
+    }
+
+    return $external_p
 }
 
 
@@ -82,6 +105,9 @@ ad_proc -public curriculum::element::edit {
     @author Ola Hansson (ola@polyxena.net)
 
 } {
+    # Check for external URLs.
+    set external_p [external_p -url $url]
+
     db_dml update_curriculum_element {*SQL*}
 }
 

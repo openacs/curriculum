@@ -7,7 +7,8 @@
 	    set    name = :name,
 	           description = :description,
 	           desc_format = :desc_format,
-	           url = :url
+	           url = :url,
+			external_p = :external_p
 	    where  element_id = :element_id
         </querytext>
     </fullquery>

@@ -11,6 +11,24 @@ ad_library {
 
 namespace eval curriculum {}
 
+
+ad_proc -public curriculum::package_keys {
+} {
+    Builds a list that will be used as an argument to "site_node_closest_ancestor_package".
+    If .LRN is not installed it will be ste to "acs_subsite" and if it is installed, 
+    "dotlrn" will be prepended to the list. The Underlying reason we do this is because
+    we want to allow one Curriculum instance under each dotLRN instance, if dotLRN is
+    installed. And if it is installed it should take precedence over acs_subsite.
+} {
+    set package_keys [list acs-subsite]
+    
+    if { [apm_package_installed_p dotlrn] } {
+	set package_keys [concat dotlrn $package_keys]
+    }
+
+    return $package_keys
+}
+
     
 ad_proc -public curriculum::conn {
     args
@@ -49,13 +67,7 @@ ad_proc -public curriculum::conn {
 		    # "ad_conn subsite_id" does not work when called from within a filter
 		    # (which we do for the curriculum bar), so we use the following instead.
 
-		    set package_keys [list acs-subsite]
-
-		    if { [apm_package_installed_p dotlrn] } {
-			set package_keys [concat dotlrn $package_keys]
-		    }
-
-		    return [site_node_closest_ancestor_package $package_keys]
+		    return [site_node_closest_ancestor_package [package_keys]]
 		}
 		package_id -
 		package_url -
