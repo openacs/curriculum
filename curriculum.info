@@ -10,10 +10,13 @@
     <version name="0.5d1" url="http://openacs.org/repository/download/apm/curriculum-0.5d1.apm">
         <owner url="mailto:ola@polyxena.net">Ola Hansson</owner>
         <vendor url="http://www.polyxena.net">Polyxena</vendor>
+        <summary>Create and track user page sequence "curriculum"</summary>
+        <description format="text/html">Provides a UI for creating a sequence of links as a "curriculum" which can 
+be presented as a linkbar in the page footer (or elsewhere) and is tracked per user.</description>
 
         <provides url="curriculum" version="0.5d1"/>
         <requires url="workflow" version="0.2d2"/>
-
+        
         <callbacks>
             <callback type="before-uninstall"  proc="curriculum::apm::before_uninstall"/>
             <callback type="after-install"  proc="curriculum::apm::after_install"/>
