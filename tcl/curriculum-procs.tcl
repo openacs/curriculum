@@ -596,10 +596,9 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     # Build up data structures with the form labels and values
     # (Note, this is something that the metadata system should be able to do for us)
 
-    array set label {
-        name "[_ curriculum.Name]"
-        status "[_ curriculum.Status]"
-    }
+    array set label [list \
+			 name "[_ curriculum.Name]" \
+			 status "[_ curriculum.Status]"]
 
     array set value [list \
 			 name "$curriculum(name)" \
