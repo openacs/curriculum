@@ -76,7 +76,6 @@
 of the Curriculum package in a subsite. Curriculum was designed to only 
 be mounted once per acs-subsite. Please visit the &lt;a href=\&quot;/admin/site-map/\&quot;&gt;Site-Map&lt;/a&gt; and unmount the extra instance. However, it could also be a bug in the code.</msg>
   <msg key="lt_This_field_is_for_com">This field is for commenting actions on the curriculum.</msg>
-  <msg key="lt_This_incident_has_bee">This incident has been logged.</msg>
   <msg key="lt_This_text_should_desc">This text should describe the curriculum and its purpose.</msg>
   <msg key="lt_This_text_should_desc_1">This text should describe the element and its purpose.</msg>
   <msg key="lt_Uncheck_the_visited_e">Uncheck the visited elements in all curriculums</msg>

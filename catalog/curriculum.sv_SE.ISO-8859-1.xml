@@ -74,7 +74,6 @@
   <msg key="lt_Stop_displaying_the_c">Sluta visa kursplanspanelen</msg>
   <msg key="lt_This_could_be_because">Detta kan bero på att du har mountat fler än en instans av Curriculum-paketet på en subsite. Curriculum har konstruerats för att endast mountas en gång per acs-subsite. Var god besök &lt;a href=\&quot;/admin/site-map/\&quot;&gt;Site-Map&lt;/a&gt; och avmounta den extra instansen. Det kan dock även vara ett fel i programkoden.</msg>
   <msg key="lt_This_field_is_for_com">Detta fält är för kommentarer till åtgärder på kursplanen.</msg>
-  <msg key="lt_This_incident_has_bee">Denna incident har blivit loggad.</msg>
   <msg key="lt_This_text_should_desc">Denna text bör beskriva kursplanen och dess syfte.</msg>
   <msg key="lt_This_text_should_desc_1">Denna text bör beskriva elementet och dess syfte.</msg>
   <msg key="lt_Uncheck_the_visited_e">Avmarkera de besökta elementen i samtliga kursplaner</msg>

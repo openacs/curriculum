@@ -676,8 +676,6 @@ ad_proc -private curriculum::security_violation {
             "[_ curriculum.Security_Violation]" \
             "<blockquote>
     [_ curriculum.lt_You_dont_have_permiss]
-    <br>
-    [_ curriculum.lt_This_incident_has_bee]
     </blockquote>"
     ad_script_abort
 }
