@@ -27,10 +27,11 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     # New curriculum.
     ####
 
+    set form_mode edit
+
     permission::require_permission -object_id $package_id -privilege write
     set write_p 1
 
-    set form_mode edit
     set title "[_ curriculum.Create_Curriculum]"
 
     lappend owners_list [list [person::name -person_id $user_id] "$user_id"]
@@ -40,6 +41,8 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     ####
     # Edit/display curriculum.
     ####
+
+    set form_mode display
 
     curriculum::get -curriculum_id $curriculum_id -array curriculum_array
 
@@ -82,6 +85,7 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	    # We can't just change the mode of the entire form to display mode because
 	    # then the form will lose its OK and Cancel buttons when an action button is pressed.
 	    
+	    set form_mode edit
 	    set element_mode display
 
 	    workflow::action::get -action_id $action_id -array action
@@ -90,8 +94,10 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	    set action_pretty_past_tense [lang::util::localize $action(pretty_past_tense)]
 	    
 	} else {
+
 	    set action_pretty_name {}
 	    set action_pretty_past_tense {}
+
 	}
 	
 	set title "[ad_decode $action_pretty_name "" "[_ curriculum.View]" $action_pretty_name] [_ curriculum.Curriculum] $curriculum_array(name)"
@@ -106,13 +112,11 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 
     }
     
-    set form_mode display
-
     lappend owners_list [list [person::name -person_id $curriculum_array(owner_id)] $curriculum_array(owner_id)]
 
 }
 
-set context {$title}
+set context [list $title]
 
 # Curriculum "owner" select box. 
 lappend owners_list [list "[_ curriculum.Search]" ":search:"]
@@ -216,14 +220,6 @@ ad_form -extend -name curriculum -form {
 #
 ####
 
-# Set editable fields. Must do this after the "-form" block!
-if { !$new_p && $wf_action_exists_p } {
-
-    foreach field [workflow::action::get_element -action_id $action_id -element edit_fields] { 
-	element set_properties curriculum $field -mode edit 
-    }
-}    
-
 ad_form -extend -name curriculum -edit_request {
 
     curriculum::get -curriculum_id $curriculum_id -array curriculum_array
@@ -238,12 +234,10 @@ ad_form -extend -name curriculum -edit_request {
     }
     
 } -validate {
-
     {name
 	{[string length $name] <= [set length 200]}
 	"[_ curriculum.lt_Name_may_not_be_more_]"
     }
-
 } -new_data {
 
     curriculum::new \
@@ -277,6 +271,15 @@ ad_form -extend -name curriculum -edit_request {
     ad_script_abort
 
 }
+
+
+# Set editable fields. Must do this after the "-form" block!
+if { !$new_p && $wf_action_exists_p && ![form is_submission curriculum] } {
+
+    foreach field [workflow::action::get_element -action_id $action_id -element edit_fields] { 
+	element set_properties curriculum $field -mode edit 
+    }
+}    
 
 
 ad_return_template
