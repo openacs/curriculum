@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <message_catalog package_key="curriculum" package_version="0.5d1" locale="nl_NL" charset="ISO-8859-1">
 
-  <msg key="Action_Log">Actie Journaal</msg>
+  <msg key="Action_Log">Actiejournaal</msg>
   <msg key="Actions">Acties</msg>
   <msg key="Add_a_curriculum">Een leerplan toevoegen</msg>
   <msg key="Add_an_element">Een onderdeel toevoegen</msg>
@@ -48,8 +48,8 @@
   <msg key="lt_Administer_this_curri">Dit leerplan beheren</msg>
   <msg key="lt_Administer_this_eleme">Dit onderdeel beheren</msg>
   <msg key="lt_Administer_user_privi">Gebruikersrechten voor deze leerplan installatie beheren</msg>
-  <msg key="lt_Are_you_sure_you_want">Moet dit leerplan echt worden verwijderd?</msg>
-  <msg key="lt_Are_you_sure_you_want_1">Moet dit onderdeel echt worden verwijderd?</msg>
+  <msg key="lt_Are_you_sure_you_want">Dit leerplan echt verwijderen?</msg>
+  <msg key="lt_Are_you_sure_you_want_1">Dit onderdeel echt verwijderen?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Terug naar %ad_url%%return_url% </msg>
   <msg key="lt_Back_to_where_you_wer">Terug naar vertrekpunt</msg>
   <msg key="lt_Create_a_new_curricul">Nieuw leerplan aanmaken</msg>
@@ -60,7 +60,7 @@
   <msg key="lt_element_name_part_of_">%element_name%, onderdeel van %curriculum_name% </msg>
   <msg key="lt_Flush_element_cache">De informatie in het geheugen (cache) over dit onderdeel verwijderen</msg>
   <msg key="lt_Installing_curriculum">Het leerplan filter voor %url_pattern% van package_id %package_id% wordt geïnstalleerd</msg>
-  <msg key="lt_More_than_one_instanc">Curriculum is meer dan eens geïnstalleerd.</msg>
+  <msg key="lt_More_than_one_instanc">Het Leerplan pakket (Curriculum) is meer dan eens geïnstalleerd.</msg>
   <msg key="lt_Name_may_not_be_more_">Een naam mag niet meer dan %length% karakters lang zijn</msg>
   <msg key="lt_No_published_curricul">Geen openbare leerplannen</msg>
   <msg key="lt_Please_delete_the_ext">Verwijder de extra installaties van het Leerplan-pakket (Curriculum) in deze subsite van de .LRN installatie. Leerplan is gemaakt om slechts eenmaal te worden geïnstalleerd. 
@@ -68,12 +68,12 @@ Bezoek de &lt;a href=&quot;/admin/site-map/&quot;&gt;Site-Map&lt;/a&gt; om te de
   <msg key="lt_Read_the_user_manual_">Lees de gebruikershandleiding van deze pagina</msg>
   <msg key="lt_Remove_all_curriculum">Alle leerplannen verwijderen</msg>
   <msg key="lt_Remove_the_curriculum">Het leerplan van de werkbalk verwijderen</msg>
-  <msg key="lt_Request_notifications">De kennisgevingsfunctie bij veranderingen rondom dit leerplan activeren</msg>
+  <msg key="lt_Request_notifications">De kennisgevingsfunctie voor veranderingen rondom dit leerplan activeren</msg>
   <msg key="lt_Reset_all_curriculums">Alle leerplannen terugzetten naar de standaardinstelling </msg>
   <msg key="lt_Set_site-wide_prefere">Stel systeem voorkeuren in voor deze Leerplan installatie </msg>
   <msg key="lt_Show_curriculums_in_p">Leerplannen die openbaar zijn tonen:</msg>
   <msg key="lt_Stop_displaying_the_c">De leerplanwerkbalk niet meer weergeven</msg>
-  <msg key="lt_This_field_is_for_com">Dit veld is voor commentaar op dit leerplan.</msg>
+  <msg key="lt_This_field_is_for_com">Dit veld is voor toelichting op dit leerplan.</msg>
   <msg key="lt_This_text_should_desc">Deze tekst moet het leerplan en het doel beschrijven.</msg>
   <msg key="lt_This_text_should_desc_1">Deze tekst moet het onderdeel en het doel beschrijven.</msg>
   <msg key="lt_Uncheck_the_visited_e">Deselecteer bezochte onderdelen in alle leerplannen</msg>
