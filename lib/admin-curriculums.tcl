@@ -54,4 +54,8 @@ db_multirow -extend {
 
 set curriculum_count [curriculum::conn -nocache curriculum_count]
 
+set return_url [ad_return_url]
+
+set export_vars [export_vars -url { package_id return_url }]
+
 ad_return_template

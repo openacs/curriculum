@@ -1,6 +1,6 @@
 <p>
   [
-  <a href="/admin/site-map/parameter-set?package%5fid=@package_id@">Package parameters</a>
+  <a href="/admin/site-map/parameter-set?@export_vars@">Package parameters</a>
   |
   <a href="/permissions/one?object%5fid=@package_id@">Package permissions</a>
   ]
@@ -51,8 +51,7 @@ foreach { notification_url notification_label notification_title } $notification
     <td width="5%">
     <if @curriculums.rownum@ gt 1>
       <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=up" alt="^" title="Move up">
-        <img src="../graphics/up.gif" border="0" width="15" height="15">
-      </a>
+        <img src="../graphics/up.gif" border="0" width="15" height="15"></a>
     </if>
     <if @curriculums.curriculum_sort_order@ lt @curriculum_count@>
       <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=down" alt="v" title="Move down">
@@ -101,8 +100,7 @@ foreach { notification_url notification_label notification_title } $notification
     <td width="20%">
     <if @curriculums.groupnum@ gt 1>
       <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=up" alt="^" title="Move up">
-        <img src="../graphics/up.gif" border="0" width="15" height="15">
-      </a>
+        <img src="../graphics/up.gif" border="0" width="15" height="15"></a>
     </if>
     <if @curriculums.groupnum_last_p@ false>
       <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=down" alt="v" title="Move down">
