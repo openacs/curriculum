@@ -29,9 +29,9 @@ if { [set tabs_p [parameter::get -package_id $package_id -parameter StateTabsP -
     
     foreach state_id $state_data(state_ids) {
 	array set state $state_data($state_id)
-	template::tabstrip add_tab states $state(state_id) $state(pretty_name) $state(short_name)
+	template::tabstrip add_tab states $state(state_id) [lang::util::localize $state(pretty_name)] $state(short_name)
     }
-    template::tabstrip add_tab states any "Any" any
+    template::tabstrip add_tab states any "[_ curriculum.Any]" any
     
 }
 

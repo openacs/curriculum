@@ -13,7 +13,7 @@ ad_page_contract {
     admin_p:onevalue
 }
 
-set title "Curriculum"
+set title {}
 set context {}
 
 # We let admins see the link to the admin page.

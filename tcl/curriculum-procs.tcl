@@ -195,7 +195,9 @@ ad_proc -public curriculum::get {
     # Get state information.
     workflow::case::fsm::get -case_id $case_id -array case -action_id $action_id
 
-    set row(pretty_state)     $case(pretty_state)
+    # I am localizing pretty_state at this level, for now. It might be better to do it at
+    # the "workflow::case::fsm::get" level though, in order to reduce tedious repetition ...
+    set row(pretty_state)     [lang::util::localize $case(pretty_state)]
     set row(state_short_name) $case(state_short_name)
     set row(hide_fields)      $case(state_hide_fields)
     set row(entry_id)         $case(entry_id)
@@ -224,10 +226,7 @@ ad_proc -public curriculum::delete {
 			 -object_id $curriculum_id \
 			 -workflow_short_name [workflow_short_name]]
 
-	# FIXME. There should be a Tcl wrapper for this in workflow but there
-	# isn't yet (at least not on MAIN).
-	#workflow::case::delete -case_id $case_id
-	db_exec_plsql delete_workflow_case {*SQL*}
+	workflow::case::delete -case_id $case_id
 
 	db_exec_plsql delete_curriculum {*SQL*}
 
@@ -255,7 +254,7 @@ ad_proc -private curriculum::delete_instance {
     db_transaction {
 	
 	foreach curriculum_id $curriculum_ids {
-	    ns_log Notice "curriculum::delete_instance - deleting curriculum $curriculum_id in package_id $package_id"
+	    ns_log Notice "curriculum::delete_instance - [_ curriculum.lt_deleting_curriculum_c]"
 	    delete -curriculum_id $curriculum_id
 	}
 	
@@ -274,21 +273,21 @@ ad_proc -private curriculum::workflow_create {} {
 } {
     set spec {
         curriculum {
-            pretty_name "Curriculum"
-            package_key "curriculum"
-            object_type "cu_curriculum"
+            pretty_name \#curriculum.Curriculum_1\#
+            package_key curriculum
+            object_type cu_curriculum
             callbacks { 
                 curriculum.CurriculumNotificationInfo
             }
             roles {
                 author {
-                    pretty_name "Author"
+                    pretty_name \#curriculum.Author\#
                     callbacks { 
                         workflow.Role_DefaultAssignees_CreationUser
                     }
                 }
                 editor {
-                    pretty_name "Editor"
+                    pretty_name \#curriculum.Editor\#
                     callbacks {
                         workflow.Role_PickList_CurrentAssignees
                         curriculum.CurriculumOwner
@@ -296,7 +295,7 @@ ad_proc -private curriculum::workflow_create {} {
                     }
                 }
                 publisher {
-                    pretty_name "Publisher"
+                    pretty_name \#curriculum.Publisher\#
                     callbacks {
                         workflow.Role_PickList_CurrentAssignees
                         curriculum.CurriculumOwner
@@ -306,81 +305,81 @@ ad_proc -private curriculum::workflow_create {} {
             }
             states {
                 authored {
-                    pretty_name "Pending"
+                    pretty_name \#curriculum.Pending\#
                     hide_fields {}
                 }
                 edited {
-                    pretty_name "Edited"
+                    pretty_name \#curriculum.Edited\#
                 }
                 rejected {
-                    pretty_name "Rejected"
+                    pretty_name \#curriculum.Rejected\#
                 }
                 published {
-                    pretty_name "Published"
+                    pretty_name \#curriculum.Published\#
                 }
                 archived {
-                    pretty_name "Archived"
+                    pretty_name \#curriculum.Archived\#
                 }
             }
             actions {
                 create {
-                    pretty_name "Create"
-                    pretty_past_tense "Created"
-                    new_state "authored"
+                    pretty_name \#curriculum.Create\#
+                    pretty_past_tense \#curriculum.Created\#
+                    new_state authored
                     initial_action_p t
                 }
                 comment {
-                    pretty_name "Comment"
-                    pretty_past_tense "Commented"
+                    pretty_name \#curriculum.Comment\#
+                    pretty_past_tense \#curriculum.Commented\#
                     allowed_roles { author editor publisher }
                     privileges { write }
                     always_enabled_p t
                     edit_fields { 
-			       comment
-		         }
+			comment
+		    }
                 }
                 edit {
-                    pretty_name "Edit"
-                    pretty_past_tense "Edited"
-                    new_state "edited"
+                    pretty_name \#curriculum.Edit\#
+                    pretty_past_tense \#curriculum.Edited\#
+                    new_state edited
                     allowed_roles { author editor publisher }
                     privileges { write }
                     always_enabled_p t
                     edit_fields { 
-                        name
-			       description
-			       comment
-		         }
+			name
+			description
+			comment
+		    }
                 }
                 reject {
-                    pretty_name "Reject"
-                    pretty_past_tense "Rejected"
-                    new_state "rejected"
+                    pretty_name \#curriculum.Reject\#
+                    pretty_past_tense \#curriculum.Rejected\#
+                    new_state rejected
                     allowed_roles { publisher }
                     enabled_states { authored edited }
                     privileges { write }
                     edit_fields { 
-			       comment
-		         }
+			comment
+		    }
                 }
                 publish {
-                    pretty_name "Publish"
-                    pretty_past_tense "Published"
-                    assigned_role "publisher"
+                    pretty_name \#curriculum.Publish\#
+                    pretty_past_tense \#curriculum.Published\#
+                    assigned_role publisher
                     enabled_states { authored edited archived }
                     assigned_states { edited }
-                    new_state "published"
+                    new_state published
                     privileges { write }
                     edit_fields {
-			       comment
-		         }
+			comment
+		    }
                 }
                 archive {
-                    pretty_name "Archive"
-                    pretty_past_tense "Archived"
+                    pretty_name \#curriculum.Archive\#
+                    pretty_past_tense \#curriculum.Archived\#
                     allowed_roles { publisher }
                     enabled_states { published }
-                    new_state "archived"
+                    new_state archived
                     privileges { write }
                     edit_fields {
                         comment
@@ -475,7 +474,7 @@ ad_proc -private curriculum::instance_workflow_delete {
 
 
 ad_proc -private curriculum::owner::pretty_name {} {
-    return "Curriculum owner"
+    return "[_ curriculum.Curriculum_owner]"
 }
 
 
@@ -497,7 +496,7 @@ ad_proc -private curriculum::owner::get_assignees {
 
 # FIXME
 ad_proc -private curriculum::capture_resolution_code::pretty_name {} {
-    return "Capture resolution code in the case activity log"
+    return "[_ curriculum.lt_Capture_resolution_co]"
 }
 
 
@@ -519,7 +518,7 @@ ad_proc -private curriculum::capture_resolution_code::do_side_effect {
 
 
 ad_proc -private curriculum::format_log_title::pretty_name {} {
-    return "Add resolution code to log title"
+    return "[_ curriculum.lt_Add_resolution_code_t]"
 }
 
 
@@ -577,7 +576,7 @@ ad_proc -private curriculum::resolution_pretty {
 
 
 ad_proc -private curriculum::notification_info::pretty_name {} {
-    return "Curriculum info"
+    return "[_ curriculum.Curriculum_info]"
 }
 
 
@@ -590,7 +589,7 @@ ad_proc -private curriculum::notification_info::get_notification_info {
 
     set url "[ad_url][apm_package_url_from_id $curriculum(package_id)]curriculum-ave?[export_vars { { curriculum_id $curriculum(curriculum_id) } }]"
 
-    set notification_subject_tag "Curriculum"
+    set notification_subject_tag "[_ curriculum.Curriculum_1]"
 
     set one_line "$curriculum(name)"
 
@@ -598,8 +597,8 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     # (Note, this is something that the metadata system should be able to do for us)
 
     array set label {
-        name "Name"
-        status "Status"
+        name "[_ curriculum.Name]"
+        status "[_ curriculum.Status]"
     }
 
     array set value [list \
@@ -656,13 +655,13 @@ ad_proc -public curriculum::get_watch_link {
                      -object_id $curriculum_id \
                      -url $return_url \
                      -user_id $user_id \
-                     -pretty_name "this curriculum"]
-        set label "Watch"
-        set title "Request notifications for activity on this curriculum"
+                     -pretty_name "[_ curriculum.this_curriculum]"]
+        set label "[_ curriculum.Watch]"
+        set title "[_ curriculum.lt_Request_notifications]"
     } else {
         set url [notification::display::unsubscribe_url -request_id $request_id -url $return_url]
-        set label "Stop watching"
-        set title "Unsubscribe to notifications for activity on this curriculum"
+        set label "[_ curriculum.Stop_watching]"
+        set title "[_ curriculum.lt_Unsubscribe_to_notifi]"
     }
     return [list $url $label $title]
 }
@@ -673,13 +672,13 @@ ad_proc -private curriculum::security_violation {
     -curriculum_id:required
     -action:required
 } {
-    ns_log Notice "$user_id doesn't have permission to '$action' on curriculum $curriculum_id"
+    ns_log Notice "[_ curriculum.lt_user_id_doesnt_have_p]"
     ad_return_forbidden \
-            "Security Violation" \
+            "[_ curriculum.Security_Violation]" \
             "<blockquote>
-    You don't have permission to '$action' on this curriculum.
+    [_ curriculum.lt_You_dont_have_permiss]
     <br>
-    This incident has been logged.
+    [_ curriculum.lt_This_incident_has_bee]
     </blockquote>"
     ad_script_abort
 }

@@ -12,7 +12,7 @@ ad_page_contract {
     context:onevalue
 }
 
-set title "Curriculum"
+set title {}
 set context {}
 
 ad_return_template

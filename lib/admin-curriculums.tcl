@@ -50,6 +50,8 @@ db_multirow -extend {
     set curriculum_id_export [export_vars -url curriculum_id]
     set element_id_export [export_vars -url element_id]
 
+    # Translate the pretty_state in #package_key.message_key# syntax.
+    set pretty_state [lang::util::localize $pretty_state]
 }
 
 set curriculum_count [curriculum::conn -nocache curriculum_count]

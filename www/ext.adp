@@ -1,7 +1,7 @@
 <html>
   <head>
     <META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
-    <title>External Element</title>
+    <title>#curriculum.External_Element#</title>
   </head>
 <switch @position@>
  <case value="top">
@@ -32,3 +32,4 @@
 </switch>
   </frameset>
 </html>
+

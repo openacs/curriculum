@@ -18,7 +18,7 @@ set package_id [curriculum::conn package_id]
 set user_id [ad_conn user_id]
 set actions [list]
 set element_mode {}
-set desc_help_text "This text should describe the curriculum and its purpose."
+set desc_help_text "[_ curriculum.lt_This_text_should_desc]"
 
 if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 
@@ -30,7 +30,7 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     set write_p 1
 
     set form_mode edit
-    set title "Create Curriculum"
+    set title "[_ curriculum.Create_Curriculum]"
 
 } else {
 
@@ -86,20 +86,22 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	    
 	    set element_mode display
 	    
-	    set action_pretty_name [workflow::action::get_element -action_id $action_id -element pretty_name]
+	    set action_pretty_name [lang::util::localize [workflow::action::get_element \
+							      -action_id $action_id \
+							      -element pretty_name]]
 	} else {
 	    set action_pretty_name {}
 	}
 	
 	set curriculum_name [acs_object_name $curriculum_id]
-	set title "[ad_decode $action_pretty_name "" "View" $action_pretty_name] Curriculum: $curriculum_name"
+	set title "[ad_decode $action_pretty_name "" "[_ curriculum.View]" $action_pretty_name] [_ curriculum.Curriculum] $curriculum_name"
     } else {
 
 	# Display mode only! (User doesn't have write perms)
 
 	set wf_action_exists_p 0
 	set curriculum_name [acs_object_name $curriculum_id]
-	set title "Curriculum: $curriculum_name"
+	set title "[_ curriculum.Curriculum] $curriculum_name"
 
     }
     
@@ -112,7 +114,7 @@ set context {$title}
 # Curriculum "owner" select box. 
 set users_list [list]
 lappend users_list [list [person::name -person_id $user_id] "$user_id"]
-lappend users_list [list "Search..." ":search:"]
+lappend users_list [list "[_ curriculum.Search]" ":search:"]
 
 
 ####
@@ -134,7 +136,7 @@ ad_form -name curriculum \
     curriculum_id:key
     {name:text
 	{mode $element_mode}
-	{label Name}
+	{label "[_ curriculum.Name]"}
 	{html {size 50}}
     }
 }
@@ -142,7 +144,7 @@ ad_form -name curriculum \
 ad_form -extend -name curriculum -form {
     {description:richtext
 	{mode $element_mode}
-	{label Description}
+	{label "[_ curriculum.Description]"}
 	{help_text $desc_help_text}
 	{html {rows 10 cols 50 wrap soft}}
 	optional
@@ -153,8 +155,8 @@ if { $write_p } {
     ad_form -extend -name curriculum -form {
 	{comment:richtext
 	    {mode $element_mode}
-	    {label "Action Log"}
-	    {help_text "This field is for commenting actions on the curriculum."}
+	    {label "[_ curriculum.Action_Log]"}
+	    {help_text "[_ curriculum.lt_This_field_is_for_com]"}
 	    {html {rows 5 cols 50 wrap soft}}
 	    optional
 	}
@@ -165,7 +167,7 @@ if { $write_p } {
 if { !$new_p && $write_p } {
     ad_form -extend -name curriculum -form {
 	{pretty_state:text(inform)
-	    {label Status}
+	    {label "[_ curriculum.Status]"}
 	    {before_html <b>}
 	    {after_html  </b>}
 	}
@@ -180,8 +182,9 @@ if { !$new_p && $write_p } {
     # Set values for comment field.
     # Is before_html the right placement of this? Perhaps we should link
     # to a different page where we show the case log?
+    set user_name [person::name -person_id $user_id]
     element set_properties curriculum comment \
-	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>$action_pretty_name by user_first_names user_last_name</b></p>"]"
+	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>[_ curriculum.lt_action_pretty_name_by]</b></p>"]"
     
     # Single-curriculum notifications link.
     set notification_link [curriculum::get_watch_link -curriculum_id $curriculum_id]
@@ -198,7 +201,7 @@ ad_form -extend -name curriculum -form {
     {owner_id:search
 	{mode $element_mode}
 	{result_datatype integer}
-	{label Owner}
+	{label "[_ curriculum.Owner]"}
 	{options $users_list}  
 	{search_query {[db_map user_search]}}
 	optional
@@ -236,7 +239,7 @@ ad_form -extend -name curriculum -edit_request {
 
     {name
 	{[string length $name] <= [set length 200]}
-	"Name may not be more than $length characters long."
+	"[_ curriculum.lt_Name_may_not_be_more_]"
     }
 
 } -new_data {

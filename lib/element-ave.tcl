@@ -29,7 +29,7 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     set write_p 1
 
     set form_mode edit
-    set title "Add Element"
+    set title "[_ curriculum.Add_Element]"
 
 } else {
 
@@ -46,7 +46,7 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     set form_mode display
     set curriculum_name [acs_object_name $curriculum_id]
     set element_name [acs_object_name $element_id]
-    set title "$element_name, part of $curriculum_name"
+    set title "[_ curriculum.lt_element_name_part_of_]"
 }
 
 set context {$title}
@@ -59,18 +59,18 @@ ad_form -name element \
     -form {
     element_id:key
     {name:text
-	{label Name}
+	{label "[_ curriculum.Name]"}
 	{html {size 50}}
     }
     {description:richtext
-	{label Description}
-	{help_text "This text should describe the element and its purpose."}
+	{label "[_ curriculum.Description]"}
+	{help_text "[_ curriculum.lt_This_text_should_desc_1]"}
 	{html {rows 10 cols 50 wrap soft}}
 	optional
     }
     {url:text(text)
-	{label URL}
-	{help_text "A leading \"http://\" indicates that the URL is external."}
+	{label "[_ curriculum.URL]"}
+	{help_text "[_ curriculum.lt_A_leading_http_indica]"}
 	{html {size 50}}
 	{value $subsite_url}
     }
@@ -88,11 +88,11 @@ ad_form -extend -name element -edit_request {
 
     {name
 	{[string length $name] <= [set length 200]}
-	"Name may not be more than $length characters long."
+	"[_ curriculum.lt_Name_may_not_be_more_]"
     }
     {url
 	{[string length $url] <= [set length 400]}
-	"URL may not be more than $length characters long."
+	"[_ curriculum.lt_URL_may_not_be_more_t]"
     }
     
 } -new_data {

@@ -200,12 +200,10 @@ ad_proc -private curriculum::get_package_id_from_subsite_id {
 			    -package_id $subsite_id -package_key [package_key]]
     } errmsg] } {
 
-	ad_return_error "Could not get child package_id" \
-	    "This could be because you have mounted more than one instance 
-of the Curriculum package in a subsite. Curriculum was designed to only 
-be mounted once per acs-subsite. Please visit the <a href=\"/admin/site-map/\">Site-Map</a> and unmount the extra instance. However, it could also be a bug in the code.
+	ad_return_error "[_ curriculum.lt_Could_not_get_child_p]" \
+	    "[_ curriculum.lt_This_could_be_because]
 <p>
-Here is what the database said:
+[_ curriculum.lt_Here_is_what_the_data]
 <p>
 $errmsg"
 	ad_script_abort

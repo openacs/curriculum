@@ -23,7 +23,7 @@ foreach package_id $package_ids {
 			  -default *]
     
     foreach url_pattern [split [string trim $url_patterns]] {
-	ns_log Notice "Installing curriculum filter for $url_pattern in package_id $package_id"
+	ns_log Notice "[_ curriculum.lt_Installing_curriculum]"
 	ad_register_filter postauth GET $url_pattern curriculum::curriculum_filter
     }
 
