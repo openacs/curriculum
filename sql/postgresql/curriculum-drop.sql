@@ -4,7 +4,8 @@
 -- @creation-date 2003-05-23
 -- @cvs-id $Id$
 
--- Drop the mapping table.
+-- Drop the mapping tables.
+drop table cu_user_curriculum_map;
 drop table cu_user_element_map;
 
 -- Drop the cu_element object.

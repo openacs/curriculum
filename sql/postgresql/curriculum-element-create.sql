@@ -15,7 +15,9 @@ create table cu_elements (
     curriculum_id                  integer
                                    constraint cu_elements_curriculum_id_fk
                                    references cu_curriculums (curriculum_id)
-                                   on delete cascade,
+                                   on delete cascade
+                                   constraint cu_elements_curriculum_id_nn
+                                   not null,
     name                           varchar(200)
                                    constraint cu_elements_name_nn
                                    not null,

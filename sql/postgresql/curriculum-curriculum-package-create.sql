@@ -76,9 +76,6 @@ declare
     v_cur RECORD;
     v_return integer := 0; 
 begin
-    delete from acs_permissions
-    where object_id = p_curriculum_id;
-
     for v_cur in select element_id
                  from   cu_elements
                  where  curriculum_id = p_curriculum_id
@@ -86,6 +83,9 @@ begin
     loop
         perform cu_element__del(v_cur.element_id);
     end loop;
+
+    delete from acs_permissions
+    where object_id = p_curriculum_id;
 
     raise NOTICE ''Deleting curriculum - %'',p_curriculum_id;
 
