@@ -1,5 +1,4 @@
 <if @elements:rowcount@ not nil>
-
 <p>
   [
   <a href="start-over">Refresh all curriculums</a>
@@ -9,23 +8,21 @@
 </if>
   ]
 </p>
-
 <table border="0" width="100%">
-  <tr bgcolor="lightblue" border="0" cellpadding="0" cellspacing="1" width="100%">
+  <tr bgcolor="#cccccc" border="0" cellpadding="0" cellspacing="1" width="100%">
     <th width="25%">Name</th>
     <th width="50%">Description</th>
     <th width="10%">Status</th>
     <th width="15%">Options</th>
   </tr>
 </table>
-
 <br>
-
 <multiple name="elements">
-
-<table bgcolor="lightblue" border="0" cellpadding="2" cellspacing="0" width="100%">
+<table bgcolor="#cccccc" border="0" cellpadding="2" cellspacing="0" width="100%">
   <tr>
-    <td width="25%">@elements.curriculum_name@</td>
+    <td width="25%">
+      <a href="curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Detailed information">@elements.curriculum_name@</a>
+    </td>
     <td width="50%">@elements.curriculum_desc@</td>
     <td width="10%">
     <if @logged_in_p@>
@@ -56,14 +53,12 @@
     <td colspan="4">
 
 <table border="0" cellpadding="2" cellspacing="1" width="100%">
-<ul>
 <if @elements.element_id@ not nil>
   <group column="curriculum_id">
-  <if @elements.groupnum@ odd><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
+  <if @elements.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td>
       <li>
-        @elements.groupnum@.
-        <a href="@elements.url@">@elements.element_name@</a>
+        <a href="element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name@</a>
       </li>
     </td>
     <td width="50%">@elements.element_desc;noquote@</td>
@@ -91,7 +86,6 @@
     <i>No elements</i>
   </li>
 </else>
-</ul>
 </table>
 
     </td>

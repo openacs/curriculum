@@ -363,11 +363,11 @@ ad_proc -private curriculum::user_elements {
 		      -short_name published]
 
     # We need user_id to join against the mapping table that holds information
-    # on what curriculums (in the package instance) the user care about.
+    # on what curriculums (in the package instance) the user cares about.
     set user_id [ad_conn user_id]
 
-    # FIXME. Add patameter.
-    set truncation_length 12
+    set truncation_length [parameter::get -package_id $package_id \
+			       -parameter DescTruncLength -default 200]
 
     set ns_sets [db_list_of_ns_sets user_element_ns_set_list {*SQL*}]
 
@@ -377,6 +377,7 @@ ad_proc -private curriculum::user_elements {
 
 ad_proc -public curriculum::elements_flush {
     {-package_id ""}
+    {-user_id ""}
 } {
     Flushes the memoized proc that gets the element_id, url and name for the curriculum bar(s).
     Should be run upon ceation, enabling, disabling or deletion of a curriculum or an element.
@@ -385,14 +386,18 @@ ad_proc -public curriculum::elements_flush {
 	set package_id [conn package_id]
     }
 
-    # Only bother to flush the cache if the bar is going to be displayed.
-    if { ![parameter::get -package_id $package_id -parameter ShowCurriculumBarP -default 1] } {
-	return {}
+    if { [empty_string_p $user_id] } {
+	set user_id [ad_conn user_id]
     }
 
-    set user_id [ad_conn user_id]
+    # Only bother to flush the cache if the bar is going to be displayed.
+    # FIXME. Bad idea since the index page takes advantage of this cache too - not just the bar.
+    #
+    #if { ![parameter::get -package_id $package_id -parameter ShowCurriculumBarP -default 1] } {
+    #return {}
+    #}
 
-    util_memoize_flush "curriculum::enabled_elements -package_id $package_id -user_id $user_id"
+    util_memoize_flush [list curriculum::enabled_elements -package_id $package_id -user_id $user_id]
 }
 
 

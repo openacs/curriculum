@@ -7,9 +7,11 @@
         <querytext>
     select    cc.curriculum_id,
               cc.name as curriculum_name,
+              cc.description as curriculum_desc,
               cc.sort_key as curriculum_sort_order,
               ce.element_id,
               ce.name as element_name,
+              ce.description as element_desc,
               ce.url as element_url,
               ce.enabled_p as element_enabled_p,
               ce.sort_key as element_sort_order,
