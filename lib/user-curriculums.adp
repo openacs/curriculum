@@ -1,13 +1,13 @@
 <if @elements:rowcount@ not nil>
 <p>
   [
-  <a href="@url@start-over?@return_url_export@">Refresh all curriculums</a>
+  <a href="@url@start-over?@return_url_export@" title="Uncheck the visited elements in all curriculums">Reset all curriculums</a>
 <if @logged_in_p@>
   |
-  <a href="@url@remove-from-bar?@return_url_export@">Remove all curriculums</a>
+  <a href="@url@remove-from-bar?@return_url_export@" title="Stop displaying the curriculum toolbar">Remove all curriculums</a>
 </if>
   |
-  <a href="doc/user.html#STUDENT">Help</a>
+  <a href="doc/user.html#STUDENT" title="Read the user manual for this page">Help</a>
   ]
 </p>
 <table border="0" width="100%">
@@ -38,19 +38,19 @@
     </td>
     <td width="15%">
       <if @elements.completed_p@>
-        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&refresh_p=1&@return_url_export@">Retake</a>
+        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&refresh_p=1&@return_url_export@" title="Add the removed curriculum to the toolbar">Retake</a>
       </if>
       <else>
-        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@">Resume</a>
+        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@" title="Add the dropped curriculum to the toolbar">Resume</a>
       </else>
       </if>
       <else>
         <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
-        <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@">Refresh</a>
+        <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@" title="Uncheck the visited elements">Reset</a>
         |
-        <a href="@url@remove-from-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@">
+        <a href="@url@remove-from-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@" title="Remove the curriculum from the toolbar">
           <if @elements.completed_p@>Remove</if><else>Drop</else>
         </a>
       </else>
@@ -59,7 +59,7 @@
       <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
-      <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@">Refresh</a>
+      <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@" title="Uncheck the visited elements">Reset</a>
     </else>
     </td>
   </tr>
@@ -71,9 +71,9 @@
   <group column="curriculum_id">
   <if @elements.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td>
-      <li>
-        <a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name;noquote@</a>
-      </li>
+      &nbsp;
+      &raquo;
+      <a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name;noquote@</a>
     </td>
     <td width="50%">@elements.element_desc;noquote@
       <if @elements.elem_desc_trunc_p@>
@@ -87,18 +87,18 @@
     </td>
     <td width="15%">
       <if @elements.external_p@>
-        <a href="@url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@">
+        <a href="@url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@" title="Visit this element again">
       </if>
-      <else><a href="@elements.url@"></else>Revisit</a>
+      <else><a href="@elements.url@" title="Visit this element again"></else>Revisit</a>
     </if>
     <else>
       Unvisited
     </td>
     <td width="15%">
       <if @elements.external_p@>
-        <a href="@url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@">
+        <a href="@url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@" title="Visit this element">
       </if>
-      <else><a href="@elements.url@"></else>Visit</a>
+      <else><a href="@elements.url@" title="Visit this element"></else>Visit</a>
     </else>
     </td>
   </tr>

@@ -45,7 +45,7 @@
   </tr>
   <tr>
     <th nowrap">
-      <a href="@package_url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@"><img src="@package_url@graphics/refresh.jpg" border="0" width="13" height="14" alt="Refresh" title="Refresh"></a>
+      <a href="@package_url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@"><img src="@package_url@graphics/reset.jpg" border="0" width="13" height="14" alt="Reset" title="Reset"></a>
       <if @logged_in_p@>
       <a href="@package_url@remove-from-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@">
         <img src="@package_url@graphics/remove.jpg" border="0" width="15" height="13" alt="X" title="Remove">

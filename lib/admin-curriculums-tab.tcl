@@ -15,18 +15,24 @@ ad_page_contract {
 set title "Curriculum"
 set context {}
 
-# Create the tab strip that filters curriculums by workflow state.
-template::tabstrip create states -base_url [ad_conn url]
+set package_id [curriculum::conn package_id]
 
 # Workflow.
-set workflow_id [curriculum::get_instance_workflow_id]
+set workflow_id [curriculum::get_instance_workflow_id -package_id $package_id]    
 
-array set state_data [workflow::state::fsm::get_all_info -workflow_id $workflow_id]
+if { [set tabs_p [parameter::get -package_id $package_id -parameter StateTabsP -default 1]] } {
 
-foreach state_id $state_data(state_ids) {
-    array set state $state_data($state_id)
-    template::tabstrip add_tab states $state(state_id) $state(pretty_name) $state(short_name)
+    # Create the tab strip that filters curriculums by workflow state.
+    template::tabstrip create states -base_url [ad_conn url]
+    
+    array set state_data [workflow::state::fsm::get_all_info -workflow_id $workflow_id]
+    
+    foreach state_id $state_data(state_ids) {
+	array set state $state_data($state_id)
+	template::tabstrip add_tab states $state(state_id) $state(pretty_name) $state(short_name)
+    }
+    template::tabstrip add_tab states any "Any" any
+    
 }
-template::tabstrip add_tab states any "Any" any
 
 ad_return_template

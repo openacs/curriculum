@@ -306,7 +306,7 @@ ad_proc -private curriculum::workflow_create {} {
             }
             states {
                 authored {
-                    pretty_name "Created"
+                    pretty_name "Pending"
                     hide_fields {}
                 }
                 edited {

@@ -1,15 +1,15 @@
 <p>
   [
-  <a href="/admin/site-map/parameter-set?@export_vars@">Package parameters</a>
+  <a href="/admin/site-map/parameter-set?@export_vars@" title="Set site-wide preferences for this Curriculum instance">Package parameters</a>
   |
-  <a href="/permissions/one?object%5fid=@package_id@">Package permissions</a>
+  <a href="/permissions/one?object%5fid=@package_id@" title="Administer user privileges for this Curriculum instance">Package permissions</a>
   |
-  <a href="../doc/user.html#TEACHER">Help</a>
+  <a href="../doc/user.html#TEACHER" title="Read the user manual for this page">Help</a>
   ]
 </p>
 <if @curriculums:rowcount@ ne 0>
 <p align="right">
-  <a href="thorough-flush">I'm done now, update the bar for everyone! (Use sparingly)</a>
+  <a href="thorough-flush" title="Update the toolbar for every user (Use sparingly)">I'm done now, update the bar for everyone</a>
 </p>
 <table border="0" width="100%">
   <tr bgcolor="#cccccc" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -32,7 +32,7 @@ foreach { notification_url notification_label notification_title } $notification
 <table bgcolor="#cccccc" border="0" cellpadding="1" cellspacing="0" width="100%">
   <tr>
     <td width="20%">
-      <a href="curriculum-ave?@curriculums.curriculum_id_export@">@curriculums.curriculum_name;noquote@</a>
+      <a href="curriculum-ave?@curriculums.curriculum_id_export@" title="Administer this curriculum">@curriculums.curriculum_name;noquote@</a>
     </td>
     <td width="50%">
       @curriculums.curriculum_desc;noquote@
@@ -46,9 +46,8 @@ foreach { notification_url notification_label notification_title } $notification
     </td>
     <td width="15%">
       <a href="@notification_url@" title="@notification_title@">@notification_label@</a>
-      <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('Are you sure you want to delete this curriculum?');" title="Delete">
-        <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
-      </a>
+      |
+      <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('Are you sure you want to delete this curriculum?');" title="Delete this curriculum and all of its data">Delete</a>
     </td>
     <td width="5%">
     <if @curriculums.rownum@ gt 1>
@@ -71,9 +70,9 @@ foreach { notification_url notification_label notification_title } $notification
   <group column="curriculum_id">
   <if @curriculums.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td width="20%">
-      <li>
-        <a href="element-ave?@curriculums.curriculum_id_export@&@curriculums.element_id_export@">@curriculums.element_name;noquote@</a>
-      </li>
+      &nbsp;
+      &raquo;
+        <a href="element-ave?@curriculums.curriculum_id_export@&@curriculums.element_id_export@" title="Administer this element">@curriculums.element_name;noquote@</a>
     </td>
     <td width="50%">
       @curriculums.element_desc;noquote@
@@ -87,16 +86,15 @@ foreach { notification_url notification_label notification_title } $notification
       Enabled
     </td>
     <td width="15%">
-      <a href="element-disable?@curriculums.element_id_export@">Disable</a>
+      <a href="element-disable?@curriculums.element_id_export@" title="Deactivate this element">Disable</a>
     </if>
     <else>
       Disabled
     </td>
     <td width="15%">
-      <a href="element-enable?@curriculums.element_id_export@">Enable</a>
-      <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('Are you sure you want to delete this element?');" title="Delete">
-        <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
-      </a>
+      <a href="element-enable?@curriculums.element_id_export@" title="Activate this element">Enable</a>
+      |
+      <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('Are you sure you want to delete this element?');" title="Delete this element and all of its data">Delete</a>
     </else>
     </td>
     <td width="20%">
@@ -125,7 +123,7 @@ foreach { notification_url notification_label notification_title } $notification
   <tr>
     <td bgcolor="beige" colspan="5">
       <li type="square">
-        <a href="element-ave?@curriculums.curriculum_id_export@">Add an element</a>
+        <a href="element-ave?@curriculums.curriculum_id_export@" title="Create a new element">Add an element</a>
       </li>
     </td>
   </tr>
@@ -142,7 +140,7 @@ foreach { notification_url notification_label notification_title } $notification
 <br />
 </else>
 <li type="square">
-  <a href="curriculum-ave">Add a curriculum</a>
+  <a href="curriculum-ave" title="Create a new curriculum">Add a curriculum</a>
 </li>
 <br />
 </table>
