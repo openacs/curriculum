@@ -22,6 +22,8 @@ set package_id [curriculum::conn package_id]
 
 set destination_url [db_string get_destination_url {*SQL*}]
 
+set export_vars [export_vars -url { return_url destination_url }]
+
 ####
 #
 # Integration with the Clickthrough package.
@@ -48,7 +50,6 @@ if { ![empty_string_p $input_cookie] && [lsearch $input_cookie $element_id] == -
 }
 
 if { [set user_id [ad_conn user_id]] } {
-    # FIXME. Port this query to Oracle.
     db_dml insert_into_map_table {*SQL*}
 }
 
