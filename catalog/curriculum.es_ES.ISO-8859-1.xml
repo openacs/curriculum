@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="curriculum" package_version="0.5d1" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="curriculum" package_version="1.3" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="Action_Log">Registro de Actividad</msg>
   <msg key="Actions">Actividades</msg>
   <msg key="Add_a_curriculum">Agregar un currículum</msg>
   <msg key="Add_an_element">Agregar un elemento</msg>
-  <msg key="Add_Element">Agregar un Elemento</msg>
+  <msg key="Add_Element">Agregar un elemento</msg>
   <msg key="Any">Cualquiera</msg>
   <msg key="Archive">Archivo</msg>
   <msg key="Archived">Archivado</msg>
@@ -62,7 +62,7 @@
   <msg key="lt_Installing_curriculum">Instalando filtro del curriculum para %url_pattern% en el paquete %package_id%</msg>
   <msg key="lt_More_than_one_instanc">Más de una instancia del curriculum</msg>
   <msg key="lt_Name_may_not_be_more_">La longitud del nombre no puede superar los %length% caracteres.</msg>
-  <msg key="lt_No_published_curricul">Ningun curriculum publicado</msg>
+  <msg key="lt_No_published_curricul">Ningún curriculum publicado</msg>
   <msg key="lt_Please_delete_the_ext">Por favor, borre las instancias extra del paquete Curriculum de las instancias del acs-subsite o de dotlrn. El paquete Curriculum ha sido diseñado una sola vez bajo estas instancias. Visite &lt;a href=&quot;/admin/site-map/&quot;&gt;Mapa del sitio&lt;/a&gt; y desmonte la instancia extra, o bien, borrela directamente pulsando &lt;a href=&quot;%delete_url%&quot;&gt;aquí&lt;/a&gt;.</msg>
   <msg key="lt_Read_the_user_manual_">Lea el manual de usuario de esta página</msg>
   <msg key="lt_Remove_all_curriculum">Borrar todos los curriculums</msg>
