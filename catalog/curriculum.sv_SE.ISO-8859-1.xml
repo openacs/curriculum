@@ -42,7 +42,6 @@
   <msg key="lt_A_leading_http_indica">Ett inledande &quot;http://&quot; betyder att URL:en är extern.</msg>
   <msg key="lt_action_pretty_past_te">%action_pretty_past_tense% av %user_name%:</msg>
   <msg key="lt_Activate_this_element">Aktivera detta element</msg>
-  <msg key="lt_Add_resolution_code_t">Lägg till upplösningskod till loggtiteln</msg>
   <msg key="lt_Add_the_dropped_curri">Lägg till den avbrutna kursplanen till panelen</msg>
   <msg key="lt_Add_the_removed_curri">Lägg till den avbrutna kursplanen till panelen</msg>
   <msg key="lt_Administer_Curriculum">Administrera kursplaner</msg>
@@ -62,7 +61,6 @@
   <msg key="lt_element_name_part_of_">%element_name%, del av %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">Flusha element-cachen</msg>
   <msg key="lt_Here_is_what_the_data">Det här är vad databasen meddelade:</msg>
-  <msg key="lt_Im_done_now_update_th">Jag är klar, uppdatera alla användares paneler</msg>
   <msg key="lt_Installing_curriculum">installerar filter för %url_pattern% i package_id %package_id%</msg>
   <msg key="lt_Name_may_not_be_more_">Namnet får inte vara längre än %length% tecken långt.</msg>
   <msg key="lt_No_published_curricul">Inga publicerade kursplaner</msg>

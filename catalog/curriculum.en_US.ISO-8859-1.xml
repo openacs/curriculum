@@ -42,7 +42,6 @@
   <msg key="lt_A_leading_http_indica">A leading &quot;http://&quot; indicates that the URL is external.</msg>
   <msg key="lt_action_pretty_past_te">%action_pretty_past_tense% by %user_name%:</msg>
   <msg key="lt_Activate_this_element">Activate this element</msg>
-  <msg key="lt_Add_resolution_code_t">Add resolution code to log title</msg>
   <msg key="lt_Add_the_dropped_curri">Add the dropped curriculum to the toolbar</msg>
   <msg key="lt_Add_the_removed_curri">Add the removed curriculum to the toolbar</msg>
   <msg key="lt_Administer_Curriculum">Administer Curriculum</msg>
@@ -62,7 +61,6 @@
   <msg key="lt_element_name_part_of_">%element_name%, part of %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">Flush element cache</msg>
   <msg key="lt_Here_is_what_the_data">Here is what the database said:</msg>
-  <msg key="lt_Im_done_now_update_th">I'm done now, update the bar for everyone</msg>
   <msg key="lt_Installing_curriculum">Installing curriculum filter for %url_pattern% in package_id %package_id%</msg>
   <msg key="lt_Name_may_not_be_more_">Name may not be more than %length% characters long.</msg>
   <msg key="lt_No_published_curricul">No published curriculums</msg>
