@@ -1,6 +1,6 @@
 ad_page_contract {
 
-    Add/edit curriculum element.
+    Add/edit/view curriculum element.
 
     @author Ola Hansson (ola@polyxena.net)
     @creation-date 2003-05-26
@@ -38,17 +38,24 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
 
     # Since we permit several curriculums per package instance we
     # require permission on curriculum_id, not package_id basis.
-    permission::require_permission -object_id $curriculum_id -privilege write
+
+    set write_p [permission::permission_p -object_id $curriculum_id -privilege write]
+    #permission::require_permission -object_id $curriculum_id -privilege write
 
     set form_mode display
     set curriculum_name [acs_object_name $curriculum_id]
     set element_name [acs_object_name $element_id]
-    set title "Edit Element \"$element_name\" (part of $curriculum_name)"
+    set title "$element_name, part of $curriculum_name"
 }
 
 set context {$title}
 
-ad_form -name element -export {curriculum_id} -cancel_url $return_url -mode $form_mode -form {
+ad_form -name element \
+    -export {curriculum_id} \
+    -cancel_url $return_url \
+    -mode $form_mode \
+    -has_edit [expr !$write_p] \
+    -form {
     element_id:key
     {name:text
 	{label Name}

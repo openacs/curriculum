@@ -38,6 +38,9 @@ if { [string equal "any" $state_id] } {
 # Construct a nicely formatted string to use in the query file.
 set where_clauses [ad_decode $where_clauses {} {} "    and    [join $where_clauses "\n    and    "]"]
 
+set truncation_length [parameter::get -package_id $package_id \
+			   -parameter DescTruncLength -default 200]
+
 # List of curriculums and their elements.
 db_multirow -extend {
     curriculum_id_export
@@ -49,15 +52,5 @@ db_multirow -extend {
 }
 
 set curriculum_count [curriculum::conn -nocache curriculum_count]
-
-##
-## DEBUG. FIXME. 
-##
-set debug_output "
-<b>debug_output</b>
-<br>package_id: $package_id
-<br>workflow_id: $workflow_id
-<br>action_role: $action_role
-"
 
 ad_return_template

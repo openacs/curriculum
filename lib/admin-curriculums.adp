@@ -2,7 +2,6 @@
 <b>Available columns:</b>
 <p>@curriculums:columns@</p>
 </if>
-@debug_output;noquote@
 
 <p align="right">
   <a href="thorough-flush">I'm done now, update the bar for everyone! (Use sparingly)</a>
@@ -32,6 +31,10 @@
     </td>
     <td width="50%">
       @curriculums.curriculum_desc;noquote@
+      <if @curriculums.curr_desc_trunc_p@>
+        ...
+        [<a href="curriculum-ave?curriculum_id=@curriculums.curriculum_id@" title="Complete description">more</a>]
+      </if>
     </td>
     <td width="10%">
       @curriculums.pretty_state@
@@ -70,6 +73,10 @@
     </td>
     <td width="50%">
       @curriculums.element_desc;noquote@
+      <if @curriculums.elem_desc_trunc_p@>
+        ...
+        [<a href="element-ave?@curriculums.curriculum_id_export@&@curriculums.element_id_export@" title="Complete description">more</a>]
+      </if>
     </td>
     <td width="10%">
     <if @curriculums.element_enabled_p@>

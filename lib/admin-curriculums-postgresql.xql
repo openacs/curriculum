@@ -7,11 +7,15 @@
         <querytext>
     select    cc.curriculum_id,
               cc.name as curriculum_name,
-              cc.description as curriculum_desc,
+              substring(cc.description from 1 for :truncation_length) as curriculum_desc,
+              case when length(cc.description) > :truncation_length
+                   then 1 else 0 end as curr_desc_trunc_p,
               cc.sort_key as curriculum_sort_order,
               ce.element_id,
               ce.name as element_name,
-              ce.description as element_desc,
+              substring(ce.description from 1 for :truncation_length) as element_desc,
+              case when length(ce.description) > :truncation_length
+                   then 1 else 0 end as elem_desc_trunc_p,
               ce.url as element_url,
               ce.enabled_p as element_enabled_p,
               ce.sort_key as element_sort_order,

@@ -23,7 +23,12 @@
     <td width="25%">
       <a href="@url@curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Detailed information">@elements.curriculum_name@</a>
     </td>
-    <td width="50%">@elements.curriculum_desc@</td>
+    <td width="50%">@elements.curriculum_desc;noquote@
+      <if @elements.curr_desc_trunc_p@>
+        ...
+        [<a href="@url@curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Complete description">more</a>]
+      </if>
+    </td>
     <td width="10%">
     <if @logged_in_p@>
       <if @elements.undesired_p@>
@@ -68,7 +73,12 @@
         <a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name@</a>
       </li>
     </td>
-    <td width="50%">@elements.element_desc;noquote@</td>
+    <td width="50%">@elements.element_desc;noquote@
+      <if @elements.elem_desc_trunc_p@>
+        ...
+        [<a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Complete description">more</a>]
+      </if>
+    </td>
     <td width="10%">
     <if @elements.checked_p@>
       Visited
