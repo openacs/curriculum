@@ -96,7 +96,7 @@ ad_form -extend -name element -edit_request {
     }
     
 } -new_data {
-    
+
     curriculum::element::new \
 	-curriculum_id $curriculum_id \
 	-name $name \
@@ -122,6 +122,21 @@ ad_form -extend -name element -edit_request {
     ad_returnredirect $return_url
     ad_script_abort
 
+}
+
+# OLA HACK (borrowed from LARS): Make the URL element a real link
+if { ![form is_valid element] } {
+        
+    if { [string equal -length 7 "http://" [set url [element get_value element url]]] } {
+	set position [parameter::get -package_id $package_id -parameter ExternalSiteBarPosition -default bottom]
+	set export_vars [export_vars -url {curriculum_id element_id position}]
+	
+	element set_properties element url -display_value \
+	    "<a href=\"[curriculum::conn package_url]ext?$export_vars\" target=\"_top\" title=\"[_ curriculum.Visit]\">$url</a>"
+    } else {
+	element set_properties element url -display_value \
+	    "<a href=\"$url\">$url</a>"
+    }
 }
 
 ad_return_template
