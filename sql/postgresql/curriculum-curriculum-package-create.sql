@@ -42,7 +42,7 @@ begin
         p_creation_date,
         p_creation_user,
         p_creation_ip,
-        p_context_id
+        coalesce(p_context_id, p_package_id)
     );  
 
     if p_sort_key is null then
