@@ -8,7 +8,7 @@
     </author>
   </articleinfo>
   <abstract>
-    <para>This is the official documentation and user manual for the Curriculum module, which is used for online courses on OpenACS 4- and .LRN 1- websites. Curriculum's open source code was developed by Polyxena, Sweden, for the Medical Faculty of Heidelberg, Germany.</para>
+    <para>This is the official documentation and user manual for the Curriculum module, which has been developed for use in online courses on OpenACS 5.0 and .LRN 2.0 websites. Curriculum's open source code was developed by Polyxena, Sweden, for the Medical Faculty of Heidelberg, Germany.</para>
   </abstract>
   <sect1 id="intro">
     <title>The Big Picture</title>
@@ -46,7 +46,6 @@ set curriculum_bar_p [apm_package_installed_p curriculum]]]></screen></blockquot
 <if @curriculum_bar_p@><include src="/packages/curriculum/lib/bar" /></if>
 <!-- End curriculum bar -->]]></screen></blockquote></para>
     <para>Where you decide to put the ADP include and what type of HTML and CSS formatting you want to work on it depends on which type of curriculum bar you are going to have. This and other preferences for the functionality and presentation of the curriculum bar you set at the instance parameters page. You'll find a link to the Curriculum parameters page at the top left of the Curriculum admin page. The setting of instance parameters can also be done later by a Curriculum administrator (a head teacher perhaps) as soon as you have granted someone such permission. You'll find a link to the Curriculum permissions page right next to the link to the Curriculum parameters page. Also, decide which users will get to read the curriculums.</para>
-    <para>Finally, assign workflow roles...</para>
   </sect1>
   <sect1 id="dev">
     <title>Developer's Guide</title>
