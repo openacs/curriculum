@@ -68,7 +68,7 @@ ad_proc -public curriculum::element::external_p {
     } else {
 	# Try to determine if the URL belongs to another subsite.
 
-	set subsite_id [site_node_closest_ancestor_package -url $url [curriculum::package_keys]]
+	set subsite_id [site_node_closest_ancestor_package -url $url { acs-subsite dotlrn }]
 
 	if { $subsite_id == [curriculum::conn subsite_id] } {
 	    set external_p f
@@ -171,19 +171,6 @@ ad_proc -public curriculum::element::get {
 	return 0
 	ad_script_abort
     }
-
-#    # Get the case ID, so we can get state information.
-#    set case_id [workflow::case::get_id \
-#		     -object_id $curriculum_id \
-#		     -workflow_short_name [workflow_short_name]]
-#
-#    # Get state information.
-#    workflow::case::fsm::get -case_id $case_id -array case -action_id $action_id
-#
-#    set row(pretty_state)     $case(pretty_state)
-#    set row(state_short_name) $case(state_short_name)
-#    set row(hide_fields)      $case(state_hide_fields)
-#    set row(entry_id)         $case(entry_id)
 
     return 1
 }

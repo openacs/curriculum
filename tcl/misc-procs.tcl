@@ -12,33 +12,15 @@ ad_library {
 namespace eval curriculum {}
 
 
-# FIXME. Remove this if it proves unnecessary ...
-ad_proc -public curriculum::package_keys {
-} {
-    Builds a list that will be used as an argument to "site_node_closest_ancestor_package".
-    If .LRN is not installed it will be set to "acs_subsite" and if it is installed, 
-    "dotlrn" will be prepended to the list. The Underlying reason we do this is because
-    we want to allow one Curriculum instance under each dotLRN instance, if dotLRN is
-    installed. And if it is installed it should take precedence over acs_subsite.
-} {
-    set package_keys [list acs-subsite]
-    
-    if { [apm_package_installed_p dotlrn] } {
-	set package_keys [concat dotlrn $package_keys]
-    }
-
-    return $package_keys
-}
-
-    
 ad_proc -public curriculum::conn {
     args
 } {
     set flag [lindex $args 0]
-    if { [string index $flag 0] != "-" } {
+    if { ![string equal "-" [string index $flag 0]] } {
+	# Insert the implicit "-get" flag explicitly at the beginning of args
+	# so that the switch statement below may always rely on it to exist.
 	set var $flag
 	set flag "-get"
-	# We want the number of args to be the same as if a flag had been provided.
 	set args [linsert $args 0 $flag]
     } else {
 	set var [lindex $args 1]
@@ -46,40 +28,55 @@ ad_proc -public curriculum::conn {
 
     switch -- $flag {
 	-set {
-
 	    set value [lindex $args 2]
-	    return [util_memoize_seed [list $var [conn subsite_id]] $value]
 
+	    if { [empty_string_p [set subsite_id [lindex $args 3]]] } {
+		set subsite_id [conn subsite_id]
+	    }
+
+	    return [util_memoize_seed [list list $var $subsite_id] $value]
 	}	    
 	-flush {
-	    # Flush the cache for key $var.
-	    util_memoize_flush [list $var [conn subsite_id]]
+	    # Flush the cache for key $var in the specified subsite.
+
+	    if { [empty_string_p [set subsite_id [lindex $args 2]]] } {
+		set subsite_id [conn subsite_id]
+	    }
+
+	    util_memoize_flush [list list $var $subsite_id]
 	}
 	-nocache {
-	    # Call ourselves with the -flush flag to flush the cache.
+	    # Call ourselves with the -flush flag to flush the cache and then
+	    # call ourselves again with the -get flag to return fresh data.
 	    conn -flush $var
-
-	    # Call ourselves with the -get flag and return fresh data.
 	    conn -get $var
 	}
 	-get {
 	    switch -- $var {
 		subsite_id {
-		    # "ad_conn subsite_id" does not work when called from within a filter
-		    # (which we do for the curriculum bar), so we use the following instead.
+		    # Get the closest ancestor package_id for package_key "acs-subsite" or "dotlrn".
+		    # We can't use "ad_conn subsite_id" because .LRN classes and clubs aren't
+		    # instances of "acs-subsite" but instances of "dotlrn", and we need to be able
+		    # to scope our cache based on those instances too ...
 
+		    # May need to be cached if it is possible ...
 		    return [site_node_closest_ancestor_package { acs-subsite dotlrn }]
 		}
 		package_id -
 		package_url -
 		subsite_url {
 
-		    return [get_info -proc get_package_info -var $var]
+		    set subsite_id [conn subsite_id]
+		    set proc [list get_package_info -subsite_id $subsite_id]
+
+		    return [get_info -var $var -subsite_id $subsite_id -proc $proc]
 
 		}			
 		curriculum_count {
+		    
+		    set proc [list get_curriculum_stats]
 
-		    return [get_info -proc get_curriculum_stats -var $var]
+		    return [get_info -var $var -proc $proc]
 
 		}
 		curriculum_ids -
@@ -87,80 +84,45 @@ ad_proc -public curriculum::conn {
 
 		    # This block returns a list.
 
-		    set $var [list]
-		    set list_of_ns_sets [get_curriculum_info]
-		    foreach ns_set $list_of_ns_sets {
-			lappend $var [ns_set get $ns_set $var]
-		    }
-		    set cu_conn($var) [set $var]
-		    return $cu_conn($var)
+		    set proc [list get_curriculum_info]
+
+		    return [get_info -var $var -proc $proc]
+
 		}
 		default {
-		    error "curriculum::conn: unknown variable $var"
+		    error "curriculum::conn: unknown var $var"
 		}
 	    }
 	}
 	default {
-	    error "::curriculum::conn: unknown flag $flag"
+	    error "curriculum::conn: unknown flag $flag"
 	}
     }
 }
 
 
 ad_proc -private curriculum::get_info {
+    -var:required
+    {-subsite_id ""}
     -proc:required
-    -var:required
 } {    
-    set subsite_id [conn subsite_id]
-
-# FIXME. Bypass the cache for debugging purposes.    
-#    if { ![empty_string_p [set value [util_memoize [list $var $subsite_id]]]] } {
-#	return $value
-#    }
-    
-    array set info [$proc]
-    foreach name [array names info] {
-	util_memoize_seed [list $name $subsite_id] $info($name)
-    }
-    
-    return $info($var)
-}
-
-
-# FIXME. Not used.
-ad_proc -private curriculum::get_client_property {
-    -table
-    -proc
-    -module:required
-    -var:required
-} {    
-    set value [ad_get_client_property -cache_only t $module $var]
-    
-    if { ![empty_string_p $value] } {
-	# Return the cached value
-	return $value
+    if { [empty_string_p $subsite_id] } {
+	set subsite_id [conn subsite_id]
     }
 
-    # The key $var is not cached so let's cache it and the rest of the keys in
-    # this block, too, while we're at it. The extra cost should be negligable.
-    
-    if { [info exists proc] } {
-	set result_list [$proc]
-    } elseif { [info exists table] } {
-	set result_list [get_table_info -table $table]
-    } else {
-	error "::curriculum::get_info: neither -proc nor -table specified"
+    if { [util_memoize_cached_p [list list $var $subsite_id]] } {
+	# Return the cached value for $var in this particular subsite.
+	return [util_memoize [list list $var $subsite_id]]
     }
 
-    if { [empty_string_p $result_list] } {
+    if { [empty_string_p [set result [eval $proc]]] } {
 	return {}
     }
-
-    array set info $result_list
+    array set info $result
     foreach name [array names info] {
-	# Call curriculum::conn and seed the cache
-	conn -set $name $info($name)
+	util_memoize_seed [list list $name $subsite_id] $info($name)
     }
+    
     return $info($var)
 }
 
@@ -173,32 +135,63 @@ ad_proc -private curriculum::get_client_property {
 
 
 ad_proc -private curriculum::get_package_info {
+    {-subsite_id ""}
 } {
-    set subsite_id [conn subsite_id]
+    if { [empty_string_p $subsite_id] } {
+	set subsite_id [conn subsite_id]
+    }
 
-    set info(package_id) [get_package_id_from_subsite_id \
-			      -subsite_id $subsite_id]
+    set subsite_node_id [site_node::get_node_id_from_object_id -object_id $subsite_id]
 
-    set info(package_url) [lindex [site_node::get_url_from_object_id \
-				       -object_id $info(package_id)] 0]
+    set info(subsite_url) [site_node::get_url -node_id $subsite_node_id]
 
-    set info(subsite_url) [lindex [site_node::get_url_from_object_id \
-				       -object_id $subsite_id] 0]
-    
+    # Note! Returns a list of curriculum package_ids.
+    set info(package_id) [site_node::get_children \
+			      -package_key [package_key] \
+			      -element package_id \
+			      -node_id $subsite_node_id]
+
+
+    if { [llength $info(package_id)] > 1 } {
+
+	# Get the latest curriculum instance that was mounted.
+	set package_id [db_string max_curriculum_id {*SQL*}]
+	set node_id [site_node::get_node_id_from_object_id -object_id $package_id]
+	set export_vars [export_vars -url { node_id { confirm_p 1 } }]
+
+	set delete_url "/admin/applications/application-delete?$export_vars"
+
+	ad_return_error "[_ curriculum.lt_More_than_one_instanc]" "[_ curriculum.lt_Please_delete_the_ext]"
+
+	ad_script_abort
+    }
+
+    set package_node_id [site_node::get_node_id_from_object_id -object_id $info(package_id)]
+
+    set info(package_url) [site_node::get_url -node_id $package_node_id]
+   
     return [array get info]
 }
 
 
+# FIXME. It would be awesome if this could go!
 ad_proc -private curriculum::get_package_id_from_subsite_id {
     -subsite_id:required
 } {
     # This call is what prevents us from mounting several curriculum instances
     # per subsite ... Maybe that could be amended?
 
+    set package_key [package_key]
+    
     if { [catch {
 	set package_id [site_node_apm_integration::get_child_package_id \
-			    -package_id $subsite_id -package_key [package_key]]
+			    -package_id $subsite_id -package_key $package_key]
     } errmsg] } {
+
+	# Get the latest curriculum instance that was mounted.
+	set package_id [db_string max_curriculum_id {*SQL*}]
+	
+	set node_id [site_node::get_node_id_from_object_id -object_id $package_id]
 
 	ad_return_error "[_ curriculum.lt_Could_not_get_child_p]" \
 	    "[_ curriculum.lt_This_could_be_because]
@@ -228,8 +221,26 @@ ad_proc -private curriculum::get_curriculum_info {
     if { [empty_string_p $package_id] } {
 	set package_id [conn package_id]
     }
+
     
-    return [db_list_of_ns_sets curriculum_info {*SQL*}]
+    set list_of_ns_sets [db_list_of_ns_sets curriculum_info {*SQL*}]
+    
+    if { [empty_string_p $list_of_ns_sets] } {
+	return {}
+    }
+
+    set columns [ad_ns_set_keys [lindex $list_of_ns_sets 0]]
+
+    foreach column $columns {
+	lappend result $column
+	foreach ns_set $list_of_ns_sets {
+	    lappend sublist [ns_set get $ns_set $column]
+	}
+	lappend result $sublist
+    }
+
+    return $result
+    
 }
 
 
@@ -247,47 +258,11 @@ ad_proc -private curriculum::get_curriculum_stats {
 	set package_id [conn package_id]
     }
     
-    db_1row curriculum_stats {*SQL*} -column_array stats
-    
-    return [array get stats]
-}
-
-
-#####
-#
-# Cached objective progress info procs
-# 
-#####
-
-# FIXME. Not used.
-ad_proc -private curriculum::get_table_info {
-    -table:required
-} {
-    set user_id [ad_conn user_id]
-    
-    db_multirow -local info table_info "
-	select *
-	from   $table
-	where  user_id = :user_id
-    " {} if_no_rows {
-
-	# Ack! No rows returned. Don't worry, we'll fall back on the defaults.
-	# If this query, too, returns nothing the "curriculum::conn ???"
-	# call we originated from will simply return an empty list.
-	
-	set magic_user_id [magic_user]
-
-	db_0or1row info_fallback "
-	    select *
-	    from   $table
-	    where  user_id = :magic_user_id
-	" -column_array info_fallback
-
-	return -code return [array get info_fallback]
+    if { [db_0or1row curriculum_stats {*SQL*} -column_array stats] } {
+	return [array get stats]
+    } else {
+	error "curriculum::get_curriculum_stats didn't return any row"
     }
-
-    # We have something. Convert it to array-settable list and then return it.
-    return [multirow_to_list_of_attrib_lists -var_name info]
 }
 
 
@@ -302,7 +277,9 @@ ad_proc -public curriculum::enabled_elements_memoized {
     {-package_id ""}
 } {
     # "ad_conn package_id" can't be used because occasionally our proc gets
-    # called from a filter, and filters don't seem to handle such calls. :(
+    # called from a filter, and filters don't seem to handle such calls.
+    # Besides, we are sometimes called from outside our package borders which
+    # would have given us the wrong package_id anyway.
 
     if { [empty_string_p $package_id] } {
 	set package_id [conn package_id]
@@ -322,16 +299,16 @@ ad_proc -private curriculum::enabled_elements {
     This is designed to be called within a memoization proc.
 } {
 
-    # The list this proc returns will be cached and used for (at least)
-    # two purposes: A) To produce the curriculum bar multirow. B) To check
-    # elements against a cookie value to be able to mark if an element has
-    # been visited. Either way we only keep elements from curriculums in
-    # workflow state "published" in the list.
+    # The list this proc returns will be cached and used for (at least) two purposes:
+    # A) To produce the curriculum bar multirow.
+    # B) To check elements against a cookie value to mark if an element has been visited.
+    # Either way, we only keep elements from curriculums in workflow state "published"
+    # in the list.
 
     # "workflow::state::fsm::get_id" doesn't return the id of state "published" if there
-    # is no workflow, and there isn't one in "/"... That is why we feed this proc the
+    # is no workflow, and there isn't one for "/" ... That is why we feed this proc the
     # package_id "curriculum::conn" gave us, which is the package_id of the curriculum
-    # instance in this subsite, regardless of what node we requested within the subsite.
+    # instance in this subsite, regardless of which node we requested within the subsite.
 
     if { ![empty_string_p $package_id] } {
 	
@@ -408,23 +385,18 @@ ad_proc -public curriculum::elements_flush {
     }
 
     if { $thorough_p } {
-	# Flush the cache for all users (including non-logged in) in this package_id.
+
+	# Flush the cache for all users (including non-registered) in this package instance.
 	util_memoize_flush_regexp [list curriculum::enabled_elements -package_id $package_id]
-	return
-    }
-    
-    if { [empty_string_p $user_id] } {
-	set user_id [ad_conn user_id]
-    }
 
-    # Only bother to flush the cache if the bar is going to be displayed.
-    # FIXME. Bad idea since the index page takes advantage of this cache too - not just the bar.
-    #
-    #if { ![parameter::get -package_id $package_id -parameter ShowCurriculumBarP -default 1] } {
-    #return {}
-    #}
-
-    util_memoize_flush [list curriculum::enabled_elements -package_id $package_id -user_id $user_id]
+    } else {
+	
+	if { [empty_string_p $user_id] } {
+	    set user_id [ad_conn user_id]
+	}
+	
+	util_memoize_flush [list curriculum::enabled_elements -package_id $package_id -user_id $user_id]
+    }
 }
 
 
@@ -445,18 +417,6 @@ ad_proc -public curriculum::get_bar {
 
     # Check cookie to make sure this person isn't finished.
     set input_cookie [ad_get_cookie [get_cookie_name -package_id $package_id]]
-
-#    if { $bar_p && [empty_string_p $input_cookie] } {
-#	# No cookie; this person is either brand new or the browser is rejecting cookies.
-#	# Let's not uglify all their pages with a bar that they can't use.
-#	return {}
-#    }
-
-    # We have a cookie.
-#    if { $bar_p && [string equal "finished" $input_cookie] } {
-#	# User has completed curriculum, don't bother showing the bar.
-#	#return {}
-#    }
 
     # Compare what the user has seen to what is in the full curriculum(s)
     # to put in checkboxes; we check the output headers first and then 
@@ -491,7 +451,7 @@ ad_proc -private curriculum::get_bar_internal {
     # If the user is logged in the "cu_user_curriculum_map" will be checked
     # for unwanted curriculums. OTOH, if the user is not logged in, we're
     # showing all (published) curriculums.
-    # See "curriculum::enabled_elements" (the non-cached variant).
+    # See "curriculum::enabled_elements" (the non-cached version).
     
     if { [llength $rows] == 0 } {
 	# Publisher hasn't published any curriculum.
@@ -547,6 +507,7 @@ ad_proc -private curriculum::get_bar_internal {
 }
 
 
+# FIXME. Not used yet.
 ad_proc -public curriculum::element_visited_p {
     element_id
 } {
@@ -629,46 +590,34 @@ ad_proc -public curriculum::curriculum_progress_cookie_value {
     }
 
     if { [string equal "start" $old_value] } {
-#	if { [llength [enabled_elements_memoized -package_id $package_id]] == 1} {
-#	    # Just one element in curriculum. Should be rare!
-#	    return "finished"
-#	}
-
 	return [list $new_element]
     }
 
     if { [string equal "reset_one_curriculum" $old_value] } {
 	set curriculum_id $new_element
-	return [reset_one_curriculum $curriculum_id]
+	return [reset_one_curriculum -curriculum_id $curriculum_id -package_id $package_id]
     }
 
-#    if { [string equal "finished" $old_value] } {
-#	# If you're finished, adding a new element doesn't change that!
-#	return "finished"
-#    }
-
     set tentative_result [lappend old_value $new_element]
-
-#    if { [llength [enabled_elements_memoized -package_id $package_id]] == [llength $tentative_result] } {
-#	return "finished"
-#    }
 
     return $tentative_result	
 }
 
 
 ad_proc -private curriculum::reset_one_curriculum {
-    curriculum_id
+    -curriculum_id:required
+    -package_id:required
 } {
     Restart just one specific curriculum (uncheck its checkboxes).
 } {
-    set cookie [ad_get_cookie [get_cookie_name]]
-    set package_id [conn package_id]
+    set cookie [ad_get_cookie [get_cookie_name -package_id $package_id]]
+
     db_foreach element_ids {*SQL*} {
 	if { [set cookie_index [lsearch -exact $cookie $element_id]] != -1 } {
 	    set cookie [lreplace $cookie $cookie_index $cookie_index]
 	}
     }
+
     if { [empty_string_p $cookie] } {
 	return "start"
     } else {
@@ -693,14 +642,10 @@ ad_proc -public curriculum::curriculum_filter {
     "curriculum_bar" which gets called from the default-master.
     This will run after a registered url has been served.
 } {
-    # FIXME. Remove the row below and uncomment the catch statement when the package is published.
-    curriculum_filter_internal $args $why    
-    
-    #       we don't want an error in the script to interrupt page service
-    #	if [catch { curriculum_filter_internal $args $why } errmsg] {
-    #	    ns_log Error "curriculum::curriculum_filter_internal coughed up $errmsg"
-    #	}
-    #
+    # We don't want an error in the script to interrupt page service
+    if { [catch { curriculum_filter_internal $args $why } errmsg] } {
+	ns_log Error "curriculum::curriculum_filter_internal coughed up $errmsg"
+    }
     
     return "filter_ok"
 }
@@ -710,25 +655,21 @@ ad_proc -private curriculum::curriculum_filter_internal {
     args
     why
 } {
-    set cookie [ad_get_cookie [get_cookie_name]]
     set package_id [conn package_id]
+    set cookie_name [get_cookie_name -package_id $package_id]
+    set cookie [ad_get_cookie $cookie_name]
 
     if { [empty_string_p $cookie] } {
 	# No cookie.
 	if { [parameter::get -package_id $package_id \
 		  -parameter AutomaticBarActivationP -default 1] } {
 	    ad_set_cookie -replace t \
-		[get_cookie_name] [curriculum_progress_cookie_value -package_id $package_id]
+		$cookie_name [curriculum_progress_cookie_value -package_id $package_id]
 	}
 	return
     }
 
     # We have a cookie.
-#    if { [string equal "finished" $cookie] } {
-#	# User has completed curriculum, nothing more to do.
-#	return
-#    }
-    
     # See what the user is looking at right now and compare
     # to curriculums to consider adding to cookie.
     set list_of_lists [curriculum::enabled_elements_memoized -package_id $package_id]
@@ -751,7 +692,7 @@ ad_proc -private curriculum::curriculum_filter_internal {
 
 	    if { [lsearch -exact $cookie $element_id] == -1 } {
 		set cookie [curriculum_progress_cookie_value -package_id $package_id $cookie $element_id]
-		ad_set_cookie -replace t [get_cookie_name] $cookie
+		ad_set_cookie -replace t $cookie_name $cookie
 
 		# If the user is logged in, we'll also want to record
 		# the additional element in the database.
@@ -764,50 +705,4 @@ ad_proc -private curriculum::curriculum_filter_internal {
 	    }
 	}	    
     }
-}
-
-
-#####
-#
-# Util procs (that perhaps should go back to the community)
-# 
-#####
-
-# FIXME. Not used.
-# Maybe this would be useful to the OpenACS community...?
-ad_proc -public curriculum::multirow_to_list_of_attrib_lists {
-    -var_name:required
-} {
-    Convert a multirow into an array-settable list of the format:
-    <pre>
-    col1 {row1 row2 ...} col2 {row1 row2 ...} col3 {row1 row2 ...} ...
-    </pre>
-
-    @param -var_name The name of the multirow to convert
-    
-    @author Ola Hansson (ola@polyxena.net)
-    @creation-date January 07, 2003
-} {
-    upvar $var_name:rowcount rowcount $var_name:columns columns i i
-
-    for { set i 1 } { $i <= $rowcount } { incr i } {
-	upvar $var_name:$i row
-	foreach column [set columns] {
-	    lappend $column $row($column)
-	}
-    }
-
-    foreach column $columns {
-	lappend result $column [set $column]
-    }
-
-    return $result
-}
-
-
-# FIXME. Not used.
-ad_proc -private curriculum::magic_user {
-} {
-    # Magic user_id.
-    return [db_exec_plsql get_magic_user_id {select cu_magic_user()}]
 }

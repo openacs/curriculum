@@ -52,7 +52,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Are you sure you want to delete this element?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Back to %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Back to where you came from</msg>
-  <msg key="lt_Could_not_get_child_p">Could not get child package_id</msg>
   <msg key="lt_Create_a_new_curricul">Create a new curriculum</msg>
   <msg key="lt_Deactivate_this_eleme">Deactivate this element</msg>
   <msg key="lt_Delete_this_curriculu">Delete this curriculum and all of its data</msg>
@@ -60,10 +59,11 @@
   <msg key="lt_deleting_curriculum_c">deleting curriculum %curriculum_id% in package_id %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%, part of %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">Flush element cache</msg>
-  <msg key="lt_Here_is_what_the_data">Here is what the database said:</msg>
   <msg key="lt_Installing_curriculum">Installing curriculum filter for %url_pattern% in package_id %package_id%</msg>
+  <msg key="lt_More_than_one_instanc">More than one instance of Curriculum mounted</msg>
   <msg key="lt_Name_may_not_be_more_">Name may not be more than %length% characters long.</msg>
   <msg key="lt_No_published_curricul">No published curriculums</msg>
+  <msg key="lt_Please_delete_the_ext">Please delete the extra instance of the Curriculum package in this acs-subsite or dotlrn instance. Curriculum was designed to only be mounted once under those instances. Please visit the &lt;a href=&quot;/admin/site-map/&quot;&gt;Site-Map&lt;/a&gt; and unmount the extra instance, or, you might want to delete the instance directly by clicking &lt;a href=&quot;%delete_url%&quot;&gt;here&lt;/a&gt;.</msg>
   <msg key="lt_Read_the_user_manual_">Read the user manual for this page</msg>
   <msg key="lt_Remove_all_curriculum">Remove all curriculums</msg>
   <msg key="lt_Remove_the_curriculum">Remove the curriculum from the toolbar</msg>
@@ -72,9 +72,6 @@
   <msg key="lt_Set_site-wide_prefere">Set site-wide preferences for this Curriculum instance</msg>
   <msg key="lt_Show_curriculums_in_p">Show curriculums in publishing state:</msg>
   <msg key="lt_Stop_displaying_the_c">Stop displaying the curriculum toolbar</msg>
-  <msg key="lt_This_could_be_because">This could be because you have mounted more than one instance 
-of the Curriculum package in a subsite. Curriculum was designed to only 
-be mounted once per acs-subsite. Please visit the &lt;a href=\&quot;/admin/site-map/\&quot;&gt;Site-Map&lt;/a&gt; and unmount the extra instance. However, it could also be a bug in the code.</msg>
   <msg key="lt_This_field_is_for_com">This field is for commenting actions on the curriculum.</msg>
   <msg key="lt_This_text_should_desc">This text should describe the curriculum and its purpose.</msg>
   <msg key="lt_This_text_should_desc_1">This text should describe the element and its purpose.</msg>

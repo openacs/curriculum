@@ -27,5 +27,14 @@
             where  package_id = :package_id
         </querytext>
     </fullquery>
+
+    <fullquery name="curriculum::get_package_id_from_subsite_id.max_curriculum_id">
+        <querytext>
+            select max(package_id)
+            from   apm_packages
+            where package_key = :package_key
+        </querytext>
+    </fullquery>
+
  
 </queryset>

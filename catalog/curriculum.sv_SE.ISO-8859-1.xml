@@ -52,7 +52,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Är du säker på att du vill radera detta element?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Tillbaka till %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Tillbaka dit du kom ifrån</msg>
-  <msg key="lt_Could_not_get_child_p">Kunde inte hitta child package_id</msg>
   <msg key="lt_Create_a_new_curricul">Lägg upp en ny kursplan</msg>
   <msg key="lt_Deactivate_this_eleme">Avaktivera detta element</msg>
   <msg key="lt_Delete_this_curriculu">Radera denna kursplan och dess samtliga element</msg>
@@ -60,10 +59,11 @@
   <msg key="lt_deleting_curriculum_c">raderar kursplan %curriculum_id% i package_id %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%, del av %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">Flusha element-cachen</msg>
-  <msg key="lt_Here_is_what_the_data">Det här är vad databasen meddelade:</msg>
   <msg key="lt_Installing_curriculum">installerar filter för %url_pattern% i package_id %package_id%</msg>
+  <msg key="lt_More_than_one_instanc">Fler än en Curriculum-instans mountad</msg>
   <msg key="lt_Name_may_not_be_more_">Namnet får inte vara längre än %length% tecken långt.</msg>
   <msg key="lt_No_published_curricul">Inga publicerade kursplaner</msg>
+  <msg key="lt_Please_delete_the_ext">Var god radera den extra instansen av Curriculum-paketet i denna instans av acs-subsite eller dotlrn. Curriculum var designad att bara mountas en gång under dessa instanser. Besök &lt;a href=&quot;/admin/site-map/&quot;&gt;Site-Map&lt;/a&gt; och av-mounta den extra instansen, eller, radera instansen direkt genom att klicka &lt;a href=&quot;%delete_url%&quot;&gt;här&lt;/a&gt;.</msg>
   <msg key="lt_Read_the_user_manual_">Läs användarmanualen för denna sida</msg>
   <msg key="lt_Remove_all_curriculum">Ta bort samtliga kursplaner</msg>
   <msg key="lt_Remove_the_curriculum">Avlägsna kursplanen från panelen</msg>
@@ -72,7 +72,6 @@
   <msg key="lt_Set_site-wide_prefere">Ställ in preferenserna för denna Curriculum-instans</msg>
   <msg key="lt_Show_curriculums_in_p">Visa kursplaner i publiceringstillståndet:</msg>
   <msg key="lt_Stop_displaying_the_c">Sluta visa kursplanspanelen</msg>
-  <msg key="lt_This_could_be_because">Detta kan bero på att du har mountat fler än en instans av Curriculum-paketet på en subsite. Curriculum har konstruerats för att endast mountas en gång per acs-subsite. Var god besök &lt;a href=\&quot;/admin/site-map/\&quot;&gt;Site-Map&lt;/a&gt; och avmounta den extra instansen. Det kan dock även vara ett fel i programkoden.</msg>
   <msg key="lt_This_field_is_for_com">Detta fält är för kommentarer till åtgärder på kursplanen.</msg>
   <msg key="lt_This_text_should_desc">Denna text bör beskriva kursplanen och dess syfte.</msg>
   <msg key="lt_This_text_should_desc_1">Denna text bör beskriva elementet och dess syfte.</msg>

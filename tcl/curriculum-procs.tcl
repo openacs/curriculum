@@ -252,7 +252,7 @@ ad_proc -private curriculum::delete_instance {
 
 } {
     # Get a list of all curriculums in this package instance.
-    set curriculum_ids [conn -nocache curriculum_ids]
+    set curriculum_ids [conn -nocache curriculum_ids $package_id]
 
     db_transaction {
 	
@@ -262,6 +262,9 @@ ad_proc -private curriculum::delete_instance {
 	}
 	
     }
+
+    # Force the curriculum bar to update.
+    curriculum::elements_flush -thorough -package_id $package_id
 }
 
 ####

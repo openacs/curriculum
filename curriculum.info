@@ -15,10 +15,10 @@
         <requires url="workflow" version="0.2d2"/>
 
         <callbacks>
-            <callback type="after-install"  proc="curriculum::apm::after_install"/>
-            <callback type="after-instantiate"  proc="curriculum::apm::after_instantiate"/>
             <callback type="before-uninstall"  proc="curriculum::apm::before_uninstall"/>
+            <callback type="after-install"  proc="curriculum::apm::after_install"/>
             <callback type="before-uninstantiate"  proc="curriculum::apm::before_uninstantiate"/>
+            <callback type="after-instantiate"  proc="curriculum::apm::after_instantiate"/>
         </callbacks>
         <parameters>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="AutomaticBarActivationP"  default="1" description="Should the bar be automatically turned on if there is no current cookie available?"/>
