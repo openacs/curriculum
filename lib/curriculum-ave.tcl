@@ -153,8 +153,8 @@ if { $write_p } {
     ad_form -extend -name curriculum -form {
 	{comment:richtext
 	    {mode $element_mode}
-	    {label "Workflow Log"}
-	    {help_text "Comments on workflow actions."}
+	    {label "Action Log"}
+	    {help_text "This field is for commenting actions on the curriculum."}
 	    {html {rows 5 cols 50 wrap soft}}
 	    optional
 	}
