@@ -16,10 +16,14 @@ set package_id [curriculum::conn package_id]
 if { [info exists curriculum_id] } {
     set new_cookie [curriculum::curriculum_progress_cookie_value \
 			-package_id $package_id reset_one_curriculum $curriculum_id]
+
     set extra_where_clause { and curriculum_id = :curriculum_id }
+
 } else {
+
     set new_cookie [curriculum::curriculum_progress_cookie_value \
 			-package_id $package_id]
+
     set extra_where_clause {}
 }
 

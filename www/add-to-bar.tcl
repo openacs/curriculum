@@ -13,7 +13,7 @@ ad_page_contract {
 }
 
 if { [info exists refresh_p] } {
-    set return_url "start-over?[ad_conn extra_url]"
+    set return_url "start-over?[export_vars -url curriculum_id]"
 }
 set package_id [curriculum::conn package_id]
 

@@ -39,7 +39,7 @@
     <td width="15%">
       [WF Actions]
       <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('Are you sure you want to delete this curriculum?');" title="Delete">
-        <img src="../../shared/images/Delete16.gif" border="0" width="16" height="16">
+        <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
       </a>
     </td>
     <td width="5%">
@@ -84,7 +84,7 @@
     <td width="5%">
       <a href="element-enable?@curriculums.element_id_export@">Enable</a>
       <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('Are you sure you want to delete this element?');" title="Delete">
-        <img src="../../shared/images/Delete16.gif" border="0" width="16" height="16">
+        <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
       </a>
     </else>
     </td>

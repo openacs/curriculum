@@ -49,7 +49,7 @@ ad_proc -public curriculum::conn {
 		    # "ad_conn subsite_id" does not work when called from within a filter
 		    # (which we do for the curriculum bar), so we use the following instead.
 
-		    return [site_node_closest_ancestor_package acs-subsite]
+		    return [site_node_closest_ancestor_package [list dotlrn acs-subsite]]
 		}
 		package_id -
 		package_url -
@@ -350,11 +350,14 @@ ad_proc -private curriculum::enabled_elements {
 
 # FIXME. Integrate with "enabled_elements" above?
 ad_proc -private curriculum::user_elements {
+    {-package_id ""}
 } {
     Not meant to be cached.
 } {
-    set package_id [conn package_id]
-
+    if { [empty_string_p $package_id] } {
+	set package_id [conn package_id]
+    }
+    
     set workflow_id [curriculum::get_instance_workflow_id -package_id $package_id]
 
     # We need to get elements of published curriculums.
@@ -453,18 +456,18 @@ ad_proc -public curriculum::get_bar {
 
 ad_proc -private curriculum::get_bar_internal {
     -bar_p:required
-    {-package_id ""}
+    -package_id:required
     cookie_value
 } {
     if { $bar_p } {
 
 	# Get the cached curriculum list for the bar.
-	set rows [enabled_elements_memoized]
+	set rows [enabled_elements_memoized -package_id $package_id]
 
     } else {
 
 	# Get the NOT cached curriculum list for index page use.
-	set rows [user_elements]
+	set rows [user_elements -package_id $package_id]
 
     }
 

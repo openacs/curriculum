@@ -9,16 +9,15 @@ ad_page_contract {
 } {
 } -properties {
     state_id:onevalue
+    workflow_id:onevalue
 }
 # state_id is an integer or the string "any", provided as an <include> property.
+# workflow_id. Get this from an <include> property, also.
 
 # Scoping.
 set package_id [curriculum::conn package_id]
 
 permission::require_permission -object_id $package_id -privilege admin
-
-# Workflow.
-set workflow_id [curriculum::get_instance_workflow_id]
 
 # We might need this if we want to present statistics, see bug-tracker (we need it for this page, too).
 set initial_state_id [workflow::fsm::get_initial_state -workflow_id $workflow_id]
