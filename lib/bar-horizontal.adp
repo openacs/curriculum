@@ -11,7 +11,7 @@
       <img src="/shared/images/checkbox.gif" border="0" width="13" height="13" alt="O" title="Ongoing">
     </else>
       @elements.curriculum_name;noquote@
-      <a href="@package_url@curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Info">
+      <a href="@package_url@curriculum-ave?curriculum_id=@elements.curriculum_id@" target="_top">
       <img src="@package_url@graphics/info.gif" border="0" width="12" height="12" alt="i" title="Information">
       </a>
     </th>
@@ -33,7 +33,7 @@
       <else>
         <a href="@elements.url@" target="_top" title="Visit">@elements.name@</a>
       </else>
-      <a href="@package_url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@">
+      <a href="@package_url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" target="_top">
         <img src="@package_url@graphics/info.gif" border="0" width="12" height="12" alt="i" title="Information">
       </a>
     </td>

@@ -19,7 +19,7 @@ set package_id [curriculum::conn package_id]
 
 set logged_in_p [ad_conn user_id]
 
-set return_url [ad_conn url]
+set return_url [ad_return_url]
 set return_url_export [export_vars -url return_url]
 
 # Upvar the "elements" multirow datasource for the curriculum bar.
