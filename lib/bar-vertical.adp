@@ -28,10 +28,10 @@
         <img src="/shared/images/checkbox.gif" border="0" width="13" height="13" alt="O" title="Unvisited">
       </else>
       <if @elements.external_p@>
-        <a href="@package_url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&@return_url_export@&position=@position@" target="_top" title="Visit">@elements.name@</a>
+        <a href="@package_url@ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&@return_url_export@&position=@position@" target="_top" title="Visit">@elements.name;noquote@</a>
       </if>
       <else>
-        <a href="@elements.url@" target="_top" title="Visit">@elements.name@</a>
+        <a href="@elements.url@" target="_top" title="Visit">@elements.name;noquote@</a>
       </else>
       <a href="@package_url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" target="_top">
         <img src="@package_url@graphics/info.gif" border="0" width="12" height="12" alt="i" title="Information">

@@ -21,7 +21,7 @@
 <table bgcolor="#cccccc" border="0" cellpadding="2" cellspacing="0" width="100%">
   <tr>
     <td width="25%">
-      <a href="@url@curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Detailed information">@elements.curriculum_name@</a>
+      <a href="@url@curriculum-ave?curriculum_id=@elements.curriculum_id@" title="Detailed information">@elements.curriculum_name;noquote@</a>
     </td>
     <td width="50%">@elements.curriculum_desc;noquote@
       <if @elements.curr_desc_trunc_p@>
@@ -70,7 +70,7 @@
   <if @elements.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td>
       <li>
-        <a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name@</a>
+        <a href="@url@element-ave?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@" title="Detailed information">@elements.element_name;noquote@</a>
       </li>
     </td>
     <td width="50%">@elements.element_desc;noquote@

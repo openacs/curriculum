@@ -30,7 +30,7 @@ foreach { notification_url notification_label notification_title } $notification
 <table bgcolor="#cccccc" border="0" cellpadding="1" cellspacing="0" width="100%">
   <tr>
     <td width="20%">
-      <a href="curriculum-ave?@curriculums.curriculum_id_export@">@curriculums.curriculum_name@</a>
+      <a href="curriculum-ave?@curriculums.curriculum_id_export@">@curriculums.curriculum_name;noquote@</a>
     </td>
     <td width="50%">
       @curriculums.curriculum_desc;noquote@
@@ -70,7 +70,7 @@ foreach { notification_url notification_label notification_title } $notification
   <if @curriculums.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td width="20%">
       <li>
-        <a href="element-ave?@curriculums.curriculum_id_export@&@curriculums.element_id_export@">@curriculums.element_name@</a>
+        <a href="element-ave?@curriculums.curriculum_id_export@&@curriculums.element_id_export@">@curriculums.element_name;noquote@</a>
       </li>
     </td>
     <td width="50%">
