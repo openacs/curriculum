@@ -52,7 +52,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Tem a certeza de que quer eliminar este elemento?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">De volta a %ad_url%%return_url% </msg>
   <msg key="lt_Back_to_where_you_wer">De volta para onde estava</msg>
-  <msg key="lt_Could_not_get_child_p">Não foi possível conseguir o package_id filho</msg>
   <msg key="lt_Create_a_new_curricul">Criar um novo currículo</msg>
   <msg key="lt_Deactivate_this_eleme">Desactivar este elemento</msg>
   <msg key="lt_Delete_this_curriculu">Eliminar este currículo e todos os seus dados</msg>
@@ -60,7 +59,6 @@
   <msg key="lt_deleting_curriculum_c">a eliminar o currículo %curriculum_id% in package_id %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%, parte de %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">Esvaziar cache do elemento</msg>
-  <msg key="lt_Here_is_what_the_data">Eis o que a base de dados disse:</msg>
   <msg key="lt_Installing_curriculum">A instalar filtro do currículo para %url_pattern% in package_id %package_id% </msg>
   <msg key="lt_Name_may_not_be_more_">O nome não pode ter mais do que %length% caracteres.</msg>
   <msg key="lt_No_published_curricul">Currículos não publicados</msg>
@@ -72,7 +70,6 @@
   <msg key="lt_Set_site-wide_prefere">Definir as preferências gerais do site para esta instância do Currículo</msg>
   <msg key="lt_Show_curriculums_in_p">Mostrar os currículos no estado de publicação:</msg>
   <msg key="lt_Stop_displaying_the_c">Parar de mostrar a barra de ferramentas do currículo</msg>
-  <msg key="lt_This_could_be_because">Isto pode ser porque montou mais do que uma instância do pacote Currículo num subsite. O currículo foi desenhado para ser montado uma única vez por cada acs-subsite. Por favor visite o &lt;a href=\&quot;/admin/site-map/\&quot;&gt;Site-Map&lt;/a&gt; e desmonte a instância extra. Contudo, pode ser também um erro no código.  </msg>
   <msg key="lt_This_field_is_for_com">Este campo é para comentar acções no currículo.</msg>
   <msg key="lt_This_text_should_desc">Este texto deve descrever o currículo e o seu propósito.</msg>
   <msg key="lt_This_text_should_desc_1">Este campo deve descrever o elemento e o seu propósito.</msg>

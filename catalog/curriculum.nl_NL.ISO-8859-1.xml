@@ -52,7 +52,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Wil je dit element echt verwijderen?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Terug naar %ad_url%%return_url% </msg>
   <msg key="lt_Back_to_where_you_wer">Terug naar waar je vandaan kwam</msg>
-  <msg key="lt_Could_not_get_child_p">Kon docterpakketidentificatie niet verkrijgen</msg>
   <msg key="lt_Create_a_new_curricul">Maak een nieuw curriculum aan</msg>
   <msg key="lt_Deactivate_this_eleme">Deactiveer dit element</msg>
   <msg key="lt_Delete_this_curriculu">Verwijder dit curriculum en al zijn data</msg>
@@ -60,7 +59,6 @@
   <msg key="lt_deleting_curriculum_c">%curriculum_id% in package_id %package_id% wordt verwijderd</msg>
   <msg key="lt_element_name_part_of_">%element_name%, deel van %curriculum_name% </msg>
   <msg key="lt_Flush_element_cache">Elementcache leegmaken</msg>
-  <msg key="lt_Here_is_what_the_data">Dit is wat de database zei:</msg>
   <msg key="lt_Installing_curriculum">Curriculumfilter toevoegen aan %url_pattern% in package_id %package_id% </msg>
   <msg key="lt_Name_may_not_be_more_">Naam mag niet langer dan %length% tekens lang zijn</msg>
   <msg key="lt_No_published_curricul">Geen gepubliceerde curriculums</msg>
@@ -72,7 +70,6 @@
   <msg key="lt_Set_site-wide_prefere">Stel sitebrede instellingen in voor deze curriculuminstantie</msg>
   <msg key="lt_Show_curriculums_in_p">Toon curriculums in publicatiestaat</msg>
   <msg key="lt_Stop_displaying_the_c">Stop met het weergeven van de curriculumwerkbalk</msg>
-  <msg key="lt_This_could_be_because">Dit komen omdat je meer dan één instantie van het curriculumpakket in een subsite heb gekopppeld. Curriculum is ontworpen voor maximaal 1 koppeling per acs subsite. Breng een bezoek aan de &lt;A href='admin/site-map'&gt;site-map&lt;/A&gt; en ontkoppel de extra instantie. Desondanks kan het ook een bug in de code zijn.</msg>
   <msg key="lt_This_field_is_for_com">De veld is voor opmerkingsacties op het curriculum.</msg>
   <msg key="lt_This_text_should_desc">Deze tekst zou een beschrijving over het curriculum en het doel daarvan moeten geven.</msg>
   <msg key="lt_This_text_should_desc_1">Deze tekst moet het element en het doel daarvan beschrijven.</msg>

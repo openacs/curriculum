@@ -52,7 +52,6 @@
   <msg key="lt_Are_you_sure_you_want_1">هَلْ أنت متأكّد تُريدُ أَنْ تَحْذفَ هذا العنصرِ؟</msg>
   <msg key="lt_Back_to_ad_urlreturn_">عدْ الى %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">عُدْ إلى حيث جِئتَ مِنْ</msg>
-  <msg key="lt_Could_not_get_child_p">لم يكن من الممكن أن نحصل على الطّفل هويّة الرّزمة </msg>
   <msg key="lt_Create_a_new_curricul">إخلقْ منهجاً جديداً</msg>
   <msg key="lt_Deactivate_this_eleme">عطّلْ هذا العنصرِ</msg>
   <msg key="lt_Delete_this_curriculu">إحذفْ هذا المنهجِ وكُلّ بياناته</msg>
@@ -60,7 +59,6 @@
   <msg key="lt_deleting_curriculum_c">حذف المنهج %curriculum_id% في الرزمة _ هوية %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%، جزء من %curriculum_name%</msg>
   <msg key="lt_Flush_element_cache">مخبأ العنصر المتدفّق</msg>
-  <msg key="lt_Here_is_what_the_data">هنا ما قالته قاعدة البيانات:</msg>
   <msg key="lt_Installing_curriculum">تركيب مرشح المنهج لـ %url_pattern% في هوية الرزمة %package_id%</msg>
   <msg key="lt_Name_may_not_be_more_">الاسم قد لا يكون أكثر من %length% حرفاً لمدة طويلة.</msg>
   <msg key="lt_No_published_curricul">لا منهجَ مَنْشُورَ</msg>
@@ -72,7 +70,6 @@
   <msg key="lt_Set_site-wide_prefere">ضِعْ تفضيلاتَ في كافة أنحاءَ موقعَ لهذه حالةِ المنهجِ</msg>
   <msg key="lt_Show_curriculums_in_p">منهجُ عرضِ في نشر الحالةِ:</msg>
   <msg key="lt_Stop_displaying_the_c">توقّفْ عن عَرْض شريط الأدواتِ المنهجِ</msg>
-  <msg key="lt_This_could_be_because">هذا يمكن أن لأن تحمل أكثر من حالة واحدة من رزمة المنهج في موقع ثانوية. المنهج صمّم أن يكون محمل مرة واحدة فقط لكلّ acs-subsite. &lt;a href=\&quot;/admin/site-map/\&quot;&gt;خريطة الموقع&lt;/a&gt; وغير محمل الحالة الإضافية. على أية حال، هو يمكن أن يكون أيضا خطأ في البرنامج.</msg>
   <msg key="lt_This_field_is_for_com">هذا الحقلِ لتَعليق الأعمالِ على المنهجِ.</msg>
   <msg key="lt_This_text_should_desc">هذا النَصِّ يَجِبُ أَنْ يَصفَ المنهجَ وهدفَه.</msg>
   <msg key="lt_This_text_should_desc_1">هذا النَصِّ يَجِبُ أَنْ يَصفَ العنصرَ وهدفَه.</msg>
