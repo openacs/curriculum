@@ -64,6 +64,7 @@ ad_form -name element \
     }
     {description:richtext
 	{label Description}
+	{help_text "This text should describe the element and its purpose."}
 	{html {rows 10 cols 50 wrap soft}}
 	optional
     }
