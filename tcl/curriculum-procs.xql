@@ -6,8 +6,7 @@
             update cu_curriculums
             set    name = :name,
                    description = :description,
-                   desc_format = :desc_format,
-                   owner_id = :owner_id
+                   desc_format = :desc_format
 		 where  curriculum_id = :curriculum_id
         </querytext>
     </fullquery>

@@ -91,7 +91,6 @@ ad_proc -public curriculum::edit {
     {-desc_format "text/plain"}
     {-comment ""}
     {-comment_format "text/html"}
-    -owner_id:required
     -action_id:required
     -array:required
     {-entry_id {}}
@@ -105,7 +104,6 @@ ad_proc -public curriculum::edit {
     @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
     @param comment        Comment on the action taken on the curriculum.
     @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param owner_id       The new owner (party_id).
 
     @return Nothing.
 
@@ -360,9 +358,9 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name "Reject"
                     pretty_past_tense "Rejected"
                     new_state "rejected"
-                    allowed_roles { publisher }
+                    assigned_role { publisher }
+                    enabled_states { authored edited }
                     privileges { write }
-                    always_enabled_p t
                     edit_fields { 
 			       comment
 		         }

@@ -154,7 +154,7 @@ if { $write_p } {
 	{comment:richtext
 	    {mode $element_mode}
 	    {label "Workflow Log"}
-	    {help_text "Comment your action"}
+	    {help_text "Comments on workflow actions."}
 	    {html {rows 5 cols 50 wrap soft}}
 	    optional
 	}
@@ -259,7 +259,6 @@ ad_form -extend -name curriculum -edit_request {
 	-desc_format [template::util::richtext::get_property format $description] \
 	-comment [template::util::richtext::get_property contents $comment] \
 	-comment_format [template::util::richtext::get_property format $comment] \
-	-owner_id $owner_id \
 	-action_id $action_id \
 	-array curriculum_array
 
