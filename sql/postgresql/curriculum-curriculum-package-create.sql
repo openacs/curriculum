@@ -24,13 +24,13 @@ declare
     p_name           alias for $2;
     p_description    alias for $3;  -- default null
     p_desc_format    alias for $4;
-    p_package_id     alias for $6;
-    p_sort_key       alias for $7;  -- default null
-    p_object_type    alias for $8;  -- default ''cu_curriculum''
-    p_creation_date  alias for $9;  -- default current_timestamp
-    p_creation_user  alias for $10; -- default null
-    p_creation_ip    alias for $11; -- default null
-    p_context_id     alias for $12; -- default null
+    p_package_id     alias for $5;
+    p_sort_key       alias for $6;  -- default null
+    p_object_type    alias for $7;  -- default ''cu_curriculum''
+    p_creation_date  alias for $8;  -- default current_timestamp
+    p_creation_user  alias for $9;  -- default null
+    p_creation_ip    alias for $10; -- default null
+    p_context_id     alias for $11; -- default null
     v_curriculum_id cu_curriculums.curriculum_id%TYPE;
     v_sort_key cu_curriculums.sort_key%TYPE;
 begin
