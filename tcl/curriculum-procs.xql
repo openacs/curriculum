@@ -6,17 +6,8 @@
             update cu_curriculums
             set    name = :name,
                    description = :description,
-                   desc_format = :desc_format,
-                   owner_id = :owner_id
+                   desc_format = :desc_format
 		 where  curriculum_id = :curriculum_id
-        </querytext>
-    </fullquery>
-
-    <fullquery name="curriculum::change_owner.update_curriculum_owner">
-        <querytext>
-	    update cu_curriculums
-	    set    owner_id = :owner_id
-	    where  curriculum_id = :curriculum_id
         </querytext>
     </fullquery>
 
@@ -28,11 +19,42 @@
         </querytext>
     </fullquery>
 
-    <fullquery name="curriculum::owner::get_assignees.select_curriculum_owner">
+    <fullquery name="curriculum::default_editor::get_assignees.select_default_editor">
         <querytext>
-	    select owner_id
-	    from   cu_curriculums
-	    where  curriculum_id = :object_id
+	    select default_editor
+	    from   cu_default_assignees
+	    where  package_id = :package_id
+        </querytext>
+    </fullquery>
+
+    <fullquery name="curriculum::default_publisher::get_assignees.select_default_publisher">
+        <querytext>
+	    select default_publisher
+	    from   cu_default_assignees
+	    where  package_id = :package_id
+        </querytext>
+    </fullquery>
+
+    <fullquery name="curriculum::users_get_options.users">
+        <querytext>
+
+        select first_names || ' ' || last_name || ' (' || email || ')'  as name, 
+               user_id
+        from   cc_users
+        where  user_id in (
+                      select default_editor
+                      from   cu_default_assignees
+                      where  package_id = :package_id
+                      
+                      union
+                      
+                      select default_publisher
+                      from   cu_default_assignees
+                      where  package_id = :package_id
+                )
+        or     user_id = :user_id
+        order  by name
+
         </querytext>
     </fullquery>
 

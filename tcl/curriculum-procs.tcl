@@ -12,7 +12,8 @@ ad_library {
 namespace eval curriculum {}
 
 # Service contract implementation alias namespaces (phew, that was long!).
-namespace eval curriculum::owner {}
+namespace eval curriculum::default_editor {}
+namespace eval curriculum::default_publisher {}
 namespace eval curriculum::notification_info {}
 namespace eval curriculum::flush_elements {}
 
@@ -29,7 +30,6 @@ ad_proc -public curriculum::new {
     {-desc_format "text/html"}
     {-comment ""}
     {-comment_format "text/html"}
-    {-owner_id ""}
     -package_id:required
     {-sort_key ""}
 } {
@@ -42,7 +42,6 @@ ad_proc -public curriculum::new {
     @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
     @param comment        Comment on the action taken on the curriculum.
     @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param owner_id       The party-id of the party - user or group - that is responsible for this curriculum. Defaults to the creating user.
     @param package_id     Package-id makes the Curriculum package subsite-aware. Defaults to [ad_conn package_id].
     @param sort_key       The relative sort order of the curriculums in a package instance.
 
@@ -51,14 +50,9 @@ ad_proc -public curriculum::new {
     @author Ola Hansson (ola@polyxena.net)
 
 } {
-    # If no owner_id is provided, we set it to the currently logged-in user.
-    if [empty_string_p $owner_id] {
-	set owner_id [ad_conn user_id]
-    }
-
     # Prepare the variables for instantiation.
     set extra_vars [ns_set create]
-    oacs_util::vars_to_ns_set -ns_set $extra_vars -var_list {curriculum_id name description desc_format owner_id package_id sort_key}
+    oacs_util::vars_to_ns_set -ns_set $extra_vars -var_list {curriculum_id name description desc_format package_id sort_key}
     
     db_transaction {
 	
@@ -85,7 +79,6 @@ ad_proc -public curriculum::edit {
     {-desc_format "text/html"}
     {-comment ""}
     {-comment_format "text/html"}
-    -owner_id:required
     -action_id:required
     -array:required
     {-entry_id {}}
@@ -99,7 +92,6 @@ ad_proc -public curriculum::edit {
     @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
     @param comment        Comment on the action taken on the curriculum.
     @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
-    @param owner_id       The party-id of the party - user or group - that is responsible for this curriculum.
 
     @return curriculum_id (just for convenience).
 
@@ -142,25 +134,6 @@ ad_proc -public curriculum::edit {
 }
 
 
-ad_proc -public curriculum::change_owner {
-    -curriculum_id:required
-    -owner_id:required
-} {
-
-    Change the owner of a curriculum.
-
-    @param curriculum_id The object-id of the curriculum which should change owner.
-    @param owner_id      Party-id of the new owner.
-
-    @return Nothing.
-
-    @author Ola Hansson (ola@polyxena.net)
-
-} {
-    db_dml update_curriculum_owner {*SQL*}
-}
-
-
 ad_proc -public curriculum::get {
     -curriculum_id:required
     -array:required
@@ -171,7 +144,7 @@ ad_proc -public curriculum::get {
     array (using upvar) in the callers scope. The
     array will contain the keys:
 
-    <p>curriculum_id, name, description, desc_format, owner_id, package_id, sort_key</p>
+    <p>curriculum_id, name, description, desc_format, package_id, sort_key</p>
     
     @param curriculum_id The id of the curriculum to retrieve information about.
     @param array The name of the array in the callers scope where the information will
@@ -295,6 +268,7 @@ ad_proc -private curriculum::workflow_create {} {
                 editor {
                     pretty_name \#curriculum.Editor\#
                     callbacks {
+                        curriculum.Role_DefaultAssignees_Editor
                         workflow.Role_PickList_CurrentAssignees
                         workflow.Role_AssigneeSubquery_RegisteredUsers
                     }
@@ -302,6 +276,7 @@ ad_proc -private curriculum::workflow_create {} {
                 publisher {
                     pretty_name \#curriculum.Publisher\#
                     callbacks {
+                        curriculum.Role_DefaultAssignees_Publisher
                         workflow.Role_PickList_CurrentAssignees
                         workflow.Role_AssigneeSubquery_RegisteredUsers
                     }
@@ -350,6 +325,7 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_past_tense \#curriculum.Edited\#
                     new_state edited
                     allowed_roles { author editor publisher }
+		    assigned_states { authored }
                     privileges { write }
                     always_enabled_p t
                     edit_fields { 
@@ -376,7 +352,7 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name \#curriculum.Publish\#
                     pretty_past_tense \#curriculum.Published\#
                     assigned_role publisher
-                    enabled_states { authored edited archived }
+                    enabled_states { authored rejected archived }
                     assigned_states { edited }
                     new_state published
                     privileges { admin }
@@ -410,7 +386,6 @@ ad_proc -private curriculum::workflow_create {} {
                     edit_fields { 
 			role_editor
 			role_publisher
-			owner_id
 			comment
 		    }
                 }
@@ -497,22 +472,62 @@ ad_proc -private curriculum::instance_workflow_delete {
 
 ####
 #
-# Curriculum owner.
+# Curriculum Default Editor.
 #
 ####
 
-
-ad_proc -private curriculum::owner::pretty_name {} {
-    return "[_ curriculum.Curriculum_owner]"
+ad_proc -private curriculum::default_editor::pretty_name {} {
+    return "[_ curriculum.Editor]"
 }
 
 
-ad_proc -private curriculum::owner::get_assignees {
+ad_proc -private curriculum::default_editor::get_assignees {
     case_id
     object_id
     role_id
 } {
-    return [db_string select_curriculum_owner {*SQL*} -default {}]
+    set package_id [curriculum::conn package_id]
+    return [db_string select_default_editor {*SQL*} -default {}]
+}
+
+
+####
+#
+# Curriculum Default Publisher.
+#
+####
+
+ad_proc -private curriculum::default_publisher::pretty_name {} {
+    return "[_ curriculum.Publisher]"
+}
+
+
+ad_proc -private curriculum::default_publisher::get_assignees {
+    case_id
+    object_id
+    role_id
+} {
+    set package_id [curriculum::conn package_id]
+    return [db_string select_default_publisher {*SQL*} -default {}]
+}
+
+
+ad_proc -private curriculum::users_get_options {
+    -package_id
+} {
+    if { ![info exists package_id] } {
+        set package_id [conn package_id]
+    }
+    
+    set user_id [ad_conn user_id]
+    
+    # This picks out users who are already assigned as editors or publishers in this curriculum instance.    
+    set users_list [db_list_of_lists users {*SQL*}]
+    
+    set users_list [concat { { "Unassigned" "" } } $users_list]
+    lappend users_list { "Search..." ":search:" }
+    
+    return $users_list
 }
 
 
@@ -555,31 +570,31 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     case_id
     object_id
 } {
-
+    
     curriculum::get -curriculum_id $object_id -array curriculum
-
+    
     set url "[ad_url][apm_package_url_from_id $curriculum(package_id)]curriculum-ave?[export_vars { { curriculum_id $curriculum(curriculum_id) } }]"
-
+    
     set notification_subject_tag "[_ curriculum.Curriculum_1]"
-
+    
     set one_line "$curriculum(name)"
 
     # Build up data structures with the form labels and values
     # (Note, this is something that the metadata system should be able to do for us)
-
+    
     array set label [list \
 			 name "[_ curriculum.Name]" \
 			 status "[_ curriculum.Status]"]
-
+    
     array set value [list \
 			 name "$curriculum(name)" \
 			 status "$curriculum(pretty_state)"]
-
+    
     set fields {
         name
         status
     }
-
+    
     # Remove fields that should be hidden in this state
     foreach field $curriculum(hide_fields) {
         set index [lsearch -exact $fields $field]
@@ -593,7 +608,7 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     foreach field $fields {
         lappend details_list $label($field) $value($field)
     }
-
+    
     return [list $url $one_line $details_list $notification_subject_tag]
 }
 
@@ -610,15 +625,15 @@ ad_proc -public curriculum::get_watch_link {
     # Get the type id
     set type "workflow_case"
     set type_id [notification::type::get_type_id -short_name $type]
-
+    
     # Check if subscribed
     set request_id [notification::request::get_request_id \
                         -type_id $type_id \
                         -object_id $curriculum_id \
                         -user_id $user_id]
-
+    
     set subscribed_p [expr ![empty_string_p $request_id]]
-        
+    
     if { !$subscribed_p } {
         set url [notification::display::subscribe_url \
                      -type $type \
@@ -644,8 +659,8 @@ ad_proc -private curriculum::security_violation {
 } {
     ns_log Notice "[_ curriculum.lt_user_id_doesnt_have_p]"
     ad_return_forbidden \
-            "[_ curriculum.Security_Violation]" \
-            "<blockquote>
+	"[_ curriculum.Security_Violation]" \
+	"<blockquote>
     [_ curriculum.lt_You_dont_have_permiss]
     </blockquote>"
     ad_script_abort

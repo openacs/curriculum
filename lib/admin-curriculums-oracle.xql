@@ -46,7 +46,6 @@
              workflow_fsm_states st 
     where    cc.curriculum_id = ce.curriculum_id(+)
     and      cc.package_id = :package_id
-    and      author.user_id = cc.owner_id
     and      cfsm.case_id = cas.case_id
     and      st.state_id = cfsm.current_state
     and      cas.workflow_id = :workflow_id

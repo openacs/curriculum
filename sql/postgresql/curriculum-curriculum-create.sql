@@ -6,10 +6,10 @@
 
 
 create table cu_curriculums (
-    curriculum_id		integer
+    curriculum_id           integer
                             constraint cu_curriculums_curriculum_id_fk
                             references acs_objects (object_id)
-					on delete cascade
+                            on delete cascade
                             constraint cu_curriculums_curriculum_id_pk
                             primary key,
     name                    varchar(200)
@@ -17,18 +17,12 @@ create table cu_curriculums (
                             not null,
     description             text,
     desc_format             varchar(200),
-    owner_id                integer
-                            constraint cu_curriculums_owner_id_nn
-                            not null
-				      -- owner can be any party, e.g., a group
-					constraint cu_curriculums_owner_id_fk
-					references parties (party_id),
     package_id              integer
                             constraint cu_curriculums_package_id_nn
                             not null
-					constraint cu_curriculums_package_id_fk
-					references apm_packages (package_id)
-					on delete cascade,
+                            constraint cu_curriculums_package_id_fk
+                            references apm_packages (package_id)
+                            on delete cascade,
     sort_key                integer
                             constraint cu_curriculums_sort_key_nn
                             not null

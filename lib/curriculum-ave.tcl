@@ -16,7 +16,6 @@ ad_page_contract {
 
 set package_id [curriculum::conn package_id]
 set user_id [ad_conn user_id]
-set owners_list [list]
 set actions [list]
 set element_mode {}
 set desc_help_text "[_ curriculum.lt_This_text_should_desc]"
@@ -33,8 +32,6 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     set write_p 1
 
     set title "[_ curriculum.Create_Curriculum]"
-
-    lappend owners_list [list [person::name -person_id $user_id] "$user_id"]
 
 } else {
 
@@ -112,15 +109,9 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 
     }
     
-    lappend owners_list [list [person::name -person_id $curriculum_array(owner_id)] $curriculum_array(owner_id)]
-
 }
 
 set context [list $title]
-
-# Curriculum "owner" select box. 
-lappend owners_list [list "[_ curriculum.Search]" ":search:"]
-
 
 ####
 #
@@ -201,19 +192,6 @@ if { !$new_p && $write_p } {
     
 }
 
-# More fixed form elements
-# FIXME. Datatype "search" does not appear to work with ad_form very well.
-# Do we need an owner anyway when we're using workflow roles?
-ad_form -extend -name curriculum -form {
-    {owner_id:search,optional
-	{mode $element_mode}
-	{result_datatype integer}
-	{label "[_ curriculum.Owner]"}
-	{options $owners_list}  
-	{search_query {[db_map user_search]}}
-    }
-}
-
 ####
 #
 # Done defining the form elements.
@@ -246,7 +224,6 @@ ad_form -extend -name curriculum -edit_request {
 	-desc_format [template::util::richtext::get_property format $description] \
 	-comment [template::util::richtext::get_property contents $comment] \
 	-comment_format [template::util::richtext::get_property format $comment] \
-	-owner_id $owner_id \
 	-package_id $package_id
     
 } -edit_data {
@@ -258,7 +235,6 @@ ad_form -extend -name curriculum -edit_request {
 	-desc_format [template::util::richtext::get_property format $description] \
 	-comment [template::util::richtext::get_property contents $comment] \
 	-comment_format [template::util::richtext::get_property format $comment] \
-	-owner_id $owner_id \
 	-action_id $action_id \
 	-array curriculum_array
 

@@ -18,7 +18,6 @@ as
 -- to 32K that is the explicit type we use here.
         description in varchar default null,
         desc_format in cu_curriculums.desc_format%TYPE,
-        owner_id in cu_curriculums.owner_id%TYPE,
         package_id in cu_curriculums.package_id%TYPE,
         sort_key in cu_curriculums.sort_key%TYPE default null,
         creation_date in acs_objects.creation_date%TYPE default sysdate,
@@ -49,7 +48,6 @@ as
         name in cu_curriculums.name%TYPE,
         description in varchar default null,
         desc_format in cu_curriculums.desc_format%TYPE,
-        owner_id in cu_curriculums.owner_id%TYPE,
         package_id in cu_curriculums.package_id%TYPE,
         sort_key in cu_curriculums.sort_key%TYPE default null,
         creation_date in acs_objects.creation_date%TYPE default sysdate,
@@ -80,9 +78,9 @@ as
         end if;
         
 	  insert into cu_curriculums
-	  (curriculum_id, name, description, desc_format, owner_id, package_id, sort_key)
+	  (curriculum_id, name, description, desc_format, package_id, sort_key)
    	  values
-	  (v_curriculum_id, name, description, desc_format, owner_id, package_id, v_sort_key);
+	  (v_curriculum_id, name, description, desc_format, package_id, v_sort_key);
 
         return v_curriculum_id;
     end new;

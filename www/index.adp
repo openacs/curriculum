@@ -4,7 +4,7 @@
 
 <if @admin_p@>
 <p align="right">
-  <a href="admin/">#curriculum.lt_Administer_Curriculum#</a>
+  <a href="admin/" class="button">#curriculum.lt_Administer_Curriculum#</a>
 </p>
 </if>
 

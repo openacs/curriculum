@@ -685,24 +685,39 @@ ad_proc -private curriculum::curriculum_filter_internal {
 	array set info $list
 
 	# Is the user visiting this curriculum element url?
-	if { [string equal $current_url [ns_urldecode $info(url)]] } {
+	set element_url [ns_urldecode $info(url)]
 
-	    # See if this element isn't already in user's cookie.
-	    set element_id $info(element_id)
+	if { ![string equal $current_url $element_url] } {
 
-	    if { [lsearch -exact $cookie $element_id] == -1 } {
-		set cookie [curriculum_progress_cookie_value -package_id $package_id $cookie $element_id]
-		ad_set_cookie -replace t $cookie_name $cookie
-
-		# If the user is logged in, we'll also want to record
-		# the additional element in the database.
-
-		if { [set user_id [ad_conn user_id]] } {
-		    # Insert, but only if there isn't a row already there.
-		    set curriculum_id $info(curriculum_id)
-		    db_dml map_insert {*SQL*}
-		}			
+	    # We're doing this since given a dir "/foo/", both "/foo/" and "/foo" will take 
+	    # us there, and both ways of getting there should result in a checked box.
+	    
+	    # Is the visited URL a "directory"?
+	    if { ![string equal "/" [string range $current_url end end]] } {
+		continue
 	    }
-	}	    
-    }
+	    
+	    if { ![string equal $element_url [string range $current_url 0 end-1]] } {
+		continue
+	    }
+	}
+	
+	
+	# See if this element isn't already in user's cookie.
+	set element_id $info(element_id)
+	
+	if { [lsearch -exact $cookie $element_id] == -1 } {
+	    set cookie [curriculum_progress_cookie_value -package_id $package_id $cookie $element_id]
+	    ad_set_cookie -replace t $cookie_name $cookie
+	    
+	    # If the user is logged in, we'll also want to record
+	    # the additional element in the database.
+	    
+	    if { [set user_id [ad_conn user_id]] } {
+		# Insert, but only if there isn't a row already there.
+		set curriculum_id $info(curriculum_id)
+		db_dml map_insert {*SQL*}
+	    }			
+	}
+    }	    
 }

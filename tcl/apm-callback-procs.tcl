@@ -44,6 +44,9 @@ ad_proc -private curriculum::apm::after_instantiate {
     Package instantiation callback proc.
 } {
     curriculum::instance_workflow_create -package_id $package_id
+    
+    set user_id [ad_conn user_id]
+    db_dml insert_default_assignees {*SQL*}
 }
 
 
@@ -58,6 +61,8 @@ ad_proc -private curriculum::apm::before_uninstantiate {
 	curriculum::delete_instance -package_id $package_id
 
 	curriculum::instance_workflow_delete -package_id $package_id
+
+	db_dml delete_default_assignees {*SQL*}
     }
 }
 
@@ -71,7 +76,8 @@ ad_proc -private curriculum::apm::before_uninstantiate {
 
 ad_proc -private curriculum::apm::register_implementations {} {
     db_transaction {
-        curriculum::apm::register_curriculum_owner_impl
+	curriculum::apm::register_curriculum_default_editor_impl
+	curriculum::apm::register_curriculum_default_publisher_impl
         curriculum::apm::register_curriculum_notification_info_impl
 	curriculum::apm::register_flush_elements_impl
     }
@@ -83,7 +89,11 @@ ad_proc -private curriculum::apm::unregister_implementations {} {
 	
         acs_sc::impl::delete \
 	    -contract_name [workflow::service_contract::role_default_assignees]  \
-	    -impl_name "CurriculumOwner"
+	    -impl_name "Role_DefaultAssignees_Editor"
+	
+        acs_sc::impl::delete \
+	    -contract_name [workflow::service_contract::role_default_assignees]  \
+	    -impl_name "Role_DefaultAssignees_Publisher"
 	
         acs_sc::impl::delete \
 	    -contract_name [workflow::service_contract::notification_info] \
@@ -97,14 +107,32 @@ ad_proc -private curriculum::apm::unregister_implementations {} {
 }
 
 
-ad_proc -private curriculum::apm::register_curriculum_owner_impl {} {
+ad_proc -private curriculum::apm::register_curriculum_default_editor_impl {} {
 
     set spec {
-        name "CurriculumOwner"
+        name "Role_DefaultAssignees_Editor"
         aliases {
             GetObjectType curriculum::object_type
-            GetPrettyName curriculum::owner::pretty_name
-            GetAssignees  curriculum::owner::get_assignees
+            GetPrettyName curriculum::default_editor::pretty_name
+            GetAssignees  curriculum::default_editor::get_assignees
+        }
+    }
+    
+    lappend spec contract_name [workflow::service_contract::role_default_assignees]
+    lappend spec owner [curriculum::package_key]
+    
+    acs_sc::impl::new_from_spec -spec $spec
+}
+
+        
+ad_proc -private curriculum::apm::register_curriculum_default_publisher_impl {} {
+
+    set spec {
+        name "Role_DefaultAssignees_Publisher"
+        aliases {
+            GetObjectType curriculum::object_type
+            GetPrettyName curriculum::default_publisher::pretty_name
+            GetAssignees  curriculum::default_publisher::get_assignees
         }
     }
     

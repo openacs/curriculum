@@ -86,3 +86,19 @@ Tracks the curriculums the user does NOT want in his/her personal curriculum bar
 comment on column cu_user_curriculum_map.package_id is '
 We use this column mainly to be able to add all the curriculums in a package instance to the user''s personalized bar (delete from cu_user_curriculum_map where user_id = :user_id and package_id = :package_id).
 ';
+
+
+create table cu_default_assignees (
+    package_id        integer
+                      constraint cu_assignees_package_id_fk
+                      references apm_packages (package_id)
+                      on delete cascade
+                      constraint cu_assignees_package_id_pk
+                      primary key,
+    default_editor    integer
+                      constraint cu_assignees_editor_fk
+                      references parties (party_id),
+    default_publisher integer
+                      constraint cu_assignees_publisher_fk
+                      references parties (party_id)
+);

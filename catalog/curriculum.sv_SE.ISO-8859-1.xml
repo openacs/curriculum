@@ -24,6 +24,8 @@
   <msg key="Curriculum_1">Kursplan</msg>
   <msg key="Curriculum_info">Kursplansinformation</msg>
   <msg key="Curriculum_owner">Kursplanens ägare</msg>
+  <msg key="Default_Assignees">Huvudansvariga</msg>
+  <msg key="Default_assignees_help">&lt;p&gt;&lt;b&gt;Hjälp:&lt;/b&gt;&lt;/p&gt; &lt;p&gt;Varje kursplan som skapas är underställd ett publicistiskt arbetsflöde, och det är användarna som tilldelats redigerar- och publicistrollerna som ansvarar för dess kvalitet. Redigeraren förväntas granska kursplanen och därefter är det publicistens uppgift att slutligen avgöra ifall kursplanen är färdig för publicering eller inte.&lt;/p&gt; &lt;p&gt;Det är när som helst möjligt att tilldela olika användare dessa roller för varje enskild kurplan. Det kan ändå vara en bra idé att ha användare som från början är tilldelade huvudansvar för alla kursplaner som läggs till denna Curriculum-instans, så att ingen kursplan lämnas oövervakad. Initialt är den användare som skapade denna instans tilldelad både rollen som redigerare och rollen som publicist.&lt;/p&gt;</msg>
   <msg key="Delete">Radera</msg>
   <msg key="Description">Beskrivning</msg>
   <msg key="Detailed_information">Detaljerad information</msg>
@@ -54,6 +56,7 @@
   <msg key="lt_Back_to_where_you_wer">Tillbaka dit du kom ifrån</msg>
   <msg key="lt_Create_a_new_curricul">Lägg upp en ny kursplan</msg>
   <msg key="lt_Deactivate_this_eleme">Avaktivera detta element</msg>
+  <msg key="lt_Default_assignees_for">Huvudansvariga för redigering och publicering</msg>
   <msg key="lt_Delete_this_curriculu">Radera denna kursplan och dess samtliga element</msg>
   <msg key="lt_Delete_this_element_a">Radera detta element och all dess data</msg>
   <msg key="lt_deleting_curriculum_c">raderar kursplan %curriculum_id% i package_id %package_id%</msg>

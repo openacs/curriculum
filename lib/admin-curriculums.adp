@@ -1,15 +1,13 @@
 <p>
-  [
-  <a href="/shared/parameters?@export_vars@" title="#curriculum.lt_Set_site-wide_prefere#">#curriculum.Package_parameters#</a>
-  |
-  <a href="/permissions/one?object%5fid=@package_id@" title="#curriculum.lt_Administer_user_privi#">#curriculum.Package_permissions#</a>
-  |
-  <a href="../doc/user.html#TEACHER" title="#curriculum.lt_Read_the_user_manual_#">#curriculum.Help#</a>
-  ]
+  <a href="admin-roles" class="button" title="#curriculum.lt_Default_assignees_for#">#curriculum.Default_Assignees#</a>
+  <a href="/shared/parameters?@export_vars@" class="button" title="#curriculum.lt_Set_site-wide_prefere#">#curriculum.Package_parameters#</a>
+  <a href="/permissions/one?object%5fid=@package_id@" class="button" title="#curriculum.lt_Administer_user_privi#">#curriculum.Package_permissions#</a>
+  <a href="../doc/user.html#TEACHER" class="button" title="#curriculum.lt_Read_the_user_manual_#">#curriculum.Help#</a>
 </p>
+
 <if @curriculums:rowcount@ ne 0>
-<table border="0" width="100%">
-  <tr bgcolor="#cccccc" border="0" cellpadding="0" cellspacing="0" width="100%">
+<table border="0" cellpadding="0" cellspacing="1" width="100%">
+  <tr bgcolor="#cccccc">
     <th width="20%">#curriculum.Name#</th>
     <th width="50%">#curriculum.Description#</th>
     <th width="10%">#curriculum.State#</th>
@@ -42,11 +40,10 @@ foreach { notification_url notification_label notification_title } $notification
       @curriculums.pretty_state@
     </td>
     <td width="15%">
-      <a href="@notification_url@" title="@notification_title@">@notification_label@</a>
-      |
-      <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('#curriculum.lt_Are_you_sure_you_want#');" title="#curriculum.lt_Delete_this_curriculu#">#curriculum.Delete#</a>
+      <a href="@notification_url@" class="button" title="@notification_title@">@notification_label@</a>
+      <a href="curriculum-delete?@curriculums.curriculum_id_export@" class="button" onclick="return confirm('#curriculum.lt_Are_you_sure_you_want#');" title="#curriculum.lt_Delete_this_curriculu#">#curriculum.Delete#</a>
     </td>
-    <td width="5%">
+    <td align="center" width="5%">
     <if @curriculums.rownum@ gt 1>
       <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=up" alt="^" title="#curriculum.Move_up#">
         <img src="../graphics/up.gif" border="0" width="15" height="15"></a>
@@ -65,7 +62,7 @@ foreach { notification_url notification_label notification_title } $notification
 
   <if @curriculums.element_id@ not nil>
   <group column="curriculum_id">
-  <if @curriculums.groupnum@ even><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
+  <if @curriculums.groupnum@ even><tr bgcolor="#dbebf8"></if><else><tr bgcolor="#eeeeee"></else>
     <td width="20%">
       &nbsp;
       &raquo;
@@ -83,18 +80,17 @@ foreach { notification_url notification_label notification_title } $notification
       #curriculum.Enabled#
     </td>
     <td width="15%">
-      <a href="element-disable?@curriculums.element_id_export@" title="#curriculum.lt_Deactivate_this_eleme#">#curriculum.Disable#</a>
+      <a href="element-disable?@curriculums.element_id_export@" class="button" title="#curriculum.lt_Deactivate_this_eleme#">#curriculum.Disable#</a>
     </if>
     <else>
       #curriculum.Disabled#
     </td>
     <td width="15%">
-      <a href="element-enable?@curriculums.element_id_export@" title="#curriculum.lt_Activate_this_element#">#curriculum.Enable#</a>
-      |
-      <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('#curriculum.lt_Are_you_sure_you_want_1#');" title="#curriculum.lt_Delete_this_element_a#">#curriculum.Delete#</a>
+      <a href="element-enable?@curriculums.element_id_export@" class="button" title="#curriculum.lt_Activate_this_element#">#curriculum.Enable#</a>
+      <a href="element-delete?@curriculums.element_id_export@" class="button" onclick="return confirm('#curriculum.lt_Are_you_sure_you_want_1#');" title="#curriculum.lt_Delete_this_element_a#">#curriculum.Delete#</a>
     </else>
     </td>
-    <td width="20%">
+    <td align="center" width="20%">
     <if @curriculums.groupnum@ gt 1>
       <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=up" alt="^" title="#curriculum.Move_up#">
         <img src="../graphics/up.gif" border="0" width="15" height="15"></a>
@@ -109,19 +105,15 @@ foreach { notification_url notification_label notification_title } $notification
   </group>
   </if>
   <else>
-  <tr bgcolor="#eeeedd">
+  <tr bgcolor="#eeeeee">
     <td colspan="5">
-      <li>
-        <i>#curriculum.No_elements#</i>
-      </li>
+      <i>#curriculum.No_elements#</i>
     </td>
   </tr>
   </else>
   <tr>
-    <td bgcolor="beige" colspan="5">
-      <li type="square">
-        <a href="element-ave?@curriculums.curriculum_id_export@" title="#curriculum.Create_a_new_element#">#curriculum.Add_an_element#</a>
-      </li>
+    <td bgcolor="#eeeedd" colspan="5">
+      <a href="element-ave?@curriculums.curriculum_id_export@" class="button" title="#curriculum.Create_a_new_element#">#curriculum.Add_an_element#</a>
     </td>
   </tr>
 </table>
@@ -131,14 +123,10 @@ foreach { notification_url notification_label notification_title } $notification
 </multiple>
 </if>
 <else>
-<li>
   <i>#curriculum.No_curriculums#</i>
-</li>
 <br />
 </else>
-<li type="square">
-  <a href="curriculum-ave" title="#curriculum.lt_Create_a_new_curricul#">#curriculum.Add_a_curriculum#</a>
-</li>
+  <a href="curriculum-ave" class="button" title="#curriculum.lt_Create_a_new_curricul#">#curriculum.Add_a_curriculum#</a>
 <br />
 </table>
 

@@ -4,14 +4,13 @@
 -- @creation-date 2003-05-23
 -- @cvs-id $Id$
 
-select define_function_args('cu_curriculum__new','curriculum_id,name,description,desc_format,owner_id,package_id,sort_key,object_type;cu_curriculum,creation_date,creation_user,creation_ip,context_id');
+select define_function_args('cu_curriculum__new','curriculum_id,name,description,desc_format,package_id,sort_key,object_type;cu_curriculum,creation_date,creation_user,creation_ip,context_id');
 
 create or replace function cu_curriculum__new (
     integer,     -- curriculum_id
     varchar,     -- name
     text,        -- description
     varchar,     -- desc_format
-    integer,     -- owner_id
     integer,     -- package_id
     integer,     -- sort_key
     varchar,     -- object_type
@@ -25,7 +24,6 @@ declare
     p_name           alias for $2;
     p_description    alias for $3;  -- default null
     p_desc_format    alias for $4;
-    p_owner_id       alias for $5;
     p_package_id     alias for $6;
     p_sort_key       alias for $7;  -- default null
     p_object_type    alias for $8;  -- default ''cu_curriculum''
@@ -55,9 +53,9 @@ begin
     end if;
  
     insert into cu_curriculums
-        (curriculum_id, name, description, desc_format, owner_id, package_id, sort_key)
+        (curriculum_id, name, description, desc_format, package_id, sort_key)
     values
-        (v_curriculum_id, p_name, p_description, p_desc_format, p_owner_id, p_package_id, v_sort_key);
+        (v_curriculum_id, p_name, p_description, p_desc_format, p_package_id, v_sort_key);
 
     raise NOTICE ''Adding curriculum - %'',p_name;
 
