@@ -9,6 +9,8 @@
   <msg key="Any">Alla</msg>
   <msg key="Archive">Arkivera</msg>
   <msg key="Archived">Arkiverad</msg>
+  <msg key="Assign">Tilldela</msg>
+  <msg key="Assigned">Tilldelad</msg>
   <msg key="Author">Upphovsman</msg>
   <msg key="Comment">Kommentera</msg>
   <msg key="Commented">Kommenterad</msg>
@@ -38,7 +40,7 @@
   <msg key="Help">Hjälp</msg>
   <msg key="Information">Information</msg>
   <msg key="lt_A_leading_http_indica">Ett inledande &quot;http://&quot; betyder att URL:en är extern.</msg>
-  <msg key="lt_action_pretty_name_by">%action_pretty_name% av %user_name%:</msg>
+  <msg key="lt_action_pretty_past_te">%action_pretty_past_tense% av %user_name%:</msg>
   <msg key="lt_Activate_this_element">Aktivera detta element</msg>
   <msg key="lt_Add_resolution_code_t">Lägg till upplösningskod till loggtiteln</msg>
   <msg key="lt_Add_the_dropped_curri">Lägg till den avbrutna kursplanen till panelen</msg>
@@ -51,7 +53,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Är du säker på att du vill radera detta element?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Tillbaka till %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Tillbaka dit du kom ifrån</msg>
-  <msg key="lt_Capture_resolution_co">Lägg in upplösningskod i case activity-loggen</msg>
   <msg key="lt_Could_not_get_child_p">Kunde inte hitta child package_id</msg>
   <msg key="lt_Create_a_new_curricul">Lägg upp en ny kursplan</msg>
   <msg key="lt_Deactivate_this_eleme">Avaktivera detta element</msg>
@@ -59,6 +60,7 @@
   <msg key="lt_Delete_this_element_a">Radera detta element och all dess data</msg>
   <msg key="lt_deleting_curriculum_c">raderar kursplan %curriculum_id% i package_id %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%, del av %curriculum_name%</msg>
+  <msg key="lt_Flush_element_cache">Flusha element-cachen</msg>
   <msg key="lt_Here_is_what_the_data">Det här är vad databasen meddelade:</msg>
   <msg key="lt_Im_done_now_update_th">Jag är klar, uppdatera alla användares paneler</msg>
   <msg key="lt_Installing_curriculum">installerar filter för %url_pattern% i package_id %package_id%</msg>
@@ -79,7 +81,6 @@
   <msg key="lt_Uncheck_the_visited_e">Avmarkera de besökta elementen i samtliga kursplaner</msg>
   <msg key="lt_Uncheck_the_visited_e_1">Avmarkera de besökta elementen</msg>
   <msg key="lt_Unsubscribe_to_notifi">Säg upp fortsatta notifieringar om åtgärder på denna kursplan</msg>
-  <msg key="lt_Update_the_toolbar_fo">Uppdatera kursplanspanelen för samtliga användare (använd sparsamt)</msg>
   <msg key="lt_URL_may_not_be_more_t">URL:en får inte vara längre än %length% tecken lång.</msg>
   <msg key="lt_user_id_doesnt_have_p">%user_id% saknar rättighet att '%action%' curriculum %curriculum_id%</msg>
   <msg key="lt_Visit_this_element_ag">Besök detta element igen</msg>

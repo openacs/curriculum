@@ -10,10 +10,11 @@ ad_library {
 
 
 namespace eval curriculum {}
+
+# Service contract implementation alias namespaces (phew, that was long!).
 namespace eval curriculum::owner {}
-namespace eval curriculum::capture_resolution_code {}
-namespace eval curriculum::format_log_title {}
 namespace eval curriculum::notification_info {}
+namespace eval curriculum::flush_elements {}
 
 
 ad_proc -public curriculum::package_key {} {
@@ -84,6 +85,7 @@ ad_proc -public curriculum::edit {
     {-desc_format "text/html"}
     {-comment ""}
     {-comment_format "text/html"}
+    -owner_id:required
     -action_id:required
     -array:required
     {-entry_id {}}
@@ -97,6 +99,7 @@ ad_proc -public curriculum::edit {
     @param desc_format    The format of the description. Current formats are: text/enhanced text/plain text/html text/fixed-width
     @param comment        Comment on the action taken on the curriculum.
     @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
+    @param owner_id       The party-id of the party - user or group - that is responsible for this curriculum.
 
     @return curriculum_id (just for convenience).
 
@@ -290,7 +293,6 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name \#curriculum.Editor\#
                     callbacks {
                         workflow.Role_PickList_CurrentAssignees
-                        curriculum.CurriculumOwner
                         workflow.Role_AssigneeSubquery_RegisteredUsers
                     }
                 }
@@ -298,7 +300,6 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name \#curriculum.Publisher\#
                     callbacks {
                         workflow.Role_PickList_CurrentAssignees
-                        curriculum.CurriculumOwner
                         workflow.Role_AssigneeSubquery_RegisteredUsers
                     }
                 }
@@ -327,6 +328,9 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_past_tense \#curriculum.Created\#
                     new_state authored
                     initial_action_p t
+                    edit_fields { 
+			comment
+		    }
                 }
                 comment {
                     pretty_name \#curriculum.Comment\#
@@ -350,6 +354,9 @@ ad_proc -private curriculum::workflow_create {} {
 			description
 			comment
 		    }
+		    callbacks {
+			curriculum.CurriculumFlushElementsCache
+		    }
                 }
                 reject {
                     pretty_name \#curriculum.Reject\#
@@ -357,7 +364,7 @@ ad_proc -private curriculum::workflow_create {} {
                     new_state rejected
                     allowed_roles { publisher }
                     enabled_states { authored edited }
-                    privileges { write }
+                    privileges { admin }
                     edit_fields { 
 			comment
 		    }
@@ -369,9 +376,12 @@ ad_proc -private curriculum::workflow_create {} {
                     enabled_states { authored edited archived }
                     assigned_states { edited }
                     new_state published
-                    privileges { write }
-                    edit_fields {
+                    privileges { admin }
+                    edit_fields { 
 			comment
+		    }
+		    callbacks {
+			curriculum.CurriculumFlushElementsCache
 		    }
                 }
                 archive {
@@ -380,10 +390,26 @@ ad_proc -private curriculum::workflow_create {} {
                     allowed_roles { publisher }
                     enabled_states { published }
                     new_state archived
-                    privileges { write }
-                    edit_fields {
-                        comment
-                    }
+                    privileges { admin }
+                    edit_fields { 
+			comment
+		    }
+		    callbacks {
+			curriculum.CurriculumFlushElementsCache
+		    }
+                }
+                assign {
+                    pretty_name \#curriculum.Assign\#
+                    pretty_past_tense \#curriculum.Assigned\#
+                    allowed_roles { publisher }
+                    privileges { admin }
+                    always_enabled_p t
+                    edit_fields { 
+			role_editor
+			role_publisher
+			owner_id
+			comment
+		    }
                 }
             }
         }
@@ -489,82 +515,24 @@ ad_proc -private curriculum::owner::get_assignees {
 
 ####
 #
-# Capture resolution code. (Useful if we need to perform side effects but not being used right now.)
+# Flush element cache (action side-effect).
 #
 ####
 
 
-# FIXME
-ad_proc -private curriculum::capture_resolution_code::pretty_name {} {
-    return "[_ curriculum.lt_Capture_resolution_co]"
+ad_proc -private curriculum::flush_elements::pretty_name {} {
+    return "[_ curriculum.lt_Flush_element_cache]"
 }
 
 
-ad_proc -private curriculum::capture_resolution_code::do_side_effect {
+ad_proc -private curriculum::flush_elements::do_side_effect {
     case_id
     object_id
     action_id
     entry_id
 } {
-    db_dml insert_resolution_code {*NOT WRITTEN YET*}
-}
-
-
-####
-#
-# Format log title.
-#
-####
-
-
-ad_proc -private curriculum::format_log_title::pretty_name {} {
-    return "[_ curriculum.lt_Add_resolution_code_t]"
-}
-
-
-ad_proc -private curriculum::format_log_title::format_log_title {
-    case_id
-    object_id
-    action_id
-    entry_id
-    data_arraylist
-} {
-    array set data $data_arraylist
-
-    if { [info exists data(resolution)] } {
-        return [resolution_pretty $data(resolution)]
-    } else {
-        return {WHAT?!}
-    }
-}
-
-
-# FIXME. Resolution ????
-ad_proc -private curriculum::resolution_get_options {} {
-
-    return {
-        fixed     "Fixed"
-        bydesign  "By Design" 
-        wontfix   "Won't Fix" 
-        postponed "Postponed"
-        duplicate "Duplicate"
-        norepro   "Not Reproducable"
-        needinfo  "Need Info"
-    }
-
-}
-
-
-ad_proc -private curriculum::resolution_pretty {
-    resolution
-} {
-    array set resolution_codes [resolution_get_options]
-
-    if { [info exists resolution_codes($resolution)] } {
-        return $resolution_codes($resolution)
-    } else {
-        return {}
-    }
+    # Force the curriculum bar to update.
+    curriculum::elements_flush
 }
 
 

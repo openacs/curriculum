@@ -8,9 +8,6 @@
   ]
 </p>
 <if @curriculums:rowcount@ ne 0>
-<p align="right">
-  <a href="thorough-flush" title="#curriculum.lt_Update_the_toolbar_fo#">#curriculum.lt_Im_done_now_update_th#</a>
-</p>
 <table border="0" width="100%">
   <tr bgcolor="#cccccc" border="0" cellpadding="0" cellspacing="0" width="100%">
     <th width="20%">#curriculum.Name#</th>

@@ -71,52 +71,30 @@ ad_proc -private curriculum::apm::before_uninstantiate {
 
 ad_proc -private curriculum::apm::register_implementations {} {
     db_transaction {
-        #curriculum::apm::register_capture_resolution_code_impl
         curriculum::apm::register_curriculum_owner_impl
-        curriculum::apm::register_format_log_title_impl
         curriculum::apm::register_curriculum_notification_info_impl
+	curriculum::apm::register_flush_elements_impl
     }
 }
 
 
 ad_proc -private curriculum::apm::unregister_implementations {} {
     db_transaction {
-
-        #acs_sc::impl::delete \
-                -contract_name [workflow::service_contract::action_side_effect] \
-                -impl_name "CurriculumCaptureResolutionCode"
-
+	
         acs_sc::impl::delete \
-                -contract_name [workflow::service_contract::role_default_assignees]  \
-                -impl_name "CurriculumOwner"
-
+	    -contract_name [workflow::service_contract::role_default_assignees]  \
+	    -impl_name "CurriculumOwner"
+	
         acs_sc::impl::delete \
-                -contract_name [workflow::service_contract::activity_log_format_title] \
-                -impl_name "CurriculumFormatLogTitle"
-
+	    -contract_name [workflow::service_contract::notification_info] \
+	    -impl_name "CurriculumNotificationInfo"
+	
         acs_sc::impl::delete \
-                -contract_name [workflow::service_contract::notification_info] \
-                -impl_name "CurriculumNotificationInfo"
+	    -contract_name [workflow::service_contract::action_side_effect] \
+	    -impl_name "CurriculumFlushElementsCache"
+	
     }
 }
-
-
-#ad_proc -private curriculum::apm::register_capture_resolution_code_impl {} {
-#
-#    set spec {
-#        name "CurriculumCaptureResolutionCode"
-#        aliases {
-#            GetObjectType curriculum::object_type
-#            GetPrettyName curriculum::capture_resolution_code::pretty_name
-#            DoSideEffect  curriculum::capture_resolution_code::do_side_effect
-#        }
-#    }
-#    
-#    lappend spec contract_name [workflow::service_contract::action_side_effect] 
-#    lappend spec owner [curriculum::package_key]
-#    
-#    acs_sc::impl::new_from_spec -spec $spec
-#}
 
 
 ad_proc -private curriculum::apm::register_curriculum_owner_impl {} {
@@ -137,24 +115,6 @@ ad_proc -private curriculum::apm::register_curriculum_owner_impl {} {
 }
 
         
-ad_proc -private curriculum::apm::register_format_log_title_impl {} {
-
-    set spec {
-        name "CurriculumFormatLogTitle"
-        aliases {
-            GetObjectType curriculum::object_type
-            GetPrettyName curriculum::format_log_title::pretty_name
-            GetTitle      curriculum::format_log_title::format_log_title
-        }
-    }
-    
-    lappend spec contract_name [workflow::service_contract::activity_log_format_title]
-    lappend spec owner [curriculum::package_key]
-    
-    acs_sc::impl::new_from_spec -spec $spec
-}
-
-
 ad_proc -private curriculum::apm::register_curriculum_notification_info_impl {} {
 
     set spec {
@@ -167,6 +127,24 @@ ad_proc -private curriculum::apm::register_curriculum_notification_info_impl {} 
     }
     
     lappend spec contract_name [workflow::service_contract::notification_info]
+    lappend spec owner [curriculum::package_key]
+    
+    acs_sc::impl::new_from_spec -spec $spec
+}
+
+
+ad_proc -private curriculum::apm::register_flush_elements_impl {} {
+    
+    set spec {
+        name "CurriculumFlushElementsCache"
+        aliases {
+            GetObjectType curriculum::object_type
+            GetPrettyName curriculum::flush_elements::pretty_name
+            DoSideEffect  curriculum::flush_elements::do_side_effect
+        }
+    }
+    
+    lappend spec contract_name [workflow::service_contract::action_side_effect] 
     lappend spec owner [curriculum::package_key]
     
     acs_sc::impl::new_from_spec -spec $spec

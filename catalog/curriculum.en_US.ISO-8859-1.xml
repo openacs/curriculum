@@ -9,6 +9,8 @@
   <msg key="Any">Any</msg>
   <msg key="Archive">Archive</msg>
   <msg key="Archived">Archived</msg>
+  <msg key="Assign">Assign</msg>
+  <msg key="Assigned">Assigned</msg>
   <msg key="Author">Author</msg>
   <msg key="Comment">Comment</msg>
   <msg key="Commented">Commented</msg>
@@ -38,7 +40,7 @@
   <msg key="Help">Help</msg>
   <msg key="Information">Information</msg>
   <msg key="lt_A_leading_http_indica">A leading &quot;http://&quot; indicates that the URL is external.</msg>
-  <msg key="lt_action_pretty_name_by">%action_pretty_name% by %user_name%:</msg>
+  <msg key="lt_action_pretty_past_te">%action_pretty_past_tense% by %user_name%:</msg>
   <msg key="lt_Activate_this_element">Activate this element</msg>
   <msg key="lt_Add_resolution_code_t">Add resolution code to log title</msg>
   <msg key="lt_Add_the_dropped_curri">Add the dropped curriculum to the toolbar</msg>
@@ -51,7 +53,6 @@
   <msg key="lt_Are_you_sure_you_want_1">Are you sure you want to delete this element?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Back to %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Back to where you came from</msg>
-  <msg key="lt_Capture_resolution_co">Capture resolution code in the case activity log</msg>
   <msg key="lt_Could_not_get_child_p">Could not get child package_id</msg>
   <msg key="lt_Create_a_new_curricul">Create a new curriculum</msg>
   <msg key="lt_Deactivate_this_eleme">Deactivate this element</msg>
@@ -59,6 +60,7 @@
   <msg key="lt_Delete_this_element_a">Delete this element and all of its data</msg>
   <msg key="lt_deleting_curriculum_c">deleting curriculum %curriculum_id% in package_id %package_id%</msg>
   <msg key="lt_element_name_part_of_">%element_name%, part of %curriculum_name%</msg>
+  <msg key="lt_Flush_element_cache">Flush element cache</msg>
   <msg key="lt_Here_is_what_the_data">Here is what the database said:</msg>
   <msg key="lt_Im_done_now_update_th">I'm done now, update the bar for everyone</msg>
   <msg key="lt_Installing_curriculum">Installing curriculum filter for %url_pattern% in package_id %package_id%</msg>
@@ -81,7 +83,6 @@ be mounted once per acs-subsite. Please visit the &lt;a href=\&quot;/admin/site-
   <msg key="lt_Uncheck_the_visited_e">Uncheck the visited elements in all curriculums</msg>
   <msg key="lt_Uncheck_the_visited_e_1">Uncheck the visited elements</msg>
   <msg key="lt_Unsubscribe_to_notifi">Unsubscribe to notifications for activity on this curriculum</msg>
-  <msg key="lt_Update_the_toolbar_fo">Update the toolbar for every user (use sparingly)</msg>
   <msg key="lt_URL_may_not_be_more_t">URL may not be more than %length% characters long.</msg>
   <msg key="lt_user_id_doesnt_have_p">%user_id% doesn't have permission to '%action%' on curriculum %curriculum_id%</msg>
   <msg key="lt_Visit_this_element_ag">Visit this element again</msg>

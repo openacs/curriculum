@@ -16,6 +16,7 @@ ad_page_contract {
 
 set package_id [curriculum::conn package_id]
 set user_id [ad_conn user_id]
+set owners_list [list]
 set actions [list]
 set element_mode {}
 set desc_help_text "[_ curriculum.lt_This_text_should_desc]"
@@ -32,18 +33,20 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     set form_mode edit
     set title "[_ curriculum.Create_Curriculum]"
 
+    lappend owners_list [list [person::name -person_id $user_id] "$user_id"]
+
 } else {
 
     ####
     # Edit/display curriculum.
     ####
 
+    curriculum::get -curriculum_id $curriculum_id -array curriculum_array
+
     set write_p [permission::permission_p -object_id $curriculum_id -privilege write]
 
     if { $write_p } {
 	
-	#permission::require_permission -object_id $curriculum_id -privilege write
-
 	####
 	# Workflow.
 	####
@@ -51,12 +54,6 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	# The form goes into "edit" mode if there is a workflow action ...
 	set action_id [form get_action curriculum]
 	set wf_action_exists_p [expr ![empty_string_p $action_id]]
-	
-	# FIXME. Do we need this when we require permission above already?
-	# Registration required for all actions.
-	#    if { $wf_action_exists_p } {
-	#	ad_maybe_redirect_for_registration
-	#    }
 	
 	set case_id [workflow::case::get_id \
 			 -object_id $curriculum_id \
@@ -71,7 +68,8 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	if { !$wf_action_exists_p } {
 	    foreach available_action_id [workflow::case::get_available_actions -case_id $case_id] {
 		workflow::action::get -action_id $available_action_id -array available_action
-		lappend actions [list "     $available_action(pretty_name)     " $available_action(action_id)]
+		lappend actions [list "     [lang::util::localize $available_action(pretty_name)]     " \
+				     $available_action(action_id)]
 	    }
 	}
 	
@@ -85,36 +83,39 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
 	    # then the form will lose its OK and Cancel buttons when an action button is pressed.
 	    
 	    set element_mode display
+
+	    workflow::action::get -action_id $action_id -array action
 	    
-	    set action_pretty_name [lang::util::localize [workflow::action::get_element \
-							      -action_id $action_id \
-							      -element pretty_name]]
+	    set action_pretty_name [lang::util::localize $action(pretty_name)]	    
+	    set action_pretty_past_tense [lang::util::localize $action(pretty_past_tense)]
+	    
 	} else {
 	    set action_pretty_name {}
+	    set action_pretty_past_tense {}
 	}
 	
-	set curriculum_name [acs_object_name $curriculum_id]
-	set title "[ad_decode $action_pretty_name "" "[_ curriculum.View]" $action_pretty_name] [_ curriculum.Curriculum] $curriculum_name"
+	set title "[ad_decode $action_pretty_name "" "[_ curriculum.View]" $action_pretty_name] [_ curriculum.Curriculum] $curriculum_array(name)"
+
     } else {
 
 	# Display mode only! (User doesn't have write perms)
 
 	set wf_action_exists_p 0
-	set curriculum_name [acs_object_name $curriculum_id]
-	set title "[_ curriculum.Curriculum] $curriculum_name"
+
+	set title "[_ curriculum.View] [_ curriculum.Curriculum] $curriculum_array(name)"
 
     }
     
-    
     set form_mode display
+
+    lappend owners_list [list [person::name -person_id $curriculum_array(owner_id)] $curriculum_array(owner_id)]
+
 }
 
 set context {$title}
 
 # Curriculum "owner" select box. 
-set users_list [list]
-lappend users_list [list [person::name -person_id $user_id] "$user_id"]
-lappend users_list [list "[_ curriculum.Search]" ":search:"]
+lappend owners_list [list "[_ curriculum.Search]" ":search:"]
 
 
 ####
@@ -134,14 +135,25 @@ ad_form -name curriculum \
     -has_edit [expr !$write_p] \
     -form {
     curriculum_id:key
+}
+
+# Add status field on display/edit mode for people with write privs.
+if { !$new_p && $write_p } {
+    ad_form -extend -name curriculum -form {
+	{pretty_state:text(inform)
+	    {label "[_ curriculum.Status]"}
+	    {before_html <b>}
+	    {after_html  </b>}
+	}
+    }
+}
+
+ad_form -extend -name curriculum -form {
     {name:text
 	{mode $element_mode}
 	{label "[_ curriculum.Name]"}
 	{html {size 50}}
     }
-}
-
-ad_form -extend -name curriculum -form {
     {description:richtext,optional
 	{mode $element_mode}
 	{label "[_ curriculum.Description]"}
@@ -161,15 +173,7 @@ if { $write_p } {
     }
 }
 
-# Add status field on display/edit mode for people with write privs.
 if { !$new_p && $write_p } {
-    ad_form -extend -name curriculum -form {
-	{pretty_state:text(inform)
-	    {label "[_ curriculum.Status]"}
-	    {before_html <b>}
-	    {after_html  </b>}
-	}
-    }
 
     # Extend the form with assignee widgets (only in edit or display mode).
     workflow::case::role::add_assignee_widgets -case_id $case_id -form_name curriculum
@@ -181,8 +185,9 @@ if { !$new_p && $write_p } {
     # Is before_html the right placement of this? Perhaps we should link
     # to a different page where we show the case log?
     set user_name [person::name -person_id $user_id]
+
     element set_properties curriculum comment \
-	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>[_ curriculum.lt_action_pretty_name_by]</b></p>"]"
+	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>[_ curriculum.lt_action_pretty_past_te]</b></p>"]"
     
     # Single-curriculum notifications link.
     set notification_link [curriculum::get_watch_link -curriculum_id $curriculum_id]
@@ -200,7 +205,7 @@ ad_form -extend -name curriculum -form {
 	{mode $element_mode}
 	{result_datatype integer}
 	{label "[_ curriculum.Owner]"}
-	{options $users_list}  
+	{options $owners_list}  
 	{search_query {[db_map user_search]}}
     }
 }
@@ -259,6 +264,7 @@ ad_form -extend -name curriculum -edit_request {
 	-desc_format [template::util::richtext::get_property format $description] \
 	-comment [template::util::richtext::get_property contents $comment] \
 	-comment_format [template::util::richtext::get_property format $comment] \
+	-owner_id $owner_id \
 	-action_id $action_id \
 	-array curriculum_array
 
