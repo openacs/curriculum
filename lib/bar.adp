@@ -1,6 +1,13 @@
 <if @elements:rowcount@ not nil>
 <multiple name="elements">
-<table align="center" border="0" cellpadding="5">
+<table bgcolor="lightblue" border="0" cellpadding="2" cellspacing="0" width="100%">
+  <tr>
+    <td width="15%">
+      Curr Name!
+    </td>
+    <td>
+
+<table bgcolor="#eeeedd" border="0" cellspacing="1" cellpadding="2" width="100%">
   <tr align="center">
   <group column="curriculum_id">
     <td>
@@ -37,5 +44,13 @@
   </if>
   </tr>
 </table>
+
+    </td>
+    <td width="5%">
+      <a href="#" title="Refresh">Refresh!</a>
+    </td>
+  </tr>
+</table>
+<br>
 </multiple>
 </if>

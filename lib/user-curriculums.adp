@@ -10,8 +10,8 @@
   ]
 </p>
 
-<table border="1" bgcolor="#eeeeee" width="100%">
-  <tr>
+<table border="0" width="100%">
+  <tr bgcolor="lightblue" border="0" cellpadding="0" cellspacing="1" width="100%">
     <th width="25%">Name</th>
     <th width="50%">Description</th>
     <th width="10%">Status</th>
@@ -23,48 +23,43 @@
 
 <multiple name="elements">
 
-<table border="1" bgcolor="#eeeeee" width="100%">
+<table bgcolor="lightblue" border="0" cellpadding="2" cellspacing="0" width="100%">
   <tr>
     <td width="25%">@elements.curriculum_name@</td>
     <td width="50%">@elements.curriculum_desc@</td>
     <td width="10%">
     <if @logged_in_p@>
       <if @elements.undesired_p@>
-        Removed
+        Dropped/Removed
+    </td>
+    <td width="15%">
+        <a href="add-to-bar?curriculum_id=@elements.curriculum_id@">Continue/Take</a>
       </if>
       <else>
-        Displayed
-      </else>
+        Ongoing/Completed
     </td>
+    <td width="15%">
+        <a href="start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
+        |
+        <a href="remove-from-bar?curriculum_id=@elements.curriculum_id@">Drop/Remove</a>
+      </else>
     </if>
+    <else>
+      Ongoing/Completed
+    </td>
     <td width="15%">
       <a href="start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
-    <if @logged_in_p@>
-      |
-      <if @elements.undesired_p@>
-        <a href="add-to-bar?curriculum_id=@elements.curriculum_id@">Display</a>
-      </if>
-      <else>
-        <a href="remove-from-bar?curriculum_id=@elements.curriculum_id@">Remove</a>
-      </else>
-    </if>
+    </else>
     </td>
   </tr>
-
-<if @elements.element_id@ not nil>
-  <group column="curriculum_id">
-
-
   <tr>
     <td colspan="4">
-      <if @elements.groupnum_last_p@>
-        Contains @elements.groupnum@ element(s). -- We could put the above table row in this row if that is better ...
-      </if>
-    </td>
-  </tr>
 
-
-  <tr>
+<table border="0" cellpadding="2" cellspacing="1" width="100%">
+<ul>
+<if @elements.element_id@ not nil>
+  <group column="curriculum_id">
+  <if @elements.groupnum@ odd><tr bgcolor="#eeeedd"></if><else><tr bgcolor="#eeeeee"></else>
     <td>
       <li>
         @elements.groupnum@.
@@ -96,13 +91,15 @@
     <i>No elements</i>
   </li>
 </else>
+</ul>
 </table>
 
+    </td>
+  </tr>
+</table>
 <br>
-
 </multiple>
 </if>
-
 <if @elements.curriculum_id@ nil>
 <li>
   <i>No published curriculums</i>
