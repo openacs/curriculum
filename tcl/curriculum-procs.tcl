@@ -358,9 +358,8 @@ ad_proc -private curriculum::workflow_create {} {
                     pretty_name "Reject"
                     pretty_past_tense "Rejected"
                     new_state "rejected"
-                    assigned_role "publisher"
+                    allowed_roles { publisher }
                     enabled_states { authored edited }
-                    assigned_states { edited }
                     privileges { write }
                     edit_fields { 
 			       comment
@@ -381,8 +380,8 @@ ad_proc -private curriculum::workflow_create {} {
                 archive {
                     pretty_name "Archive"
                     pretty_past_tense "Archived"
-                    assigned_role "publisher"
-                    assigned_states { published }
+                    allowed_roles { publisher }
+                    enabled_states { published }
                     new_state "archived"
                     privileges { write }
                     edit_fields {
