@@ -228,6 +228,13 @@ ad_form -extend -name curriculum -edit_request {
     
 } -edit_data {
 
+    # Esti: the roles where not assigned because they were not included in the curriculum_array
+    foreach role_id [workflow::get_roles -workflow_id [workflow::case::get_element -case_id $case_id -element workflow_id]] {
+        workflow::role::get -role_id $role_id -array role
+        set element "role_$role(short_name)"
+        set curriculum_array($element) [set $element]
+    }
+    
     curriculum::edit \
 	-curriculum_id $curriculum_id \
 	-name $name \

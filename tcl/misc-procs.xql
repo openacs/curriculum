@@ -28,7 +28,7 @@
         </querytext>
     </fullquery>
 
-    <fullquery name="curriculum::get_package_id_from_subsite_id.max_curriculum_id">
+    <fullquery name="curriculum::get_package_info.max_curriculum_package_id">
         <querytext>
             select max(package_id)
             from   apm_packages

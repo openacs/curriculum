@@ -2,6 +2,7 @@
   <a href="admin-roles" class="button" title="#curriculum.lt_Default_assignees_for#">#curriculum.Default_Assignees#</a>
   <a href="/shared/parameters?@export_vars@" class="button" title="#curriculum.lt_Set_site-wide_prefere#">#curriculum.Package_parameters#</a>
   <a href="/permissions/one?object%5fid=@package_id@" class="button" title="#curriculum.lt_Administer_user_privi#">#curriculum.Package_permissions#</a>
+  <a href="@category_map_url@" class="button">Site-Wide Categories</a>
   <a href="../doc/user.html#TEACHER" class="button" title="#curriculum.lt_Read_the_user_manual_#">#curriculum.Help#</a>
 </p>
 

@@ -67,6 +67,17 @@ ad_proc -private curriculum::apm::before_uninstantiate {
 }
 
 
+ad_proc -private curriculum::apm::after_mount {
+    {-package_id:required}
+    {-node_id:required}
+} {
+    Package mount callback proc.
+} {
+    # Register the filter that makes tracking in the curriculum bar work.
+    curriculum::register_filter -package_id $package_id
+}
+
+
 #####
 #
 # Service contract implementations.

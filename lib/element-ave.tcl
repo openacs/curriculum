@@ -60,22 +60,49 @@ ad_form -name element \
     -mode $form_mode \
     -has_edit [expr !$write_p] \
     -form {
-    element_id:key
-    {name:text
-	{label "[_ curriculum.Name]"}
-	{html {size 50}}
+	element_id:key
+	{name:text
+	    {label "[_ curriculum.Name]"}
+	    {html {size 50}}
+	}
+	{description:richtext,optional
+	    {label "[_ curriculum.Description]"}
+	    {help_text "[_ curriculum.lt_This_text_should_desc_1]"}
+	    {html {rows 10 cols 50 wrap soft}}
+	}
+	{url:text(text),optional,nospell
+	    {label "[_ curriculum.URL]"}
+	    {help_text "[_ curriculum.lt_A_leading_http_indica]"}
+	    {html {size 50}}
+	}
     }
-    {description:richtext,optional
-	{label "[_ curriculum.Description]"}
-	{help_text "[_ curriculum.lt_This_text_should_desc_1]"}
-	{html {rows 10 cols 50 wrap soft}}
-    }
-    {url:text(text),optional,nospell
-	{label "[_ curriculum.URL]"}
-	{help_text "[_ curriculum.lt_A_leading_http_indica]"}
-	{html {size 50}}
-    }
-} -on_request {
+
+#if { [exists_and_not_null element_id] } {
+#    if { ![empty_string_p [category_tree::get_mapped_trees $package_id]] } {
+#	ad_form -extend -name element -form {
+#	    {category_ids:integer(category),multiple {label "E Categories"}
+#		{html {size 7}} {value {$element_id $package_id}}
+#	    }
+#	}
+#    }
+#} else {
+#    if { ![empty_string_p [category_tree::get_mapped_trees $package_id]] } {
+#        ad_form -extend -name element -form {
+#            {category_ids:integer(category),multiple,optional {label "A Categories"}
+#                {html {size 7}} {value {}}
+#            }
+#        }
+#    }
+#}
+
+# SWC (Site-wide categories):
+category::ad_form::add_widgets \
+    -container_object_id $package_id \
+    -categorized_object_id [value_if_exists entry_id] \
+    -form_name element \
+    -help_text "Help text here!"
+
+ad_form -extend -name element -on_request {
     # Nothing, really
 } -edit_request {
 
@@ -96,6 +123,12 @@ ad_form -name element \
 	"[_ curriculum.lt_URL_may_not_be_more_t]"
     }
     
+} -on_submit {
+
+    # SWC Collect categories from all the category widgets
+    set category_ids [category::ad_form::get_categories \
+                          -container_object_id $package_id]
+    
 } -new_data {
 
     curriculum::element::new \
@@ -107,6 +140,9 @@ ad_form -name element \
 	-url [ad_decode $url "" "[curriculum::conn package_url]element-ave?curriculum_id=$curriculum_id&element_id=$element_id" $url] \
 	-enabled_p t
 
+    # SWC
+    category::map_object -remove_old -object_id $element_id $category_ids
+    
 } -edit_data {
 
     curriculum::element::edit \
@@ -115,7 +151,10 @@ ad_form -name element \
 	-description [template::util::richtext::get_property contents $description] \
 	-desc_format [template::util::richtext::get_property format $description] \
 	-url [ad_decode $url "" "[curriculum::conn package_url]element-ave?curriculum_id=$curriculum_id&element_id=$element_id" $url]
-
+    
+    # SWC
+    category::map_object -remove_old -object_id $element_id $category_ids
+    
 } -after_submit {
 
     # Force the curriculum bar to update.

@@ -103,9 +103,11 @@ ad_proc -public curriculum::edit {
     array set assignments [list]
     
     set role_prefix "role_"
-    foreach name [array names row "${role_prefix}*"] {
-        set assignments([string range $name [string length $role_prefix] end]) $row($name)
-        unset row($name)
+
+    # Esti : name -> role_name (otherwise mixes with the name of the curriculum)
+    foreach role_name [array names row "${role_prefix}*"] {
+        set assignments([string range $role_name [string length $role_prefix] end]) $row($role_name)
+        unset row($role_name)
     }
 
     db_transaction {
@@ -550,7 +552,8 @@ ad_proc -private curriculum::flush_elements::do_side_effect {
     entry_id
 } {
     # Force the curriculum bar to update.
-    curriculum::elements_flush
+    curriculum::elements_flush -thorough
+    ns_log Notice "OLA -- case_id: $case_id, object_id: $object_id, action_id: $action_id, entry_id: $entry_id"
 }
 
 
@@ -664,4 +667,22 @@ ad_proc -private curriculum::security_violation {
     [_ curriculum.lt_You_dont_have_permiss]
     </blockquote>"
     ad_script_abort
+}
+
+
+ad_proc -private curriculum::register_filter {
+    -package_id:required
+} {
+    set curriculum_url [site_node::get_url_from_object_id -object_id $package_id]
+    
+    set curriculum_subsite_id [site_node::closest_ancestor_package -include_self \
+			-url $curriculum_url \
+			-package_key { acs-subsite dotlrn } \
+			-element package_id]
+    
+    set url_pattern "[site_node::get_url_from_object_id -object_id $curriculum_subsite_id]*"
+    
+    ns_log Notice "[_ curriculum.lt_Installing_curriculum]"
+    
+    ad_register_filter -debug f postauth GET $url_pattern curriculum::curriculum_filter $package_id
 }

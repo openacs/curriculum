@@ -59,8 +59,9 @@ ad_proc -public curriculum::conn {
 		    # instances of "acs-subsite" but instances of "dotlrn", and we need to be able
 		    # to scope our cache based on those instances too ...
 
-		    # May need to be cached if it is possible ...
-		    return [site_node_closest_ancestor_package { acs-subsite dotlrn }]
+		    # Still using this proc despite the fact that it is deprecated. The new proc 
+		    # (site_node::closest_ancestor_package), which supersedes this one, is a lot slower.
+		    return [site_node_closest_ancestor_package -url [ad_conn url] { acs-subsite dotlrn }]
 		}
 		package_id -
 		package_url -
@@ -141,70 +142,36 @@ ad_proc -private curriculum::get_package_info {
 	set subsite_id [conn subsite_id]
     }
 
-    set subsite_node_id [site_node::get_node_id_from_object_id -object_id $subsite_id]
+    set package_key [package_key]
 
-    set info(subsite_url) [site_node::get_url -node_id $subsite_node_id]
-
-    # Note! Returns a list of curriculum package_ids.
+    set info(subsite_url) [site_node::get_url_from_object_id -object_id $subsite_id]
+    
+    # Note! Returns a list of curriculum package_ids mounted directly under the given 
+    # node. Of course, only one curriculum instance is allowed under a "curriculum subsite" 
+    # (acs-subsite or dotlrn instance) so it should never return more than one element.
+    set subsite_node_id [site_node::get_node_id -url $info(subsite_url)]
     set info(package_id) [site_node::get_children \
-			      -package_key [package_key] \
+			      -package_key $package_key \
 			      -element package_id \
 			      -node_id $subsite_node_id]
-
-
-    if { [llength $info(package_id)] > 1 } {
-
-	# Get the latest curriculum instance that was mounted.
-	set package_id [db_string max_curriculum_id {*SQL*}]
-	set node_id [site_node::get_node_id_from_object_id -object_id $package_id]
-	set export_vars [export_vars -url { node_id { confirm_p 1 } }]
-
-	set delete_url "/admin/applications/application-delete?$export_vars"
-
-	ad_return_error "[_ curriculum.lt_More_than_one_instanc]" "[_ curriculum.lt_Please_delete_the_ext]"
-
-	ad_script_abort
-    }
-
-    set package_node_id [site_node::get_node_id_from_object_id -object_id $info(package_id)]
-
-    set info(package_url) [site_node::get_url -node_id $package_node_id]
-   
-    return [array get info]
-}
-
-
-# FIXME. It would be awesome if this could go!
-ad_proc -private curriculum::get_package_id_from_subsite_id {
-    -subsite_id:required
-} {
-    # This call is what prevents us from mounting several curriculum instances
-    # per subsite ... Maybe that could be amended?
-
-    set package_key [package_key]
     
-    if { [catch {
-	set package_id [site_node_apm_integration::get_child_package_id \
-			    -package_id $subsite_id -package_key $package_key]
-    } errmsg] } {
-
-	# Get the latest curriculum instance that was mounted.
-	set package_id [db_string max_curriculum_id {*SQL*}]
+    if { [llength $info(package_id)] > 1 } {
 	
-	set node_id [site_node::get_node_id_from_object_id -object_id $package_id]
-
-	ad_return_error "[_ curriculum.lt_Could_not_get_child_p]" \
-	    "[_ curriculum.lt_This_could_be_because]
-<p>
-[_ curriculum.lt_Here_is_what_the_data]
-<p>
-$errmsg"
+	# Get the latest curriculum instance that was mounted.
+	set latest_package_id [db_string max_curriculum_package_id {*SQL*}]
+	set node_id [site_node::get_node_id_from_object_id -object_id $latest_package_id]
+	set export_vars [export_vars -url { node_id { confirm_p 1 } }]
+	
+	set delete_url "/admin/applications/application-delete?$export_vars"
+	
+	ad_return_error "[_ curriculum.lt_More_than_one_instanc]" "[_ curriculum.lt_Please_delete_the_ext]"
+	
 	ad_script_abort
-
-    } else {
-
-	return $package_id
     }
+    
+    set info(package_url) [site_node::get_url_from_object_id -object_id $info(package_id)]
+    
+    return [array get info]
 }
 
 
@@ -635,27 +602,25 @@ ad_proc -private curriculum::reset_one_curriculum {
 
 ad_proc -public curriculum::curriculum_filter {
     conn
-    args
+    package_id
     why
 } {
-    We run this filter on registered urls in conjunction with
-    "curriculum_bar" which gets called from the default-master.
+    We run this filter on registered url patterns for GETs in conjunction 
+    with "curriculum_bar" which gets called from the default-master.
     This will run after a registered url has been served.
 } {
     # We don't want an error in the script to interrupt page service
-    if { [catch { curriculum_filter_internal $args $why } errmsg] } {
-	ns_log Error "curriculum::curriculum_filter_internal coughed up $errmsg"
+    if { [catch { curriculum_filter_internal -package_id $package_id } errmsg] } {
+	ns_log Error "\"curriculum::curriculum_filter_internal -package_id $package_id\" coughed up: $errmsg"
     }
-    
+
     return "filter_ok"
 }
 
 
 ad_proc -private curriculum::curriculum_filter_internal {
-    args
-    why
+    -package_id:required
 } {
-    set package_id [conn package_id]
     set cookie_name [get_cookie_name -package_id $package_id]
     set cookie [ad_get_cookie $cookie_name]
 
@@ -674,7 +639,6 @@ ad_proc -private curriculum::curriculum_filter_internal {
     # to curriculums to consider adding to cookie.
     set list_of_lists [curriculum::enabled_elements_memoized -package_id $package_id]
     set current_url [ad_conn url]
-
     # Check for query vars. URL decode the vars here if they exist, and do the same
     # when we compare current_url to the element URLs to ensure consistency ...
     if { ![empty_string_p [set query_vars [ad_conn query]]] } {

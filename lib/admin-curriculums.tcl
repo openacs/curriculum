@@ -19,11 +19,6 @@ set package_id [curriculum::conn package_id]
 
 permission::require_permission -object_id $package_id -privilege admin
 
-# We might need this if we want to present statistics, see bug-tracker (we need it for this page, too).
-set initial_state_id [workflow::fsm::get_initial_state -workflow_id $workflow_id]
-
-set action_role [db_string select_resolve_role {*SQL*}]
-
 ####
 # Filters.
 ####
@@ -59,5 +54,10 @@ set curriculum_count [curriculum::conn -nocache curriculum_count]
 set return_url [ad_return_url]
 
 set export_vars [export_vars -url { package_id return_url }]
+
+# Categories.
+set category_map_url [export_vars -base \
+			  "[site_node::get_package_url -package_key categories]cadmin/one-object" \
+			  { { object_id $package_id } }]
 
 ad_return_template

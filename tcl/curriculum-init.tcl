@@ -8,23 +8,10 @@ ad_library {
 
 }
 
-# FIXME. Most likely we should only get the package_ids that have
-# curriculums which are published.
-set package_ids [db_list get_all_curriculum_package_ids {*SQL*}]
+set package_key [curriculum::package_key]
 
-foreach package_id $package_ids {
+db_foreach get_all_curriculum_package_ids {*SQL*} {
 
     # Register the filter that keeps track of which elements the user has seen.
-    # If no "UrlPatternsToFilter" parameter is detected we register
-    # this filter for all urls in this curriculum instance.
-    
-    set url_patterns [parameter::get -package_id $package_id \
-			  -parameter UrlPatternsToFilter \
-			  -default *]
-    
-    foreach url_pattern [split [string trim $url_patterns]] {
-	ns_log Notice "[_ curriculum.lt_Installing_curriculum]"
-	ad_register_filter postauth GET $url_pattern curriculum::curriculum_filter
-    }
-
+    curriculum::register_filter -package_id $package_id
 }

@@ -3,8 +3,10 @@
 
     <fullquery name="get_all_curriculum_package_ids">
         <querytext>
-            select distinct package_id
-            from   cu_curriculums
+        select   package_id 
+        from     apm_packages 
+        where    package_key = :package_key
+        order by package_id
         </querytext>
     </fullquery>
 
