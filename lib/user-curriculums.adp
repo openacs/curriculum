@@ -27,22 +27,29 @@
     <td width="10%">
     <if @logged_in_p@>
       <if @elements.undesired_p@>
-        Dropped/Removed
+        <if @elements.completed_p@>Removed</if><else>Dropped</else>
     </td>
     <td width="15%">
-        <a href="add-to-bar?curriculum_id=@elements.curriculum_id@">Continue/Take</a>
+      <if @elements.completed_p@>
+        <a href="add-to-bar?curriculum_id=@elements.curriculum_id@&refresh_p=1">Retake</a>
       </if>
       <else>
-        Ongoing/Completed
+        <a href="add-to-bar?curriculum_id=@elements.curriculum_id@">Resume</a>
+      </else>
+      </if>
+      <else>
+        <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
         <a href="start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
         |
-        <a href="remove-from-bar?curriculum_id=@elements.curriculum_id@">Drop/Remove</a>
+        <a href="remove-from-bar?curriculum_id=@elements.curriculum_id@">
+          <if @elements.completed_p@>Remove</if><else>Drop</else>
+        </a>
       </else>
     </if>
     <else>
-      Ongoing/Completed
+        Ongoing/Completed
     </td>
     <td width="15%">
       <a href="start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
@@ -63,20 +70,18 @@
     </td>
     <td width="50%">@elements.element_desc;noquote@</td>
     <td width="10%">
-      <if @elements.checked_p@>
-        Visited
-      </if>
-      <else>
-        Unvisited
-      </else>
+    <if @elements.checked_p@>
+      Visited
     </td>
     <td width="15%">
-      <if @elements.checked_p@>
-        <a href="@elements.url@">Revisit</a>
-      </if>
-      <else>
-        <a href="@elements.url@">Visit</a>
-      </else>
+      <a href="@elements.url@">Revisit</a>
+    </if>
+    <else>
+      Unvisited
+    </td>
+    <td width="15%">
+      <a href="@elements.url@">Visit</a>
+    </else>
     </td>
   </tr>
   </group>

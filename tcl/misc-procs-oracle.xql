@@ -23,7 +23,8 @@
         <querytext>
 
             select   cee.element_id,
-                     cee.curriculum_id,
+                     cc.curriculum_id,
+                     cc.name as curriculum_name,
                      cee.url,
                      cee.name
             from    (select   curriculum_id

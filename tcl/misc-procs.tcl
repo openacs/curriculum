@@ -403,10 +403,13 @@ ad_proc -public curriculum::elements_flush {
 
 ad_proc -public curriculum::get_bar {
     -bar_p:required
+    {-package_id ""}
 } {
     Returns a string containing the HTML for a curriculum bar that shows the amount of progress a user has made on a curriculum.
 } {
-    set package_id [conn package_id]
+    if { [empty_string_p $package_id] } {
+	set package_id [conn package_id]
+    }
 
     # Is the curriculum bar even activated? If not, return the empty string.
     if { $bar_p && ![parameter::get -package_id $package_id -parameter ShowCurriculumBarP -default 1] } {
@@ -414,35 +417,36 @@ ad_proc -public curriculum::get_bar {
     }
 
     # Check cookie to make sure this person isn't finished.
-    set input_cookie [ad_get_cookie [get_cookie_name]]
+    set input_cookie [ad_get_cookie [get_cookie_name -package_id $package_id]]
 
-    if { $bar_p && [empty_string_p $input_cookie] } {
-	# No cookie; this person is either brand new or the browser is rejecting cookies.
-	# Let's not uglify all their pages with a bar that they can't use.
-	#return {}
-    }
+#    if { $bar_p && [empty_string_p $input_cookie] } {
+#	# No cookie; this person is either brand new or the browser is rejecting cookies.
+#	# Let's not uglify all their pages with a bar that they can't use.
+#	return {}
+#    }
 
     # We have a cookie.
-    if { $bar_p && [string equal "finished" $input_cookie] } {
-	# User has completed curriculum, don't bother showing the bar.
-	#return {}
-    }
+#    if { $bar_p && [string equal "finished" $input_cookie] } {
+#	# User has completed curriculum, don't bother showing the bar.
+#	#return {}
+#    }
 
     # Compare what the user has seen to what is in the full curriculum(s)
     # to put in checkboxes; we check the output headers first and then 
     # the input headers, in case there is going to be a newer value.
-    set output_cookie [get_output_cookie]
+    set output_cookie [get_output_cookie -package_id $package_id]
 
     if { [empty_string_p $output_cookie] } {
-	get_bar_internal -bar_p $bar_p $input_cookie
+	get_bar_internal -bar_p $bar_p -package_id $package_id $input_cookie
     } else {
-	get_bar_internal -bar_p $bar_p $output_cookie
+	get_bar_internal -bar_p $bar_p -package_id $package_id $output_cookie
     }
 }
 
 
 ad_proc -private curriculum::get_bar_internal {
     -bar_p:required
+    {-package_id ""}
     cookie_value
 } {
     if { $bar_p } {
@@ -466,37 +470,61 @@ ad_proc -private curriculum::get_bar_internal {
 	# Publisher hasn't published any curriculum.
 	return {}
     }
-    
+
     set manipulated_rows {}
+    set completed_p 1
+    array set first_row [lindex $rows 0]
+    set this_curriculum $first_row(curriculum_id)
+    set element_ids [list]
 
     foreach row $rows {
-	array set element_info $row
+	array set info $row
 
+	if { $info(curriculum_id) != $this_curriculum } {
+	    # Next curriculum.
+	    set this_curriculum $info(curriculum_id)
+	    
+	    foreach element_id $element_ids {
+		lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) external_p $external_p($element_id) completed_p $completed_p]
+	    }
+	    
+	    # Empty the list.
+	    set element_ids [list]
+	    set completed_p 1
+	}
+	
+	# Recorded elements.
+	lappend element_ids $info(element_id)
+	# Remember every row.
+	set info_row(${info(element_id)}) $row
+	
 	# Check in cookie whether the element has been visited or not.
-	if { [lsearch -exact $cookie_value $element_info(element_id)] != -1 } {
-	    set row [concat $row checked_p 1]
+	if { [lsearch -exact $cookie_value $info(element_id)] != -1 } {
+	    set checked_p(${info(element_id)}) 1
 	} else {
-	    set row [concat $row checked_p 0]
+	    set checked_p(${info(element_id)}) 0
+	    set completed_p 0
 	}
 
 	# FIXME. Should be performed by the db!
 	# Check for external URLs.
-	if { [string equal -length 7 "http://" $element_info(url) ] } {
-	    set row [concat $row external_p 1]
+	if { [string equal -length 7 "http://" $info(url)] } {
+	    set external_p(${info(element_id)}) 1
 	} else {
-	    set row [concat $row external_p 0]
+	    set external_p(${info(element_id)}) 0
 	}
 
-	lappend manipulated_rows $row
     }
-
-    # DEBUG.
-#    if {!$bar_p} {doc_return 200 text/plain "$cookie_value"}
-
+    
+    # Play the recording for the last curriculum.
+    foreach element_id $element_ids {
+	lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) external_p $external_p($element_id) completed_p $completed_p]
+    }
+    
     # Let's turn this list into a multirow datasource in the <include>
     # template's environment. 3 levels up, that is.
+    
     template::util::list_to_multirow elements $manipulated_rows 3
-
 }
 
 
@@ -540,6 +568,7 @@ ad_proc -public curriculum::element_visited_p {
 
 
 ad_proc -public curriculum::get_output_cookie {
+    {-package_id ""}
 } {
     Returns the value of the CurriculumProgress cookie that will be written to the client, or empty string if none is in the outputheaders ns_set
 } {
@@ -547,15 +576,24 @@ ad_proc -public curriculum::get_output_cookie {
 	return {}
     }
 
-    return [ad_get_cookie -include_set_cookies t [get_cookie_name]]
+    if { [empty_string_p $package_id] } {
+	set package_id [conn package_id]
+    }
+    
+    return [ad_get_cookie -include_set_cookies t [get_cookie_name -package_id $package_id]]
 }
 
 
 ad_proc -public curriculum::get_cookie_name {
+    {-package_id ""}
 } {
     Returns the package_id-dependent name of our cookie (CurriculumProgress_****).
 } {
-    return CurriculumProgress_[conn package_id]
+    if { [empty_string_p $package_id] } {
+	set package_id [conn package_id]
+    }
+
+    return CurriculumProgress_$package_id
 }
 
 
@@ -626,7 +664,7 @@ ad_proc -public curriculum::curriculum_filter {
 } {
     We run this filter on registered urls in conjunction with
     "curriculum_bar" which gets called from the default-master.
-    This will be run after(?) a registered url has been served.
+    This will run after a registered url has been served.
 } {
     # FIXME. Remove the row below and uncomment the catch statement when the package is published.
     curriculum_filter_internal $args $why
@@ -649,34 +687,34 @@ ad_proc -private curriculum::curriculum_filter_internal {
     set package_id [conn package_id]
     if { ![empty_string_p $cookie] } {
 	# We have a cookie.
-	if { [string equal "finished" $cookie] } {
-	    # User has completed curriculum, nothing more to do.
-	    return
-	} else {
-	    # See what the user is looking at right now and compare
-	    # to curriculums to consider adding to cookie.
-	    set list_of_lists [curriculum::enabled_elements_memoized -package_id $package_id]
-	    set current_url [ad_conn url]
-	    
-	    foreach list $list_of_lists {
-		array set info $list
-		# Is the user visiting this curriculum element url?
-		if { [string equal $current_url $info(url)] } {
-		    # See if this element isn't already in user's cookie.
-		    set element_id $info(element_id)
-		    if { [lsearch -exact $cookie $element_id] == -1 } {
-			set cookie [curriculum_progress_cookie_value -package_id $package_id $cookie $element_id]
-			ad_set_cookie -replace t [get_cookie_name] $cookie
-			# If the user is logged in, we'll also want to record
-			# the additional element in the database.
-			if { [set user_id [ad_conn user_id]] } {
-			    # Insert, but only if there isn't a row already there.
-			    set curriculum_id $info(curriculum_id)
-			    db_dml map_insert {*SQL*}
-			}			
-		    }
+#	if { [string equal "finished" $cookie] } {
+#	    # User has completed curriculum, nothing more to do.
+#	    return
+#	}
+
+	# See what the user is looking at right now and compare
+	# to curriculums to consider adding to cookie.
+	set list_of_lists [curriculum::enabled_elements_memoized -package_id $package_id]
+	set current_url [ad_conn url]
+	
+	foreach list $list_of_lists {
+	    array set info $list
+	    # Is the user visiting this curriculum element url?
+	    if { [string equal $current_url $info(url)] } {
+		# See if this element isn't already in user's cookie.
+		set element_id $info(element_id)
+		if { [lsearch -exact $cookie $element_id] == -1 } {
+		    set cookie [curriculum_progress_cookie_value -package_id $package_id $cookie $element_id]
+		    ad_set_cookie -replace t [get_cookie_name] $cookie
+		    # If the user is logged in, we'll also want to record
+		    # the additional element in the database.
+		    if { [set user_id [ad_conn user_id]] } {
+			# Insert, but only if there isn't a row already there.
+			set curriculum_id $info(curriculum_id)
+			db_dml map_insert {*SQL*}
+		    }			
 		}
-	    }
+	    }	    
 	}
     } else {
 	# No cookie.
@@ -686,6 +724,33 @@ ad_proc -private curriculum::curriculum_filter_internal {
 		[get_cookie_name] [curriculum_progress_cookie_value -package_id $package_id]
 	}
     }
+}
+
+
+ad_proc -public curriculum::element_filter {
+    conn
+    package_id
+    why
+} {
+    get_bar -bar_p 1 -package_id $package_id
+
+    set package_url [conn package_url]
+    set return_url_export [export_vars -url [set return_url [ad_conn url]]]
+    set logged_in_p [ad_conn user_id]
+
+    set code [template::adp_compile -file [acs_package_root_dir curriculum]/lib/bar.adp]
+    
+    # Return the HTML chunk.
+    ns_write [template::adp_eval code]
+
+#template::adp_append_code "append __adp_output \[$command\]"
+#  set command "template::adp_parse"
+#  append command " \[template::util::url_to_file \"$src\" \"\$__adp_stub\"\]"
+#  append command " \[list"
+
+
+
+    return "filter_ok"
 }
 
 

@@ -9,8 +9,12 @@ ad_page_contract {
 } {
     curriculum_id:optional
     {return_url "."}
+    refresh_p:optional
 }
 
+if { [info exists refresh_p] } {
+    set return_url "start-over?[ad_conn extra_url]"
+}
 set package_id [curriculum::conn package_id]
 
 # Adding is actually obtained by deleting one or more rows from the table

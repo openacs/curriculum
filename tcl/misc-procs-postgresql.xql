@@ -25,8 +25,9 @@
 -- Rewrite this query to look more like the Oracle version.
 --
 
-            (select   cee.element_id,
-                     cee.curriculum_id,
+           (select   cee.element_id,
+                     cc.curriculum_id,
+                     cc.name as curriculum_name,
                      cee.url,
                      cee.name
             from     cu_curriculums cc left outer join
@@ -42,8 +43,9 @@
 
             EXCEPT
 
-            (select   cee.element_id,
-                     cee.curriculum_id,
+           (select   cee.element_id,
+                     cc.curriculum_id,
+                     cc.name as curriculum_name,
                      cee.url,
                      cee.name
             from     (cu_user_curriculum_map ucm inner join
