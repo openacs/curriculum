@@ -49,7 +49,13 @@ ad_proc -public curriculum::conn {
 		    # "ad_conn subsite_id" does not work when called from within a filter
 		    # (which we do for the curriculum bar), so we use the following instead.
 
-		    return [site_node_closest_ancestor_package [list dotlrn acs-subsite]]
+		    set package_keys [list acs-subsite]
+
+		    if { [apm_package_installed_p dotlrn] } {
+			set package_keys [concat dotlrn $package_keys]
+		    }
+
+		    return [site_node_closest_ancestor_package $package_keys]
 		}
 		package_id -
 		package_url -

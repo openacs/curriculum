@@ -151,7 +151,7 @@ if { !$new_p && $write_p } {
 }
 
 ad_form -extend -name curriculum -form {
-    {description:text(textarea)
+    {description:richtext
 	{mode $element_mode}
 	{label Description}
 	{help_text $desc_help_text}
@@ -215,8 +215,9 @@ ad_form -extend -name curriculum -edit_request {
     curriculum::get -curriculum_id $curriculum_id -array curriculum_array
 
     template::util::array_to_vars curriculum_array
-    # FIXME.
-    set description [list $description $desc_format]
+
+    # The first list element is the description and it needs to be set to be empty.
+    set description [list {} $desc_format]
 
     # Hide elements that should be hidden because of a certain wf status.
     foreach element $curriculum_array(hide_fields) {
@@ -232,26 +233,20 @@ ad_form -extend -name curriculum -edit_request {
 
 } -new_data {
 
-#[template::util::richtext::get_property contents $description]
-#[template::util::richtext::get_property format $description]
-
     curriculum::new \
 	-name $name \
-	-description $description \
-	-desc_format text/html \
+	-description [template::util::richtext::get_property contents $description] \
+	-desc_format [template::util::richtext::get_property format $description] \
 	-owner_id $owner_id \
 	-package_id $package_id
     
 } -edit_data {
 
-#[template::util::richtext::get_property contents $description]
-#[template::util::richtext::get_property format $description]
-
     curriculum::edit \
 	-curriculum_id $curriculum_id \
 	-name $name \
-	-description $description \
-	-desc_format text/html \
+	-description [template::util::richtext::get_property contents $description] \
+	-desc_format [template::util::richtext::get_property format $description] \
 	-owner_id $owner_id \
 	-action_id $action_id \
 	-array curriculum_array

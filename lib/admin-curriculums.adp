@@ -91,7 +91,7 @@ foreach { notification_url notification_label notification_title } $notification
     <else>
       Disabled
     </td>
-    <td width="5%">
+    <td width="15%">
       <a href="element-enable?@curriculums.element_id_export@">Enable</a>
       <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('Are you sure you want to delete this element?');" title="Delete">
         <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
