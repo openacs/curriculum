@@ -142,23 +142,21 @@ ad_form -name curriculum \
 }
 
 ad_form -extend -name curriculum -form {
-    {description:richtext
+    {description:richtext,optional
 	{mode $element_mode}
 	{label "[_ curriculum.Description]"}
 	{help_text $desc_help_text}
 	{html {rows 10 cols 50 wrap soft}}
-	optional
     }
 }
 
 if { $write_p } {
     ad_form -extend -name curriculum -form {
-	{comment:richtext
+	{comment:richtext,optional
 	    {mode $element_mode}
 	    {label "[_ curriculum.Action_Log]"}
 	    {help_text "[_ curriculum.lt_This_field_is_for_com]"}
 	    {html {rows 5 cols 50 wrap soft}}
-	    optional
 	}
     }
 }
@@ -198,13 +196,12 @@ if { !$new_p && $write_p } {
 # FIXME. Datatype "search" does not appear to work with ad_form very well.
 # Do we need an owner anyway when we're using workflow roles?
 ad_form -extend -name curriculum -form {
-    {owner_id:search
+    {owner_id:search,optional
 	{mode $element_mode}
 	{result_datatype integer}
 	{label "[_ curriculum.Owner]"}
 	{options $users_list}  
 	{search_query {[db_map user_search]}}
-	optional
     }
 }
 

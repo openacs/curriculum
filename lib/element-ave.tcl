@@ -31,6 +31,10 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     set form_mode edit
     set title "[_ curriculum.Add_Element]"
 
+    # Workaround for the default value of "url";
+    # http://openacs.org/bugtracker/openacs/bug?bug%5fnumber=804
+    set url $subsite_url
+
 } else {
 
     ####
@@ -41,7 +45,6 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     # require permission on curriculum_id, not package_id basis.
 
     set write_p [permission::permission_p -object_id $curriculum_id -privilege write]
-    #permission::require_permission -object_id $curriculum_id -privilege write
 
     set form_mode display
     set curriculum_name [acs_object_name $curriculum_id]
@@ -62,21 +65,19 @@ ad_form -name element \
 	{label "[_ curriculum.Name]"}
 	{html {size 50}}
     }
-    {description:richtext
+    {description:richtext,optional
 	{label "[_ curriculum.Description]"}
 	{help_text "[_ curriculum.lt_This_text_should_desc_1]"}
 	{html {rows 10 cols 50 wrap soft}}
-	optional
     }
-    {url:text(text)
+    {url:text(text),optional
 	{label "[_ curriculum.URL]"}
 	{help_text "[_ curriculum.lt_A_leading_http_indica]"}
 	{html {size 50}}
-	{value $subsite_url}
     }
-}
-
-ad_form -extend -name element -edit_request {
+} -on_request {
+    # Nothing, really
+} -edit_request {
 
     curriculum::element::get -element_id $element_id -array element_array
 
@@ -98,11 +99,12 @@ ad_form -extend -name element -edit_request {
 } -new_data {
 
     curriculum::element::new \
+	-element_id $element_id \
 	-curriculum_id $curriculum_id \
 	-name $name \
 	-description [template::util::richtext::get_property contents $description] \
 	-desc_format [template::util::richtext::get_property format $description] \
-	-url $url \
+	-url [ad_decode $url "" "[curriculum::conn package_url]element-ave?curriculum_id=$curriculum_id&element_id=$element_id" $url] \
 	-enabled_p t
 
 } -edit_data {
@@ -112,7 +114,7 @@ ad_form -extend -name element -edit_request {
 	-name $name \
 	-description [template::util::richtext::get_property contents $description] \
 	-desc_format [template::util::richtext::get_property format $description] \
-	-url $url
+	-url [ad_decode $url "" "[curriculum::conn package_url]element-ave?curriculum_id=$curriculum_id&element_id=$element_id" $url]
 
 } -after_submit {
 
@@ -131,12 +133,12 @@ if { ![form is_valid element] } {
 	set position [parameter::get -package_id $package_id -parameter ExternalSiteBarPosition -default bottom]
 	set export_vars [export_vars -url {curriculum_id element_id position}]
 	
-	element set_properties element url -display_value \
-	    "<a href=\"[curriculum::conn package_url]ext?$export_vars\" target=\"_top\" title=\"[_ curriculum.Visit]\">$url</a>"
+	set link "<a href=\"[curriculum::conn package_url]ext?$export_vars\" target=\"_top\" title=\"[_ curriculum.Visit]\">$url</a>"
     } else {
-	element set_properties element url -display_value \
-	    "<a href=\"$url\">$url</a>"
+	set link "<a href=\"$url\">$url</a>"
     }
+
+    element set_properties element url -display_value $link
 }
 
 ad_return_template
