@@ -70,7 +70,7 @@ ad_form -name element \
 	{help_text "[_ curriculum.lt_This_text_should_desc_1]"}
 	{html {rows 10 cols 50 wrap soft}}
     }
-    {url:text(text),optional
+    {url:text(text),optional,nospell
 	{label "[_ curriculum.URL]"}
 	{help_text "[_ curriculum.lt_A_leading_http_indica]"}
 	{html {size 50}}
