@@ -581,7 +581,6 @@ ad_proc -private curriculum::notification_info::pretty_name {} {
 }
 
 
-# FIXME. 
 ad_proc -private curriculum::notification_info::get_notification_info {
     case_id
     object_id
@@ -603,14 +602,13 @@ ad_proc -private curriculum::notification_info::get_notification_info {
         status "Status"
     }
 
+    array set value [list \
+			 name "$curriculum(name)" \
+			 status "$curriculum(pretty_state)"]
+
     set fields {
         name
         status
-    }
-
-    array set value {
-        name "$curriculum(name)"
-        status "$curriculum(pretty_state)"
     }
 
     # Remove fields that should be hidden in this state
