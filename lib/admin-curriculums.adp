@@ -3,6 +3,8 @@
   <a href="/admin/site-map/parameter-set?@export_vars@">Package parameters</a>
   |
   <a href="/permissions/one?object%5fid=@package_id@">Package permissions</a>
+  |
+  <a href="../doc/user.html#TEACHER">Help</a>
   ]
 </p>
 <if @curriculums:rowcount@ ne 0>

@@ -6,6 +6,8 @@
   |
   <a href="@url@remove-from-bar?@return_url_export@">Remove all curriculums</a>
 </if>
+  |
+  <a href="doc/user.html#STUDENT">Help</a>
   ]
 </p>
 <table border="0" width="100%">
