@@ -11,17 +11,19 @@ ad_page_contract {
     logged_in_p:onevalue
 }
 
-# package_id may or may not be provided as an attribute with the <include> tag.
+# "package_id" may or may not be provided as an attribute with the <include> tag.
 if { ![info exists package_id] } {
     set package_id [curriculum::conn package_id]
+}
+
+# "template" may or may not be provided as an attribute with the <include> tag.
+if { ![info exists template] } {
     # Use the ordinary template (user-curriculums.adp).
     set template ""
 } else {
-    # package_id provided.
-    # Assume it came from the portlet <include> and use the "summary" template.
+    # Assume "template" came from the portlet <include> and calculate the community name, etc.
     set community_name [site_nodes::get_parent_name -package_id $package_id]
     set indent [string repeat "&nbsp;" 4]
-    set template /packages/curriculum/lib/summary
 }
 
 set logged_in_p [ad_conn user_id]
