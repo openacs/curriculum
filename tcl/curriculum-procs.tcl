@@ -16,13 +16,6 @@ namespace eval curriculum::format_log_title {}
 namespace eval curriculum::notification_info {}
 
 
-ad_proc -public curriculum::workflow_short_name {} {
-    Get the short name of the workflow for curriculums
-} {
-    return "curriculum"
-}
-
-
 ad_proc -public curriculum::package_key {} {
     return "curriculum"
 }
@@ -88,7 +81,7 @@ ad_proc -public curriculum::edit {
     -curriculum_id:required
     -name:required
     {-description ""}
-    {-desc_format "text/plain"}
+    {-desc_format "text/html"}
     {-comment ""}
     {-comment_format "text/html"}
     -action_id:required
@@ -105,7 +98,7 @@ ad_proc -public curriculum::edit {
     @param comment        Comment on the action taken on the curriculum.
     @param comment_format The format of the comment. Current formats are: text/enhanced text/plain text/html text/fixed-width
 
-    @return Nothing.
+    @return curriculum_id (just for convenience).
 
     @author Ola Hansson (ola@polyxena.net)
 
@@ -119,7 +112,7 @@ ad_proc -public curriculum::edit {
         set assignments([string range $name [string length $role_prefix] end]) $row($name)
         unset row($name)
     }
-    
+
     db_transaction {
 
 	# Update the curriculum info.
@@ -296,12 +289,17 @@ ad_proc -private curriculum::workflow_create {} {
                 }
                 editor {
                     pretty_name "Editor"
+                    callbacks {
+                        workflow.Role_PickList_CurrentAssignees
+                        curriculum.CurriculumOwner
+                        workflow.Role_AssigneeSubquery_RegisteredUsers
+                    }
                 }
                 publisher {
                     pretty_name "Publisher"
                     callbacks {
-                        curriculum.CurriculumOwner
                         workflow.Role_PickList_CurrentAssignees
+                        curriculum.CurriculumOwner
                         workflow.Role_AssigneeSubquery_RegisteredUsers
                     }
                 }
@@ -437,7 +435,7 @@ ad_proc -public curriculum::get_instance_workflow_id {
     Return the workflow_id for the instance (not package) workflow.
 } {
     if { [empty_string_p $package_id] } {
-        set package_id [conn package_id]
+        set package_id [conn -nocache package_id]
     }
 
     return [workflow::get_id \
@@ -588,66 +586,35 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     case_id
     object_id
 } {
-####
-    return [list /my/test/url one_line {details_list testing} notification_subject_tag]
-    ad_script_abort
-####
 
+    curriculum::get -curriculum_id $object_id -array curriculum
 
-    bug_tracker::bug::get -bug_id $object_id -array bug
+    set url "[ad_url][apm_package_url_from_id $curriculum(package_id)]curriculum-ave?[export_vars { { curriculum_id $curriculum(curriculum_id) } }]"
 
-    set url "[ad_url][apm_package_url_from_id $bug(project_id)]bug?[export_vars { { bug_number $bug(bug_number) } }]"
+    set notification_subject_tag "Curriculum"
 
-    bug_tracker::get_pretty_names -array pretty_names
-
-    set notification_subject_tag [db_string select_notification_tag {} -default {}]
-
-    set one_line "$pretty_names(Bug) #$bug(bug_number): $bug(summary)"
+    set one_line "$curriculum(name)"
 
     # Build up data structures with the form labels and values
     # (Note, this is something that the metadata system should be able to do for us)
 
     array set label {
-        summary "Summary"
+        name "Name"
         status "Status"
-        found_in_version "Found in version"
-        fix_for_version "Fix for version"
-        fixed_in_version "Fixed in version"
     }
-
-    set label(bug_number) "$pretty_names(Bug) #"
-    set label(component) "$pretty_names(Component)"
 
     set fields {
-        bug_number
-        component
+        name
+        status
     }
 
-    # keywords
-    foreach { category_id category_name } [bug_tracker::category_types] {
-        lappend fields $category_id
-        set value($category_id) [bug_tracker::category_heading \
-                                     -keyword_id [cr::keyword::item_get_assigned -item_id $bug(bug_id) -parent_id $category_id] \
-                                     -package_id $bug(project_id)]
-        set label($category_id) $category_name
+    array set value {
+        name "$curriculum(name)"
+        status "$curriculum(pretty_state)"
     }
-
-    lappend fields summary status 
-
-    if { [bug_tracker::versions_p -package_id $bug(project_id)] } {
-        lappend fields found_in_version fix_for_version fixed_in_version
-    }
-
-    set value(bug_number) $bug(bug_number)
-    set value(component)  $bug(component_name)
-    set value(summary) $bug(summary)
-    set value(status) $bug(pretty_state)
-    set value(found_in_version) [ad_decode $bug(found_in_version_name) "" "Unknown" $bug(found_in_version_name)]
-    set value(fix_for_version) [ad_decode $bug(fix_for_version_name) "" "Undecided" $bug(fix_for_version_name)]
-    set value(fixed_in_version) [ad_decode $bug(fixed_in_version_name) "" "Unknown" $bug(fixed_in_version_name)]
 
     # Remove fields that should be hidden in this state
-    foreach field $bug(hide_fields) {
+    foreach field $curriculum(hide_fields) {
         set index [lsearch -exact $fields $field]
         if { $index != -1 } {
             set fields [lreplace $fields $index $index]
