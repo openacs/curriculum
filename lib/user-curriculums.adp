@@ -1,10 +1,10 @@
 <if @elements:rowcount@ not nil>
 <p>
   [
-  <a href="@url@start-over">Refresh all curriculums</a>
+  <a href="@url@start-over?@return_url_export@">Refresh all curriculums</a>
 <if @logged_in_p@>
   |
-  <a href="@url@remove-from-bar">Remove all curriculums</a>
+  <a href="@url@remove-from-bar?@return_url_export@">Remove all curriculums</a>
 </if>
   ]
 </p>
@@ -31,19 +31,19 @@
     </td>
     <td width="15%">
       <if @elements.completed_p@>
-        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&refresh_p=1">Retake</a>
+        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&refresh_p=1&@return_url_export@">Retake</a>
       </if>
       <else>
-        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@">Resume</a>
+        <a href="@url@add-to-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@">Resume</a>
       </else>
       </if>
       <else>
         <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
-        <a href="@url@start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
+        <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@">Refresh</a>
         |
-        <a href="@url@remove-from-bar?curriculum_id=@elements.curriculum_id@">
+        <a href="@url@remove-from-bar?curriculum_id=@elements.curriculum_id@&@return_url_export@">
           <if @elements.completed_p@>Remove</if><else>Drop</else>
         </a>
       </else>
@@ -52,7 +52,7 @@
       <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
-      <a href="@url@start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
+      <a href="@url@start-over?curriculum_id=@elements.curriculum_id@&@return_url_export@">Refresh</a>
     </else>
     </td>
   </tr>

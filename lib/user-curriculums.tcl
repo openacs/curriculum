@@ -25,4 +25,7 @@ set position [parameter::get -package_id $package_id -parameter ExternalSiteBarP
 # into the dotLRN portlet.
 set url [lindex [site_node::get_url_from_object_id -object_id $package_id] 0]
 
+set return_url [ad_return_url]
+set return_url_export [export_vars -url return_url]
+
 ad_return_template
