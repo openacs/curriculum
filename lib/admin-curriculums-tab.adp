@@ -3,6 +3,7 @@
 <table width="0">
   <tr>
     <td>
+      #curriculum.lt_Show_curriculums_in_p#
       <tabstrip id="states"></tabstrip>
     </td>
   </tr>

@@ -1,6 +1,6 @@
 <p>
   [
-  <a href="/admin/site-map/parameter-set?@export_vars@" title="#curriculum.lt_Set_site-wide_prefere#">#curriculum.Package_parameters#</a>
+  <a href="/shared/parameters?@export_vars@" title="#curriculum.lt_Set_site-wide_prefere#">#curriculum.Package_parameters#</a>
   |
   <a href="/permissions/one?object%5fid=@package_id@" title="#curriculum.lt_Administer_user_privi#">#curriculum.Package_permissions#</a>
   |
