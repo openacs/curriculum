@@ -19,6 +19,7 @@ as
         description in varchar default null,
         desc_format in cu_elements.desc_format%TYPE,
         url in cu_elements.url%TYPE,
+        external_p in cu_elements.external_p%TYPE default 'f',
         enabled_p in cu_elements.enabled_p%TYPE default 't',
         sort_key in cu_elements.sort_key%TYPE default null,
         object_type in acs_objects.object_type%TYPE default 'cu_element',
@@ -56,6 +57,7 @@ as
         description in varchar default null,
         desc_format in cu_elements.desc_format%TYPE,
         url in cu_elements.url%TYPE,
+        external_p in cu_elements.external_p%TYPE default 'f',
         enabled_p in cu_elements.enabled_p%TYPE default 't',
         sort_key in cu_elements.sort_key%TYPE default null,
         object_type in acs_objects.object_type%TYPE default 'cu_element',
@@ -87,9 +89,9 @@ as
         end if;
 
         insert into cu_elements
-        (element_id, curriculum_id, name, description, desc_format, url, enabled_p, sort_key)
+        (element_id, curriculum_id, name, description, desc_format, url, external_p, enabled_p, sort_key)
         values
-        (v_element_id, curriculum_id, name, description, desc_format, url, enabled_p, v_sort_key);
+        (v_element_id, curriculum_id, name, description, desc_format, url, external_p, enabled_p, v_sort_key);
 
         return v_element_id;
     end new;

@@ -37,10 +37,24 @@ ad_proc -public curriculum::element::new {
     @author Ola Hansson (ola@polyxena.net)
 
 } {
+    # Check for external URLs.
+    if { [string equal -length 7 "http://" $url] } {
+	set external_p t
+    } else {
+	# Try to determine if the URL belongs to another subsite.
+	array set node [site_node::get_from_url -url $url]
+	
+	# FIXME. This condition does not tell the whole truth ...
+	if { [string equal -length [string length $node(url)] $node(url) $url] } {
+	    set external_p f
+	} else {
+	    set external_p t
+	}
+    }
     
     # Prepare the variables for instantiation.
     set extra_vars [ns_set create]
-    oacs_util::vars_to_ns_set -ns_set $extra_vars -var_list {element_id curriculum_id name description desc_format url enabled_p sort_key}
+    oacs_util::vars_to_ns_set -ns_set $extra_vars -var_list {element_id curriculum_id name description desc_format url external_p enabled_p sort_key}
     
     # Instantiate the curriculum element.
     return [package_instantiate_object -extra_vars $extra_vars cu_element]

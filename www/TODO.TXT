@@ -8,9 +8,9 @@ TODO:
 - Assignees and notifications in workflow.
 - Documentation.
 - Optimize bar and admin page queries (compare with the
-  user page query!).
+  user page query!). 
 - Fix desc truncation and the "more" link on index page.
-- Fix question mark in the curriculum bar.
+  (dbms_lob.instr() doesn't return the substr on Oracle ...)
 - Host problem in ext.tcl and remove-from-bar.tcl
   ("hostname" vs. "localhost").
 - Deleting the curriculum package when both curriculums
@@ -50,3 +50,9 @@ DONE:
   "conn" just returns {} without a curriculum instance mounted.
 - I believe that the sort order is wrong in the "bar query" -
   or am I being fooled by a caching issue?
+- Fix question mark in the curriculum bar.
+- Normally, flushing of the cache should be done globally -
+  not per user and instance!
+  ("util_memoize_flush_regexp" is pretty expensive considering
+  that each user has one cache per instance, so we provided
+  a link instead, that the admin should hit when done admin'ing.)

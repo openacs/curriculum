@@ -110,13 +110,13 @@ as
             from   cu_elements
             where  curriculum_id = cu_curriculum.del.curriculum_id;
     begin
+        delete from acs_permissions
+        where  object_id = cu_curriculum.del.curriculum_id;
+
         -- Delete all elements in the curriculum.
         for v_element_val in c_element_cur loop
             cu_element.del(v_element_val.element_id);
         end loop;
-
-        delete from acs_permissions
-        where  object_id = cu_curriculum.del.curriculum_id;
 
         delete from cu_curriculums
         where  curriculum_id = cu_curriculum.del.curriculum_id;

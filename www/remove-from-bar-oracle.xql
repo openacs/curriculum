@@ -17,4 +17,17 @@
         </querytext>
     </fullquery>
 
+    <fullquery name="desired_curriculums">
+        <querytext>
+            select   curriculum_id
+            from     cu_curriculums
+            where    package_id = :package_id
+            MINUS
+            select   curriculum_id
+            from     cu_user_curriculum_map
+            where    user_id = :user_id
+            and      package_id = :package_id
+        </querytext>
+    </fullquery>
+
 </queryset>

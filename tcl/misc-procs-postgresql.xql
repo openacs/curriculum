@@ -21,45 +21,32 @@
     <fullquery name="curriculum::enabled_elements.element_ns_set_list">
         <querytext>
 
---
--- Rewrite this query to look more like the Oracle version.
---
-
-           (select   cee.element_id,
+            select   cee.element_id,
                      cc.curriculum_id,
                      cc.name as curriculum_name,
                      cee.url,
+                     cee.external_p,
                      cee.name
-            from     cu_curriculums cc left outer join
-                     cu_elements_enabled cee using (curriculum_id),
+            from    (select   curriculum_id
+                     from     cu_curriculums
+                     where    package_id = :package_id
+                     EXCEPT
+                     select   curriculum_id
+                     from     cu_user_curriculum_map
+                     where    user_id = :user_id
+                     and      package_id = :package_id) desired,
                      workflow_cases cas,
-                     workflow_case_fsm cfsm
+                     workflow_case_fsm cfsm,
+                     cu_curriculums cc,
+                     cu_elements_enabled cee
             where    cc.package_id = :package_id
+            and      desired.curriculum_id = cc.curriculum_id
+            and      cc.curriculum_id = cee.curriculum_id
             and      cas.object_id = cc.curriculum_id
             and      cfsm.case_id = cas.case_id
             and      cfsm.current_state = :state_id
             order by cc.sort_key,
-                     cee.sort_key)
-
-            EXCEPT
-
-           (select   cee.element_id,
-                     cc.curriculum_id,
-                     cc.name as curriculum_name,
-                     cee.url,
-                     cee.name
-            from     (cu_user_curriculum_map ucm inner join
-                     cu_curriculums cc using (curriculum_id)) left outer join
-                     cu_elements_enabled cee using (curriculum_id),
-                     workflow_cases cas,
-                     workflow_case_fsm cfsm
-            where    cc.package_id = :package_id
-            and      cas.object_id = cc.curriculum_id
-            and      cfsm.case_id = cas.case_id
-            and      cfsm.current_state = :state_id
-            and      ucm.user_id = :user_id
-            order by cc.sort_key,
-                     cee.sort_key)
+                     cee.sort_key
 
         </querytext>
     </fullquery>
@@ -79,7 +66,8 @@
              substring(cee.description from 1 for :truncation_length) as element_desc,
              case when length(cee.description) > :truncation_length
                   then 1 else 0 end as elem_desc_trunc_p,
-             cee.url
+             cee.url,
+             cee.external_p
     from     (select   cc.*
               from     cu_curriculums cc,
                        workflow_cases cas,

@@ -4,6 +4,9 @@
 </if>
 @debug_output;noquote@
 
+<p align="right">
+  <a href="thorough-flush">I'm done now, update the bar for everyone! (Use sparingly)</a>
+</p>
 <p>
   [
   <a href="/admin/site-map/parameter-set?package%5fid=@package_id@">Package parameters</a>
@@ -34,16 +37,21 @@
       @curriculums.pretty_state@
     </td>
     <td width="15%">
-      WF ACTIONS
-      |
-      <a href="curriculum-delete?@curriculums.curriculum_id_export@">delete</a>
+      [WF Actions]
+      <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('Are you sure you want to delete this curriculum?');" title="Delete">
+        <img src="../../shared/images/Delete16.gif" border="0" width="16" height="16">
+      </a>
     </td>
     <td width="5%">
-    <if @curriculums.curriculum_sort_order@ lt @curriculum_count@>
-      <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=down">down</a>
-    </if>
     <if @curriculums.rownum@ gt 1>
-      <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=up">up</a>
+      <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=up" alt="^" title="Move up">
+        <img src="../graphics/up.gif" border="0" width="15" height="15">
+      </a>
+    </if>
+    <if @curriculums.curriculum_sort_order@ lt @curriculum_count@>
+      <a href="curriculum-swap?sort_order=@curriculums.curriculum_sort_order@&direction=down" alt="v" title="Move down">
+        <img src="../graphics/down.gif" border="0" width="15" height="15">
+      </a>
     </if>
     </td>
   </tr>
@@ -75,16 +83,21 @@
     </td>
     <td width="5%">
       <a href="element-enable?@curriculums.element_id_export@">Enable</a>
-      |
-      <a href="element-delete?@curriculums.element_id_export@">Delete</a>
+      <a href="element-delete?@curriculums.element_id_export@" onclick="return confirm('Are you sure you want to delete this element?');" title="Delete">
+        <img src="../../shared/images/Delete16.gif" border="0" width="16" height="16">
+      </a>
     </else>
     </td>
     <td width="20%">
-    <if @curriculums.groupnum_last_p@ false>
-      <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=down">down</a>
-    </if>
     <if @curriculums.groupnum@ gt 1>
-      <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=up">up</a>
+      <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=up" alt="^" title="Move up">
+        <img src="../graphics/up.gif" border="0" width="15" height="15">
+      </a>
+    </if>
+    <if @curriculums.groupnum_last_p@ false>
+      <a href="element-swap?@curriculums.curriculum_id_export@&sort_order=@curriculums.element_sort_order@&direction=down" alt="v" title="Move down">
+        <img src="../graphics/down.gif" border="0" width="15" height="15">
+      </a>
     </if>
     </td>
   </tr>

@@ -18,4 +18,9 @@ set logged_in_p [ad_conn user_id]
 # Upvar the "elements" multirow datasource for the curriculum bar.
 curriculum::get_bar -bar_p 0
 
+set package_id [curriculum::conn package_id]
+
+# Top, bottom, left, right.
+set position [parameter::get -package_id $package_id -parameter ExternalSiteBarPosition -default bottom]
+
 ad_return_template

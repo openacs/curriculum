@@ -7,7 +7,7 @@ ad_page_contract {
     @cvs-id $Id$
 
 } {
-    curriculum_id
+    curriculum_id:integer,optional
     {return_url "."}
 }
 
@@ -17,14 +17,25 @@ set package_id [curriculum::conn package_id]
 # "cu_user_curriculum_map", which holds the row(s) the user DOESN'T want.
 
 if [set user_id [ad_conn user_id]] {    
+    
+    if { [info exists curriculum_id] } {
 
-    db_transaction {
+	# Just remove the this one curriculum.
 	db_dml user_curriculum_map_insert {*SQL*}
 	
-	# Force the bat to update.
-	curriculum::elements_flush
+    } else {
+
+	db_foreach desired_curriculums {*SQL*} {
+	    db_dml user_curriculum_map_insert {*SQL*}
+	} if_no_rows {
+	    # Don't do a thing!
+	}
+
     }
 
+    # Force the bar to update.
+    curriculum::elements_flush
+    
 }
 
 ns_returnredirect $return_url

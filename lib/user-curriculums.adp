@@ -49,7 +49,7 @@
       </else>
     </if>
     <else>
-        Ongoing/Completed
+      <if @elements.completed_p@>Completed</if><else>Ongoing</else>
     </td>
     <td width="15%">
       <a href="start-over?curriculum_id=@elements.curriculum_id@">Refresh</a>
@@ -74,13 +74,19 @@
       Visited
     </td>
     <td width="15%">
-      <a href="@elements.url@">Revisit</a>
+      <if @elements.external_p@>
+        <a href="ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@">
+      </if>
+      <else><a href="@elements.url@"></else>Revisit</a>
     </if>
     <else>
       Unvisited
     </td>
     <td width="15%">
-      <a href="@elements.url@">Visit</a>
+      <if @elements.external_p@>
+        <a href="ext?curriculum_id=@elements.curriculum_id@&element_id=@elements.element_id@&position=@position@">
+      </if>
+      <else><a href="@elements.url@"></else>Visit</a>
     </else>
     </td>
   </tr>

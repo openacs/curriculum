@@ -26,6 +26,12 @@ create table cu_elements (
     url                            varchar(400)
                                    constraint cu_elements_url_nn
                                    not null,
+    external_p                     char(1)
+                                   default 'f'
+                                   constraint cu_elements_external_p_nn
+                                   not null
+                                   constraint cu_elements_external_p_ck
+                                   check (external_p in ('t','f')),
     enabled_p                      character(1)
                                    default 't'
                                    constraint cu_elements_enabled_p_nn

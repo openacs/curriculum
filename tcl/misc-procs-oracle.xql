@@ -26,6 +26,7 @@
                      cc.curriculum_id,
                      cc.name as curriculum_name,
                      cee.url,
+                     cee.external_p,
                      cee.name
             from    (select   curriculum_id
                      from     cu_curriculums
@@ -56,17 +57,18 @@
 
     select   published.curriculum_id,
              published.name as curriculum_name,
-             dbms_lob.instr(published.description,1,:truncation_length) as curriculum_desc,
+             dbms_lob.substr(published.description,:truncation_length,1) as curriculum_desc,
              case when dbms_lob.getlength(published.description) > :truncation_length
                   then 1 else 0 end as curr_desc_trunc_p,
              case when ucm.curriculum_id is null
                   then 0 else 1 end as undesired_p,
              cee.element_id,
              cee.name as element_name,
-             dbms_lob.instr(cee.description,1,:truncation_length) as element_desc,
+             dbms_lob.substr(cee.description,:truncation_length,1) as element_desc,
              case when dbms_lob.getlength(cee.description) > :truncation_length
                   then 1 else 0 end as elem_desc_trunc_p,
-             cee.url
+             cee.url,
+             cee.external_p
     from     (select   cc.*
               from     cu_curriculums cc,
                        workflow_cases cas,

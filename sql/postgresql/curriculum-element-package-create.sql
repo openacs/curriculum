@@ -4,7 +4,7 @@
 -- @creation-date 2003-05-23
 -- @cvs-id $Id$
 
-select define_function_args('cu_element__new','element_id,curriculum_id,name,description,desc_format,url,enabled_p,sort_key,object_type;cu_element,creation_date,creation_user,creation_ip,context_id');
+select define_function_args('cu_element__new','element_id,curriculum_id,name,description,desc_format,url,external_p,enabled_p,sort_key,object_type;cu_element,creation_date,creation_user,creation_ip,context_id');
 
 create or replace function cu_element__new (
     integer,     -- element_id
@@ -13,6 +13,7 @@ create or replace function cu_element__new (
     text,        -- description
     varchar,     -- desc_format
     varchar,     -- url
+    char,        -- external_p
     char,        -- enabled_p
     integer,     -- sort_key
     varchar,     -- object_type
@@ -28,13 +29,14 @@ declare
     p_description                  alias for $4;
     p_desc_format                  alias for $5;
     p_url                          alias for $6;
-    p_enabled_p                    alias for $7;  -- default ''t''
-    p_sort_key                     alias for $8;  -- default null
-    p_object_type                  alias for $9;  -- default ''cu_element''
-    p_creation_date                alias for $10; -- default current_timestamp
-    p_creation_user                alias for $11; -- default null
-    p_creation_ip                  alias for $12; -- default null
-    p_context_id                   alias for $13; -- default null
+    p_external_p                   alias for $7;  -- default ''f''
+    p_enabled_p                    alias for $8;  -- default ''t''
+    p_sort_key                     alias for $9; -- default null
+    p_object_type                  alias for $10; -- default ''cu_element''
+    p_creation_date                alias for $11; -- default current_timestamp
+    p_creation_user                alias for $12; -- default null
+    p_creation_ip                  alias for $13; -- default null
+    p_context_id                   alias for $14; -- default null
     v_element_id cu_elements.element_id%TYPE;
     v_sort_key cu_elements.sort_key%TYPE;
 begin
@@ -57,9 +59,9 @@ begin
     end if;
  
     insert into cu_elements
-        (element_id, curriculum_id, name, description, desc_format, url, enabled_p, sort_key)
+        (element_id, curriculum_id, name, description, desc_format, url, external_p, enabled_p, sort_key)
     values
-        (v_element_id, p_curriculum_id, p_name, p_description, p_desc_format, p_url, p_enabled_p, v_sort_key);
+        (v_element_id, p_curriculum_id, p_name, p_description, p_desc_format, p_url, p_external_p, p_enabled_p, v_sort_key);
 
     raise NOTICE ''Adding element - %'',p_name;
 

@@ -184,7 +184,7 @@ ad_proc -private curriculum::get_package_id_from_subsite_id {
 	ad_return_error "Could not get child package_id" \
 	    "This could be because you have mounted more than one instance 
 of the Curriculum package in a subsite. Curriculum was designed to only 
-mount one instance per acs-subsite. It could also be a bug in the code.
+be mounted once per acs-subsite. Please visit the <a href=\"/admin/site-map/\">Site-Map</a> and unmount the extra instance. However, it could also be a bug in the code.
 <p>
 Here is what the database said:
 <p>
@@ -376,6 +376,7 @@ ad_proc -private curriculum::user_elements {
 
 
 ad_proc -public curriculum::elements_flush {
+    {-thorough:boolean 0}
     {-package_id ""}
     {-user_id ""}
 } {
@@ -386,6 +387,12 @@ ad_proc -public curriculum::elements_flush {
 	set package_id [conn package_id]
     }
 
+    if { $thorough_p } {
+	# Flush the cache for all users (including non-logged in) in this package_id.
+	util_memoize_flush_regexp [list curriculum::enabled_elements -package_id $package_id]
+	return
+    }
+    
     if { [empty_string_p $user_id] } {
 	set user_id [ad_conn user_id]
     }
@@ -485,7 +492,7 @@ ad_proc -private curriculum::get_bar_internal {
 	    set this_curriculum $info(curriculum_id)
 	    
 	    foreach element_id $element_ids {
-		lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) external_p $external_p($element_id) completed_p $completed_p]
+		lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) completed_p $completed_p]
 	    }
 	    
 	    # Empty the list.
@@ -506,19 +513,11 @@ ad_proc -private curriculum::get_bar_internal {
 	    set completed_p 0
 	}
 
-	# FIXME. Should be performed by the db!
-	# Check for external URLs.
-	if { [string equal -length 7 "http://" $info(url)] } {
-	    set external_p(${info(element_id)}) 1
-	} else {
-	    set external_p(${info(element_id)}) 0
-	}
-
     }
     
     # Play the recording for the last curriculum.
     foreach element_id $element_ids {
-	lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) external_p $external_p($element_id) completed_p $completed_p]
+	lappend manipulated_rows [concat $info_row($element_id) checked_p $checked_p($element_id) completed_p $completed_p]
     }
     
     # Let's turn this list into a multirow datasource in the <include>
@@ -667,7 +666,7 @@ ad_proc -public curriculum::curriculum_filter {
     This will run after a registered url has been served.
 } {
     # FIXME. Remove the row below and uncomment the catch statement when the package is published.
-    curriculum_filter_internal $args $why
+    curriculum_filter_internal $args $why    
     
     #       we don't want an error in the script to interrupt page service
     #	if [catch { curriculum_filter_internal $args $why } errmsg] {
@@ -724,33 +723,6 @@ ad_proc -private curriculum::curriculum_filter_internal {
 		[get_cookie_name] [curriculum_progress_cookie_value -package_id $package_id]
 	}
     }
-}
-
-
-ad_proc -public curriculum::element_filter {
-    conn
-    package_id
-    why
-} {
-    get_bar -bar_p 1 -package_id $package_id
-
-    set package_url [conn package_url]
-    set return_url_export [export_vars -url [set return_url [ad_conn url]]]
-    set logged_in_p [ad_conn user_id]
-
-    set code [template::adp_compile -file [acs_package_root_dir curriculum]/lib/bar.adp]
-    
-    # Return the HTML chunk.
-    ns_write [template::adp_eval code]
-
-#template::adp_append_code "append __adp_output \[$command\]"
-#  set command "template::adp_parse"
-#  append command " \[template::util::url_to_file \"$src\" \"\$__adp_stub\"\]"
-#  append command " \[list"
-
-
-
-    return "filter_ok"
 }
 
 

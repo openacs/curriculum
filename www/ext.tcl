@@ -9,8 +9,14 @@ ad_page_contract {
 } {
     element_id:integer
     curriculum_id:integer
-    return_url
+    {return_url "."}
+    {position "bottom"}
 }
+# The positions are:
+# "top" (horizontal)
+# "bottom" (horizontal)
+# "left" (vertical).
+# "right" (vertical).
 
 set package_id [curriculum::conn package_id]
 
@@ -46,10 +52,4 @@ if { [set user_id [ad_conn user_id]] } {
     db_dml insert_into_map_table {*SQL*}
 }
 
-#ad_returnredirect $destination_url
-
-array set external_page [ad_httpget -url $destination_url]
-
-set page $external_page(page)
-set status $external_page(status)
-set modified $external_page(modified)
+ad_return_template
