@@ -7,11 +7,11 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>f</singleton-p>
     
-    <version name="0.4d" url="http://openacs.org/repository/download/apm/curriculum-0.4d.apm">
+    <version name="0.5d1" url="http://openacs.org/repository/download/apm/curriculum-0.5d1.apm">
         <owner url="mailto:ola@polyxena.net">Ola Hansson</owner>
         <vendor url="http://www.polyxena.net">Polyxena</vendor>
 
-        <provides url="curriculum" version="0.4d"/>
+        <provides url="curriculum" version="0.5d1"/>
         <requires url="workflow" version="0.2d2"/>
 
         <callbacks>
