@@ -76,7 +76,7 @@ NAME="ADMIN"
 ><P
 >As a site wide admin (SWA) there are a few things that you should be aware of when setting up an instance of the Curriculum module. The package essentially offers services to students and teachers of online courses. The students are offered a curriculum bar, a navigation and tracking interface, that is to be displayed on all master-templated pages of the site, or at least the subsite, where the Curriculum instance is mounted. You must facilitate this. The teachers that design courses use a publishing workflow. Unless you want to take on the responsibility for administrating the work, you must grant admin rights on the instance to a head teacher.</P
 ><P
->Hence, after installing and mounting the Curriculum package (you can mount one instance of Curriculum per subsite) there are a few things left for you to do. First, make sure to facilitate the proper display of the curriculum bar widget. There are two versions of the curriculum bar to choose from: a horizontal and a vertical course menu. But the curriculum bar widget won't be displayed at all until you have included it manually in the master template. You will need to add the following curriculum bar include code at the desired place in the default-master or other template of preference, and perhaps write some markup code around it.</P
+>Hence, after installing and mounting the Curriculum package (you can mount one instance of Curriculum per subsite) - and restarting the server - there are a few things left for you to do. First, make sure to facilitate the proper display of the curriculum bar widget. There are two versions of the curriculum bar to choose from: a horizontal and a vertical course menu. But the curriculum bar widget won't be displayed at all unless it is included in the master template. If it isn't, you will need to add the following curriculum bar include code at the desired place in the site-master or other template of preference, and perhaps write some markup code around it.</P
 ><P
 >Add this to the template's TCL file:</P
 ><P
@@ -88,7 +88,7 @@ CLASS="BLOCKQUOTE"
 ><PRE
 CLASS="SCREEN"
 ># Curriculum bar
-set curriculum_bar_p [apm_package_installed_p curriculum]</PRE
+set curriculum_bar_p [llength [site_node::get_children -all -filters { package_key "curriculum" } -node_id $subsite_node_id]]</PRE
 ></BLOCKQUOTE
 ></P
 ><P

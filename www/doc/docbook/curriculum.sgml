@@ -29,18 +29,18 @@
     <sect2 id="teacher">
       <title>Teacher's Guide</title>
       <para>The Curriculum module provides online teachers with a handy educational tool. It allows you to set up curriculums made up of learning elements that are URLs found anywhere online. In order to manage this course design process, a publishing workflow aids the administration of curriculums in the making. While the teachers focus on designing courses, the web publisher is ultimately responsible for determining when a course is ready for public viewing, and when it is time to archive it. Hence Curriculum is administered via a content management system.</para>
-      <para>The Curriculum admin page presents an overview of all set-up curriculums from a workflow perspective. Here you will get information about which publishing state each curriculum and its learning elements are in. If you click on a curriculum's name, you will (apart from the data about the curriculum) also be presented with those administrative actions you are allowed to take, depending on your assigned role in the workflow. On the admin page you use the tabs at the top to filter out a view of only those curriculums that are in a particular publishing state of your interest. The workflow states that are implemented in a default setup of Curriculum are: Created, Edited, Rejected, Published, and Archived.</para>
-      <para>The first thing to do is to create a new curriculum. Simply follow the "Add a curriculum" link, fill in the form, and submit it. Now, a curriculum is merely the container of the actual learning resources: the URL elements. The "Add an element" link found in the created curriculum will take you to a form where you fill in the data about a learning resource. Repeat this operation for every element in your curriculum. If you wish to change the internal order of the elements in the curriculum, just click on the arrows in the "Move" column in the curriculum table. If you have created several curriculums, the order of these can also be altered in the same way. In order for you to get notifications of administrative actions taken on a curriculum, just click on the "Watch" link in the "Actions" column of the curriculums you are interested in.</para>
-      <para>The publisher will get notified about the created curriculum. If you are a publisher, you will be presented with the option of publishing the created (or edited) curriculum when you look at it in a detailed view. A published curriculum will go live; all users will be presented with it. But the users' individual curriculum bars are not updated with the new curriculum until you click on the "I'm done now, update the bar for everyone!" link to the top right of the admin page. The reason why you have to manually make sure that this happens is because you only want your very final edition to show. Also, updating users' individual bars is a rather heavy computer operation; if this were done automatically every time a curriculum or element was edited or moved, a lot of unnecessary computer processing would take place.</para>
+      <para>The Curriculum admin page presents an overview of all set-up curriculums from a workflow perspective. Here you will get information about which publishing state each curriculum and its learning elements are in. If you click on a curriculum's name, you will (apart from the data about the curriculum) also be presented with those administrative actions you are allowed to take, depending on your assigned role in the workflow. On the admin page you use the tabs at the top to filter out a view of only those curriculums that are in a particular publishing state of your interest. The workflow states that are implemented in a default setup of Curriculum are: Pending, Edited, Rejected, Published, and Archived.</para>
+      <para>The first thing to do is to create a new curriculum. Simply follow the "Add a curriculum" link, fill in the form, and submit it. Now, a curriculum is merely the container of the actual learning resources: the URL elements. The "Add an element" link found in the created curriculum will take you to a form where you fill in the data about a learning resource. If you don't state a URL, the element will consist solely of its metadata. Then the element URL in the curriculum bar will lead to the element info page, just like the info link. Repeat this operation for every element in your curriculum. If you wish to change the internal order of the elements in the curriculum, just click on the arrows in the "Move" column in the curriculum table. If you have created several curriculums, the order of these can also be altered in the same way.</para>
+      <para>In order for you to get notifications of administrative actions taken on a curriculum, just click on the "Watch" link in the "Actions" column of the curriculums you are interested in. Then you will get an email report whenever someone has performed an action in the publishing workflow of the curriculum. The publisher will get notified about the created curriculum. If you are a publisher, you will be presented with the option of publishing the created (or edited) curriculum when you look at it in a detailed view. A published curriculum will go live; all users will be presented with it.</para>
     </sect2>
   </sect1>
   <sect1 id="admin">
     <title>Administrator's Guide</title>
     <para>As a site wide admin (SWA) there are a few things that you should be aware of when setting up an instance of the Curriculum module. The package essentially offers services to students and teachers of online courses. The students are offered a curriculum bar, a navigation and tracking interface, that is to be displayed on all master-templated pages of the site, or at least the subsite, where the Curriculum instance is mounted. You must facilitate this. The teachers that design courses use a publishing workflow. Unless you want to take on the responsibility for administrating the work, you must grant admin rights on the instance to a head teacher.</para>
-    <para>Hence, after installing and mounting the Curriculum package (you can mount one instance of Curriculum per subsite) there are a few things left for you to do. First, make sure to facilitate the proper display of the curriculum bar widget. There are two versions of the curriculum bar to choose from: a horizontal and a vertical course menu. But the curriculum bar widget won't be displayed at all until you have included it manually in the master template. You will need to add the following curriculum bar include code at the desired place in the default-master or other template of preference, and perhaps write some markup code around it.</para>
+    <para>Hence, after installing and mounting the Curriculum package (you can mount one instance of Curriculum per subsite) - and restarting the server - there are a few things left for you to do. First, make sure to facilitate the proper display of the curriculum bar widget. There are two versions of the curriculum bar to choose from: a horizontal and a vertical course menu. But the curriculum bar widget won't be displayed at all unless it is included in the master template. If it isn't, you will need to add the following curriculum bar include code at the desired place in the site-master or other template of preference, and perhaps write some markup code around it.</para>
     <para>Add this to the template's TCL file:</para>
     <para><blockquote><screen><![CDATA[# Curriculum bar
-set curriculum_bar_p [apm_package_installed_p curriculum]]]></screen></blockquote></para>
+set curriculum_bar_p [llength [site_node::get_children -all -filters { package_key "curriculum" } -node_id $subsite_node_id]]]]></screen></blockquote></para>
     <para>Add this to the template's ADP file:</para>
     <para><blockquote><screen><![CDATA[<!-- Start curriculum bar -->
 <if @curriculum_bar_p@><include src="/packages/curriculum/lib/bar" /></if>
@@ -50,71 +50,9 @@ set curriculum_bar_p [apm_package_installed_p curriculum]]]></screen></blockquot
   <sect1 id="dev">
     <title>Developer's Guide</title>
     <para>The usage of Curriculum has been extended quite a bit from the OpenACS 3 version, which wasn't subsite aware and didn't allow for several curriculums to be presented at once. The new expanded Curriculum module has also been adapted into a .LRN applet and portlet. One nice feature that has been kept from the original module is the ability to serve curriculums to both logged-in users and casual surfers. Non-registered users will get a cookie that keeps track of the curriculum progress. Logged-in users get their progress updated in the database, and are thus able to continue where they were last even if they are not using their own computer.</para>
-    <para>The definition of the curriculums and their elements (and respective metadata) is entered via ad_forms into the <computeroutput>cu_curriculums</computeroutput> and the <computeroutput>cu_elements</computeroutput> tables. Elements, not curriculums, are actually the most fundamental objects that the Curriculum package works with. Presenting the elements as belonging to a certain curriculum, in turn belonging to a certain instance, is more or less a matter of display finesses. The curriculum and element definition tables are cached per instance, and the cache gets flushed whenever a curriculum or element is modified.</para>
-    <para>The tracking of users' learning progress is handled with a registered filter that notes whenever a user visits a URL that has been defined as a learning element in a curriculum. If the URL is external to the subsite that hosts the Curriculum instance, it will be modified in the bar so as to lead to a "clickthrough" script where the tracking takes place as the web page is delivered. In order to display the curriculum bar on external pages too, these are presented with frames. A user's individual curriculum progress is set and updated in a cookie. Logged-in users get their learning progress recorded in the <computeroutput>cu_user_element_map.</computeroutput></para>
-    <para>In order for logged-in users to have more control over which curriculums to follow and which not to, the <computeroutput>cu_user_curriculum_map</computeroutput> keeps track of which curriculums a user wants displayed. This table is cached per user. The cache is only flushed for all users at the specific request of a curriculum administrator who is done modifying the curriculums and elements in an instance. The administrator will want do this from time to time in order to update the curriculum bar of all users of the Curriculum service so as to reflect altered curriculum or element definitions.</para>
-    <para>Curriculum uses the Workflow package for managing the process of publishing curriculums. A default workflow is automatically created when installing the Curriculum package. Every instance will use an individual copy of this default workflow. If you are dissatisfied with the default workflow template and wish to create another one of your own liking, please refer to the Workflow Developer's Guide. The default workflow of Curriculum goes as follows:</para>
-    <para><blockquote><screen>
-* Roles:
-
-{Author}
-{Editor}
-{Publisher}
-
-* Actions:
-
-[Create]
-[Edit]
-[Reject]
-[Publish]
-[Archive]
-[Comment]
-
-* States:
-
-(Created)
-(Edited)
-(Rejected)
-(Published)
-(Archived)
-
-* Cases:
-
-In-flow:
-
-The {Editor} and {Publisher} are required to act on some states, and will be notified when this is so.
-
-When the object is in the states (Created) or (Rejected) the {Editor} is required to [Edit].
-
-(Created) -> [Edit] -> (Edited)
-(Rejected) -> [Edit] -> (Edited)
-
-When the object is in the state (Edited) the {Publisher} is required to [Reject] or [Publish].
-
-(Edited) -> [Reject] -> (Rejected)
-(Edited) -> [Publish] -> (Published)
-
-Out-of-flow: 
-
-The {Author}, {Editor}, and {Publisher} are free to act in different ways on different states.
-
-The {Author} can always [Create] objects, and then the {Editor} is required to [Edit].
-
-[Create] -> (Created)
-
-The {Editor} can always [Edit] objects, and then the {Publisher} is required to either [Reject] or [Publish].
-
-(Edited) -> [Edit] -> (Edited)
-(Published) -> [Edit] -> (Edited)
-(Archived) -> [Edit] -> (Edited)
-
-The {Publisher} can always [Archive] objects that are (Published), and [Publish] objects that are (Archived).
-
-(Published) -> [Archive] -> (Archived)
-(Archived) -> [Publish] -> (Published) 
-
-All roles can [Comment] the workflow process without this having any effect on the states.
-      </screen></blockquote></para>
+    <para>The definition of the curriculums and their elements (and respective metadata) is entered via ad_forms into the <computeroutput>cu_curriculums</computeroutput> and the <computeroutput>cu_elements</computeroutput> tables. Elements, not curriculums, are actually the most fundamental objects that the Curriculum package works with. Presenting the elements as belonging to a certain curriculum, in turn belonging to a certain instance, is more or less a matter of display finesses. The curriculum and element definition tables are cached per instance, and the cache gets flushed via a callback whenever a curriculum or element is modified by an editor or publisher.</para>
+    <para>The tracking of users' learning progress is handled with a registered filter that notes whenever a user visits a URL that has been defined as a learning element in a curriculum. If the URL is external to the subsite that hosts the Curriculum instance, it will be modified in the bar so as to lead to a "clickthrough" script where the tracking takes place as the web page is delivered. In order to display the curriculum bar on external pages too, these are presented with frames. A user's individual curriculum progress is set and updated in a cookie. Logged-in users get their learning progress recorded in the <computeroutput>cu_user_element_map</computeroutput>. In order for logged-in users to have more control over which curriculums to follow and which not to, the <computeroutput>cu_user_curriculum_map</computeroutput> keeps track of which curriculums a user wants displayed. This table is cached per user.</para>
+    <para>Curriculum uses the Workflow package for managing the process of publishing curriculums. A default workflow - distinguishing between the roles of Creator, Editor, and Publisher - is automatically created when installing the Curriculum package. Every instance will use an individual copy of this default workflow. If you are dissatisfied with the default workflow template and wish to create another one to your own liking, please refer to the Workflow Developer's Guide.</para>
   </sect1>
   <sect1 id="future">
     <title>Future Developments</title>
