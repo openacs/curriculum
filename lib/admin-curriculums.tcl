@@ -49,6 +49,7 @@ db_multirow -extend {
 
     set curriculum_id_export [export_vars -url curriculum_id]
     set element_id_export [export_vars -url element_id]
+
 }
 
 set curriculum_count [curriculum::conn -nocache curriculum_count]

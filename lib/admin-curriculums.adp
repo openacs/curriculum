@@ -1,17 +1,13 @@
-<if @curriculums:columns@ not nil>
-<b>Available columns:</b>
-<p>@curriculums:columns@</p>
-</if>
-
-<p align="right">
-  <a href="thorough-flush">I'm done now, update the bar for everyone! (Use sparingly)</a>
-</p>
 <p>
   [
   <a href="/admin/site-map/parameter-set?package%5fid=@package_id@">Package parameters</a>
   |
   <a href="/permissions/one?object%5fid=@package_id@">Package permissions</a>
   ]
+</p>
+<if @curriculums:rowcount@ ne 0>
+<p align="right">
+  <a href="thorough-flush">I'm done now, update the bar for everyone! (Use sparingly)</a>
 </p>
 <table border="0" width="100%">
   <tr bgcolor="#cccccc" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -22,8 +18,15 @@
     <th width="5%">Move</th>
   </tr>
 </table>
-<br>
+<br />
 <multiple name="curriculums">
+<tcl>
+# Single-curriculum notifications link.
+set notification_link [curriculum::get_watch_link -curriculum_id $curriculums(curriculum_id)]
+foreach { notification_url notification_label notification_title } $notification_link {
+    # Do nothing!
+}
+</tcl>
 <table bgcolor="#cccccc" border="0" cellpadding="1" cellspacing="0" width="100%">
   <tr>
     <td width="20%">
@@ -40,7 +43,7 @@
       @curriculums.pretty_state@
     </td>
     <td width="15%">
-      [WF Actions]
+      <a href="@notification_url@" title="@notification_title@">@notification_label@</a>
       <a href="curriculum-delete?@curriculums.curriculum_id_export@" onclick="return confirm('Are you sure you want to delete this curriculum?');" title="Delete">
         <img src="/shared/images/Delete16.gif" border="0" width="16" height="16">
       </a>
@@ -129,16 +132,17 @@
 </table>
 
 </table>
-<br>
+<br />
 </multiple>
-
-<if @curriculums.curriculum_id@ nil>
+</if>
+<else>
 <li>
   <i>No curriculums</i>
 </li>
-</if>
+<br />
+</else>
 <li type="square">
   <a href="curriculum-ave">Add a curriculum</a>
 </li>
-<br>
+<br />
 </table>

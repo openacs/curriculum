@@ -1,10 +1,5 @@
 TODO:
 
-- Let the public access the curriculum-ave and element-ave
-  widgets, but prohibit them from adding/editing content...
-  Also, remove the workflow action buttons!
-- Think about flushing "enabled rows" after publishing.
-  (maybe via a WF "side effect")
 - Assignees and notifications in workflow.
 - Documentation.
 - Optimize bar and admin page queries (compare with the
@@ -24,7 +19,7 @@ A: Yes, to be able to delete rows representing individual
 
 Q: Register filter or proc upon adding of a subsite-external
    element to bring the current bar into the picture?
-A: Maybe.
+A: Nope! Solved with frames.
 
 
 DONE:
@@ -56,3 +51,6 @@ DONE:
   a link instead, that the admin should hit when done admin'ing.)
 - Fix desc truncation and the "more" link on index page.
   (dbms_lob.instr() doesn't return the substr on Oracle ...)
+- Let the public access the curriculum-ave and element-ave
+  widgets, but prohibit them from adding/editing content...
+  Also, remove the workflow action buttons!

@@ -26,6 +26,7 @@ if { [set new_p [ad_form_new_p -key element_id]] } {
     ####
 
     permission::require_permission -object_id $curriculum_id -privilege write
+    set write_p 1
 
     set form_mode edit
     set title "Add Element"

@@ -27,6 +27,7 @@ if { [set new_p [ad_form_new_p -key curriculum_id]] } {
     ####
 
     permission::require_permission -object_id $package_id -privilege write
+    set write_p 1
 
     set form_mode edit
     set title "Create Curriculum"
@@ -124,7 +125,12 @@ lappend users_list [list "Search..." ":search:"]
 # and then force the "edit_fields" into edit mode depending on wf status, etc. 
 # This might be figured out by ad_form, e.g. if there exist any actions ...
 
-ad_form -name curriculum -cancel_url $return_url -mode $form_mode -actions $actions -form {
+ad_form -name curriculum \
+    -cancel_url $return_url \
+    -mode $form_mode \
+    -actions $actions \
+    -has_edit [expr !$write_p] \
+    -form {
     curriculum_id:key
     {name:text
 	{mode $element_mode}
@@ -154,33 +160,25 @@ ad_form -extend -name curriculum -form {
     }
 }
 
-if { !$new_p } {
+if { !$new_p && $write_p } {
 
-    if { $write_p } {
-	# Extend the form with assignee widgets (only in edit or display mode).
-	workflow::case::role::add_assignee_widgets -case_id $case_id -form_name curriculum
-	
-	# FIXME. Get values for the role assignment widgets.
-	workflow::case::role::set_assignee_values -case_id $case_id -form_name curriculum
-	
-	# Set values for description field.
-	# Is before_html the right placement of this? Perhaps we should link
-	# to a different page where we show the case log?
-	element set_properties curriculum description \
-	    -before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>$action_pretty_name by user_first_names user_last_name</b></p>"]"
-	
-    }
+    # Extend the form with assignee widgets (only in edit or display mode).
+    workflow::case::role::add_assignee_widgets -case_id $case_id -form_name curriculum
     
-    # Single-curriculum notifications and "start over" link.
+    # FIXME. Get values for the role assignment widgets.
+    workflow::case::role::set_assignee_values -case_id $case_id -form_name curriculum
+    
+    # Set values for description field.
+    # Is before_html the right placement of this? Perhaps we should link
+    # to a different page where we show the case log?
+    element set_properties curriculum description \
+	-before_html "[workflow::case::get_activity_html -case_id $case_id][ad_decode $action_id "" "" "<p><b>$action_pretty_name by user_first_names user_last_name</b></p>"]"
+    
+    # Single-curriculum notifications link.
     set notification_link [curriculum::get_watch_link -curriculum_id $curriculum_id]
     foreach { notification_url notification_label notification_title } $notification_link {
 	# Do nothing!
     }
-    
-    #set start_over_url   "start-over?[export_vars -url curriculum_id]"
-    #set start_over_label "Restart this curriculum"
-    #set start_over_title "Clear all checkboxes in $curriculum_name"
-    
     
 }
 

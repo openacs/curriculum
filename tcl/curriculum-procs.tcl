@@ -73,7 +73,7 @@ ad_proc -public curriculum::new {
 	    -workflow_id [workflow::get_id -object_id $package_id -short_name [workflow_short_name]] \
 	    -object_id $curriculum_id \
 	    -comment $description \
-	    -comment_mime_type "text/plain"
+	    -comment_mime_type $desc_format
     }
 
     return $curriculum_id
@@ -308,8 +308,8 @@ ad_proc -private curriculum::workflow_create {} {
                 edited {
                     pretty_name "Edited"
                 }
-                refused {
-                    pretty_name "Refused"
+                rejected {
+                    pretty_name "Rejected"
                 }
                 published {
                     pretty_name "Published"
@@ -670,11 +670,11 @@ ad_proc -public curriculum::get_watch_link {
                      -url $return_url \
                      -user_id $user_id \
                      -pretty_name "this curriculum"]
-        set label "Watch this curriculum"
-        set title "Request notifications for all activity on this curriculum"
+        set label "Watch"
+        set title "Request notifications for activity on this curriculum"
     } else {
         set url [notification::display::unsubscribe_url -request_id $request_id -url $return_url]
-        set label "Stop watching this curriculum"
+        set label "Stop watching"
         set title "Unsubscribe to notifications for activity on this curriculum"
     }
     return [list $url $label $title]
