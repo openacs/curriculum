@@ -13,7 +13,7 @@
     <fullquery name="curriculum::delete.delete_workflow_case">
         <querytext>
 		declare begin
-			:1 := workflow_case.delete(:case_id);
+			:1 := workflow_case.del(:case_id);
 		end;
         </querytext>
     </fullquery>

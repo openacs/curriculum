@@ -121,7 +121,7 @@ as
         delete from cu_curriculums
         where  curriculum_id = cu_curriculum.del.curriculum_id;
 
-        acs_object.delete(cu_curriculum.del.curriculum_id);
+        acs_object.del(cu_curriculum.del.curriculum_id);
     end del;
 
 end cu_curriculum;

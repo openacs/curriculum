@@ -120,7 +120,7 @@ as
         delete from cu_elements
         where  element_id = cu_element.del.element_id;
 
-        acs_object.delete(element_id);
+        acs_object.del(element_id);
     end del;
 
 end cu_element;
