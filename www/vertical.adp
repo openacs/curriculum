@@ -7,4 +7,4 @@
   <img src="graphics/frame_back.gif" border="0" width="12" height="11" alt="&lt;&lt;">
   Back to where you were
 </a>
-<include src="../lib/bar-vertical" />
+<include src="../lib/bar" />
