@@ -7,7 +7,7 @@
   <a href="@url@remove-from-bar?@return_url_export@" title="#curriculum.lt_Stop_displaying_the_c#">#curriculum.lt_Remove_all_curriculum#</a>
 </if>
   |
-  <a href="doc/user.html#STUDENT" title="#curriculum.lt_Read_the_user_manual_#">#curriculum.Help#</a>
+  <a href="@url@doc/user.html#STUDENT" title="#curriculum.lt_Read_the_user_manual_#">#curriculum.Help#</a>
   ]
 </p>
 <table border="0" width="100%">
@@ -118,7 +118,7 @@
 </if>
 <else>
 <li>
-  <i>#curriculum.lt_No_published_curricul#</i>
+  #curriculum.lt_No_published_curricul#
 </li>
 </else>
 
