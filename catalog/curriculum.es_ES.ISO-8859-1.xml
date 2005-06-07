@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="curriculum" package_version="1.3" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="curriculum" package_version="1.5" locale="es_ES" charset="ISO-8859-1">
 
   <msg key="Action_Log">Registro de Actividad</msg>
   <msg key="Actions">Actividades</msg>
@@ -24,6 +24,8 @@
   <msg key="Curriculum_1">Currículum</msg>
   <msg key="Curriculum_info">Información sobre el Currículum</msg>
   <msg key="Curriculum_owner">Propietario del curriculum</msg>
+  <msg key="Default_Assignees">Asignados por defecto</msg>
+  <msg key="Default_assignees_help">Asignados por defecto para este curriculum</msg>
   <msg key="Delete">Borrar</msg>
   <msg key="Description">Descripción</msg>
   <msg key="Detailed_information">Información detallada</msg>
@@ -53,7 +55,9 @@
   <msg key="lt_Back_to_ad_urlreturn_">Volver a %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Volver donde estaba</msg>
   <msg key="lt_Create_a_new_curricul">Crear un nuevo curriculum</msg>
+  <msg key="lt_Curriculum_Administration">Administración de Curriculum</msg>
   <msg key="lt_Deactivate_this_eleme">Desactivar este elemento</msg>
+  <msg key="lt_Default_assignees_for">Ver Asignados por Defecto</msg>
   <msg key="lt_Delete_this_curriculu">Borrar este curriculum y todos sus datos</msg>
   <msg key="lt_Delete_this_element_a">Borrar este elemento y todos sus datos</msg>
   <msg key="lt_deleting_curriculum_c">borrando curriculum %curriculum_id% del paquete %package_id%</msg>
