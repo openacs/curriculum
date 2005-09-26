@@ -7,7 +7,7 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>f</singleton-p>
     
-    <version name="1.4" url="http://openacs.org/repository/download/apm/curriculum-1.4.apm">
+    <version name="1.5" url="http://openacs.org/repository/download/apm/curriculum-1.5.apm">
         <owner url="mailto:ola@polyxena.net">Ola Hansson</owner>
         <summary>Create and track user page sequence &quot;curriculum&quot;</summary>
         <vendor url="http://www.polyxena.net">Polyxena</vendor>
@@ -15,7 +15,7 @@
 be presented as a linkbar in the page footer (or elsewhere) and is tracked per user.</description>
         <maturity>0</maturity>
 
-        <provides url="curriculum" version="1.4"/>
+        <provides url="curriculum" version="1.5"/>
         <requires url="workflow" version="2.0.0b1"/>
         <requires url="categories" version="1.0d4"/>
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="curriculum" package_version="1.5" locale="es_ES" charset="ISO-8859-1">
+<message_catalog package_key="curriculum" package_version="1.3" locale="es_CO" charset="ISO-8859-1">
 
   <msg key="Action_Log">Registro de Actividad</msg>
   <msg key="Actions">Actividades</msg>
   <msg key="Add_a_curriculum">Agregar un currículum</msg>
   <msg key="Add_an_element">Agregar un elemento</msg>
-  <msg key="Add_Element">Agregar un elemento</msg>
+  <msg key="Add_Element">Agregar un Elemento</msg>
   <msg key="Any">Cualquiera</msg>
   <msg key="Archive">Archivo</msg>
   <msg key="Archived">Archivado</msg>
@@ -16,7 +16,7 @@
   <msg key="Commented">Comentado</msg>
   <msg key="Complete_description">Complete la Descripción</msg>
   <msg key="Completed">Completado</msg>
-  <msg key="Create">Cree</msg>
+  <msg key="Create">Crear</msg>
   <msg key="Create_a_new_element">Cree un nuevo elemento</msg>
   <msg key="Create_Curriculum">Cree un Currículum</msg>
   <msg key="Created">Creado</msg>
@@ -24,8 +24,6 @@
   <msg key="Curriculum_1">Currículum</msg>
   <msg key="Curriculum_info">Información sobre el Currículum</msg>
   <msg key="Curriculum_owner">Propietario del curriculum</msg>
-  <msg key="Default_Assignees">Asignados por defecto</msg>
-  <msg key="Default_assignees_help">Asignados por defecto para este curriculum</msg>
   <msg key="Delete">Borrar</msg>
   <msg key="Description">Descripción</msg>
   <msg key="Detailed_information">Información detallada</msg>
@@ -44,8 +42,8 @@
   <msg key="lt_A_leading_http_indica">Si la URL empieza por http://, significa que se trata de una URL externa.</msg>
   <msg key="lt_action_pretty_past_te">%action_pretty_past_tense% por %user_name%:</msg>
   <msg key="lt_Activate_this_element">Activar este elemento</msg>
-  <msg key="lt_Add_the_dropped_curri">Añadir el curriculum borrado a la barra de herramientas</msg>
-  <msg key="lt_Add_the_removed_curri">Añadir el curriculum borrado a la barra de herramientas</msg>
+  <msg key="lt_Add_the_dropped_curri">Agregar el curriculum borrado a la barra de herramientas</msg>
+  <msg key="lt_Add_the_removed_curri">Agregar el curriculum borrado a la barra de herramientas</msg>
   <msg key="lt_Administer_Curriculum">Administrar curriculum</msg>
   <msg key="lt_Administer_this_curri">Administrar este curriculum</msg>
   <msg key="lt_Administer_this_eleme">Administrar este elemento</msg>
@@ -53,11 +51,9 @@
   <msg key="lt_Are_you_sure_you_want">¿Desea realmente borrar este curriculum?</msg>
   <msg key="lt_Are_you_sure_you_want_1">¿Desea realmente borrar este elemento?</msg>
   <msg key="lt_Back_to_ad_urlreturn_">Volver a %ad_url%%return_url%</msg>
-  <msg key="lt_Back_to_where_you_wer">Volver donde estaba</msg>
+  <msg key="lt_Back_to_where_you_wer">Regresar</msg>
   <msg key="lt_Create_a_new_curricul">Crear un nuevo curriculum</msg>
-  <msg key="lt_Curriculum_Administration">Administración de Curriculum</msg>
   <msg key="lt_Deactivate_this_eleme">Desactivar este elemento</msg>
-  <msg key="lt_Default_assignees_for">Ver Asignados por Defecto</msg>
   <msg key="lt_Delete_this_curriculu">Borrar este curriculum y todos sus datos</msg>
   <msg key="lt_Delete_this_element_a">Borrar este elemento y todos sus datos</msg>
   <msg key="lt_deleting_curriculum_c">borrando curriculum %curriculum_id% del paquete %package_id%</msg>
@@ -66,8 +62,8 @@
   <msg key="lt_Installing_curriculum">Instalando filtro del curriculum para %url_pattern% en el paquete %package_id%</msg>
   <msg key="lt_More_than_one_instanc">Más de una instancia del curriculum</msg>
   <msg key="lt_Name_may_not_be_more_">La longitud del nombre no puede superar los %length% caracteres.</msg>
-  <msg key="lt_No_published_curricul">Ningún curriculum publicado</msg>
-  <msg key="lt_Please_delete_the_ext">Por favor, borre las instancias extra del paquete Curriculum de las instancias del acs-subsite o de dotlrn. El paquete Curriculum ha sido diseñado una sola vez bajo estas instancias. Visite &lt;a href=&quot;/admin/site-map/&quot;&gt;Mapa del sitio&lt;/a&gt; y desmonte la instancia extra, o bien, borrela directamente pulsando &lt;a href=&quot;%delete_url%&quot;&gt;aquí&lt;/a&gt;.</msg>
+  <msg key="lt_No_published_curricul">Ningun curriculum publicado</msg>
+  <msg key="lt_Please_delete_the_ext">Por favor, borre las instancias extras del paquete Curriculum de las instancias del acs-subsite o de dotlrn. El paquete Curriculum ha sido diseñado una sola vez bajo estas instancias. Visite &lt;a href=&quot;/admin/site-map/&quot;&gt;Mapa del sitio&lt;/a&gt; y desmonte la instancia extra, o bien, borrela directamente pulsando &lt;a href=&quot;%delete_url%&quot;&gt;aquí&lt;/a&gt;.</msg>
   <msg key="lt_Read_the_user_manual_">Lea el manual de usuario de esta página</msg>
   <msg key="lt_Remove_all_curriculum">Borrar todos los curriculums</msg>
   <msg key="lt_Remove_the_curriculum">Borrar el curriculum de la barra de herramientas</msg>
@@ -82,7 +78,7 @@
   <msg key="lt_Uncheck_the_visited_e">Quitar selección de los elementos visitados en todos los curriculums</msg>
   <msg key="lt_Uncheck_the_visited_e_1">Quitar selección de los elementos visitados</msg>
   <msg key="lt_Unsubscribe_to_notifi">Quitar notificaciones de actividades sobre este curriculum</msg>
-  <msg key="lt_URL_may_not_be_more_t">La URL no puede tener más de %length% caracteres.</msg>
+  <msg key="lt_URL_may_not_be_more_t">El URL no puede tener más de %length% caracteres.</msg>
   <msg key="lt_user_id_doesnt_have_p">%user_id% no tiene permiso de '%action%' sobre el curriculum %curriculum_id%</msg>
   <msg key="lt_Visit_this_element_ag">Volver a visitar este elemento</msg>
   <msg key="lt_You_dont_have_permiss">No dispone del permiso '%action%' sobre este curriculum.</msg>

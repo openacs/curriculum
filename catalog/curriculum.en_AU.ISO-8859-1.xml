@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="curriculum" package_version="1.5" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="curriculum" package_version="1.3" locale="en_AU" charset="ISO-8859-1">
 
   <msg key="Action_Log">Action Log</msg>
   <msg key="Actions">Actions</msg>
@@ -24,8 +24,6 @@
   <msg key="Curriculum_1">Curriculum</msg>
   <msg key="Curriculum_info">Curriculum info</msg>
   <msg key="Curriculum_owner">Curriculum owner</msg>
-  <msg key="Default_Assignees">Default Assignees</msg>
-  <msg key="Default_assignees_help">Default Assignees for this curriculum</msg>
   <msg key="Delete">Delete</msg>
   <msg key="Description">Description</msg>
   <msg key="Detailed_information">Detailed information</msg>
@@ -55,9 +53,7 @@
   <msg key="lt_Back_to_ad_urlreturn_">Back to %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Back to where you came from</msg>
   <msg key="lt_Create_a_new_curricul">Create a new curriculum</msg>
-  <msg key="lt_Curriculum_Administration">Curriculum Administration</msg>
   <msg key="lt_Deactivate_this_eleme">Deactivate this element</msg>
-  <msg key="lt_Default_assignees_for">View Default Assignees</msg>
   <msg key="lt_Delete_this_curriculu">Delete this curriculum and all of its data</msg>
   <msg key="lt_Delete_this_element_a">Delete this element and all of its data</msg>
   <msg key="lt_deleting_curriculum_c">deleting curriculum %curriculum_id% in package_id %package_id%</msg>
