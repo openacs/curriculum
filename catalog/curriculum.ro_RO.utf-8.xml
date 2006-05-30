@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<message_catalog package_key="curriculum" package_version="1.3" locale="ro_RO" charset="utf-8">
+<message_catalog package_key="curriculum" package_version="1.5" locale="ro_RO" charset="utf-8">
 
   <msg key="Action_Log">Regisrul Acţiunilor</msg>
   <msg key="Actions">Acţiuni</msg>

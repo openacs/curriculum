@@ -67,7 +67,7 @@
   <msg key="lt_More_than_one_instanc">Más de una instancia del curriculum</msg>
   <msg key="lt_Name_may_not_be_more_">La longitud del nombre no puede superar los %length% caracteres.</msg>
   <msg key="lt_No_published_curricul">Ningún curriculum publicado</msg>
-  <msg key="lt_Please_delete_the_ext">Por favor, borre las instancias extra del paquete Curriculum de las instancias del acs-subsite o de dotlrn. El paquete Curriculum ha sido diseñado una sola vez bajo estas instancias. Visite &lt;a href=&quot;/admin/site-map/&quot;&gt;Mapa del sitio&lt;/a&gt; y desmonte la instancia extra, o bien, borrela directamente pulsando &lt;a href=&quot;%delete_url%&quot;&gt;aquí&lt;/a&gt;.</msg>
+  <msg key="lt_Please_delete_the_ext">Por favor, borre la instancia extra del paquete Curriculum de la instancia del acs-subsite o de dotlrn. El paquete Curriculum ha sido diseñado para ser instalado una sola vez bajo estas instancias. Visite &lt;a href=&quot;/admin/site-map/&quot;&gt;Mapa del sitio&lt;/a&gt; y desmonte la instancia extra, o bien, borrela directamente pulsando &lt;a href=&quot;%delete_url%&quot;&gt;aquí&lt;/a&gt;.</msg>
   <msg key="lt_Read_the_user_manual_">Lea el manual de usuario de esta página</msg>
   <msg key="lt_Remove_all_curriculum">Borrar todos los curriculums</msg>
   <msg key="lt_Remove_the_curriculum">Borrar el curriculum de la barra de herramientas</msg>
