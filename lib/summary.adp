@@ -21,7 +21,7 @@
 <else>
 
 <li>
-  @community_name@: #curriculum.lt_No_published_curricul#
+  #curriculum.lt_No_published_curricul#
 </li>
 
 </else>
