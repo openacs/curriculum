@@ -53,6 +53,7 @@
   <msg key="lt_Back_to_ad_urlreturn_">Retorne para %ad_url%%return_url%</msg>
   <msg key="lt_Back_to_where_you_wer">Retorne ao lugar de onde você veio</msg>
   <msg key="lt_Create_a_new_curricul">Criar um novo curriculum</msg>
+  <msg key="lt_Curriculum_Administration">Administração do Currículo</msg>
   <msg key="lt_Deactivate_this_eleme">Desativar este elemento</msg>
   <msg key="lt_Delete_this_curriculu">Deletar este curriculum e todos os dados relativos</msg>
   <msg key="lt_Delete_this_element_a">Deletar este elemento e todos dados relacionados</msg>
