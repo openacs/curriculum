@@ -100,7 +100,7 @@ ad_proc -public curriculum::edit {
 } {
     upvar $array row
     
-    array set assignments [list]
+    array set assignments {}
     
     set role_prefix "role_"
 
@@ -607,7 +607,7 @@ ad_proc -private curriculum::notification_info::get_notification_info {
     }
     
     # Build up the details list
-    set details_list [list]
+    set details_list {}
     foreach field $fields {
         lappend details_list $label($field) $value($field)
     }
