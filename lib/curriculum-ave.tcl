@@ -16,7 +16,7 @@ ad_page_contract {
 
 set package_id [curriculum::conn package_id]
 set user_id [ad_conn user_id]
-set actions {}
+set actions [list]
 set element_mode {}
 set desc_help_text "[_ curriculum.lt_This_text_should_desc]"
 
